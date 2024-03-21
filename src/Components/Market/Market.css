@@ -1,0 +1,126 @@
+.trading-dta {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #fff;
+}
+
+.trading-dta img {
+    margin-right: 10px;
+}
+
+p.block-head-whitee {
+    text-align: left;
+    color: #c1c1c1;
+}
+
+.coin-img-name-dtl {
+    display: flex;
+    align-items: center;
+}
+
+.coin-img-name-dtl img {
+    height: 30px;
+}
+
+span.coin-name-rght {
+    color: #fff;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.coin-rate-mid {
+    color: #fff;
+}
+
+.coin-rate-status.low-rate {
+    color: #CF304A;
+}
+
+.tab-names-block span.MuiTabs-indicator {
+    display: none;
+}
+
+.tab-names-block .Mui-selected {
+    position: relative;
+    background: #18342D;
+    border-radius: 4.76333px;
+    color: #25DEB0 !important;
+}
+
+.tab-names-block .Mui-selected svg {
+    color: #25DEB0 !important;
+}
+
+.tabs-market-block {
+    margin-top: 70px;
+    width: 100%;
+}
+
+.tabs-search-blockform form {
+    margin-left: auto !important;
+}
+
+.tabs-search-block form {
+    margin-left: auto;
+}
+
+.tabs-search-block {
+    align-items: center;
+}
+
+.tabs-market-block-inner-options {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.tabs-market-block-inner-options button.Mui-selected {
+    background: #25DEB0;
+    color: #fff !important;
+}
+
+.tabs-market-block-inner-options button.Mui-selected svg {
+    color: #fff !important;
+}
+
+.tabs-market-block-inner-options .MuiTabs-flexContainer {
+    gap: 30px !important;
+}
+
+.MuiTablePagination-toolbar input.MuiSelect-select {
+    color: #fff !important;
+}
+
+.tabs-market-block-inner-options th span.Mui-active,
+.tabs-market-block-inner-options th span:hover {
+    color: #fff !important;
+}
+
+.tabs-market-block th,
+.tabs-market-block td,
+.tabs-market-block button {
+    text-transform: capitalize;
+}
+
+.tabs-market-block-inner-options button {
+    color: #25DEB0;
+}
+
+.classgreens {
+    color: green
+}
+
+.classreds {
+    color: red;
+}
+
+.crypto-coin-size img {
+    width: 30px;
+}
+
+.img-div {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 7px;
+}

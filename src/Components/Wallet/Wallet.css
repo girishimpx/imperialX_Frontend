@@ -1,0 +1,445 @@
+.wallet-with-percent {
+    border: 0.926846px solid #25DEB0 !important;
+    padding: 20px 23px !important;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(1.85369px) !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+div#wallet-blocks {
+    gap: 0 !important;
+    justify-content: space-between;
+}
+
+table#common-color-white th {
+    color: #25DEB0 !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+}
+
+table#common-color-white td {
+    color: #fff !important;
+}
+
+h3.welcome-msg {
+    color: #25DEB0;
+    font-weight: 500;
+    font-size: 21px;
+    text-align: left;
+    margin: 0px;
+    padding-top: 0px;
+}
+
+p.welcome-txt {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.apexcharts-canvas {
+    width: 100% !important;
+}
+
+div#chart {
+    padding-top: 70px;
+}
+
+.css-1ygcj2i-MuiTableCell-root {
+    /* border-bottom: 1px solid #25DEB0 !important; */
+    /* color: rgb(255, 255, 255) !important; */
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+    /* border-bottom: 1px solid #25DEB0 !important; */
+    color: rgb(255, 255, 255) !important;
+    font-size: 12px !important;
+}
+
+button.Deposit,
+button.Withdraw,
+button.Trade {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 2px 6px !important;
+}
+
+button.Withdraw,
+button.Withdraw:hover,
+button.Withdraw:focus,
+button.Withdraw:active {
+    background: #fd5959;
+    border: 1px solid #fd5959;
+    color: #fff;
+}
+
+button.Trade,
+button.Trade:hover,
+button.Trade:focus,
+button.Trade:active {
+    background: #0a9e79;
+    border: 1px solid #0a9e79;
+    color: #fff;
+}
+
+button.Deposit,
+button.Deposit:hover,
+button.Deposit:focus,
+button.Deposit:active {
+    background: #2ab720;
+    border: 1px solid #2ab720;
+    color: #fff;
+}
+
+span.apexcharts-legend-text {
+    color: #fff !important;
+}
+
+.Top-Trading-Plartform-head {
+    text-align: start;
+}
+
+
+/** wallet deposit css ***/
+
+.stepper-crypto-block span.MuiStepLabel-label {
+    font-size: 17px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.stepper-crypto-block .MuiStepIcon-root.Mui-completed {
+    color: #25deb0;
+}
+
+.stepper-crypto-block .MuiStepIcon-root.Mui-active,
+.stepper-crypto-block .MuiStepIcon-root {
+    color: #25deb0;
+}
+
+.stepper-crypto-block .MuiStepIcon-root.Mui-active text {
+    fill: #000 !important;
+}
+
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root label {
+    background: #131a26;
+    color: #ccc;
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root .MuiInputBase-root fieldset,
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root .MuiInputBase-root {
+    text-align: left !important;
+}
+
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root .MuiInputBase-root fieldset {
+    border-color: #ccc;
+}
+
+.Wallet-deposit-Body-Page {
+    text-align: left !important;
+}
+
+strong.strong-tad-block-style {
+    color: #fff;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+p.p-tad-block-style {
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* .address-label {
+    margin-top: 25px;
+} */
+
+.qr-code-info-copy-scan .MuiFormControl-root {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.copy-address-button button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    text-transform: none;
+    gap: 5px;
+}
+
+.address-label label {
+    color: #fff;
+    font-weight: 600;
+}
+
+.Wallet-Deposit-Body-right-class {
+    overflow: auto;
+}
+
+.qr-code-info-copy-scan {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.QR_Code_img img {
+    width: 70px;
+    height: 70px;
+}
+
+.QR_Code_img {
+    display: inline-block;
+}
+
+.QR_Code_img {
+    background: #fff;
+    margin-bottom: 15px;
+}
+
+.qr-code-info-copy-scan>div:first-child {
+    width: 70%;
+}
+
+.QR_Code_img-outer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 13px;
+}
+
+.QR_Code_img-outer label {
+    color: #ccc;
+}
+
+.deposit-detail-table-block {
+    background: #000;
+}
+
+.deposit-detail-table-block span,
+.deposit-detail-table-block strong {
+    color: #ccc;
+}
+
+.deposit-detail-table-block {
+    background: #000;
+    padding: 5px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.deposit-detail-table-block span,
+.deposit-detail-table-block strong {
+    color: #ccc;
+}
+
+.deposit-detail-table-block-inner {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stepper-crypto-block {
+    max-width: 600px !important;
+}
+.amount-withdrawal-part {
+    display: flex;
+    flex-direction: column;
+}
+
+.amount-withdrawal-part .MuiFormControl-root {
+    margin: 5px 0px 2px !important;
+    width: 100%;
+}
+
+.amount-withdrawal-part > label, .amount-withdrawal-part > span {
+    color: #fff;
+}
+
+.amount-withdrawal-part > span {
+    font-size: 12px;
+}
+.stepper-crypto-block .MuiStep-root.MuiStep-vertical .MuiFormControl-root .MuiInputAdornment-root p {
+    color: #fff;
+}
+
+.funding-details-withdraw {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    background: #000;
+    margin-top: 15px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.funding-details-withdraw label.MuiFormControlLabel-root {
+    margin: 0px;
+}
+
+.funding-details-withdraw > span {
+    color: #fff;
+}
+
+.amount-withdrawal-part.network-fee {
+    margin: 15px 0;
+}
+
+p.hr-24-limit-para {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.amount-withdrawal-part.address-domain-part {
+    margin-bottom: 15px;
+}
+
+.amount-withdrawal-part.address-domain-part button {
+    text-transform: none;
+    padding: 0px;
+}
+
+span.amount-withdrawal-part-enable {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.amount-withdrawal-part-field .MuiFormControl-root {
+    margin: 0px !important;
+}
+
+.stepper-crypto-block button.MuiButtonBase-root.MuiButton-root.MuiButton-contained {
+    text-transform: none;
+    background: #25deb0;
+}
+
+label.select-option-chain-label {
+    position: absolute;
+    left: 32px;
+    pointer-events: none;
+    color: #ccc;
+    font-weight: 600;
+}
+
+.MuiStep-root.MuiStep-vertical.Mui-completed,
+.MuiStep-root.MuiStep-vertical {
+    position: relative;
+}
+
+label.error-msg-color {
+    color: #f00 !important;
+    padding-left: 0px !important;
+    padding-top: 10px !important;
+    font-size: 16px;
+}
+
+p#modal-modal-description, p#modal-modal-description-2 {
+    color: #fff;
+    text-align: center;
+}
+
+.otp-verify-modal-box {
+    background: #090d13 !important;
+    border-color: #10ad86 !important;
+    border-radius: 10px !important;
+}
+
+.otp-verify-modal-box h2 {
+    font-weight: 700;
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+}
+
+p#modal-modal-description-1 fieldset {
+    border-color: #10ad86;
+    width: 100%;
+}
+
+p#modal-modal-description-2 button {
+    text-transform: none;
+    font-size: 16px;
+    background: #10ad86;
+}
+
+p#modal-modal-description-1 .MuiFormControl-root {
+    width: 100%;
+}
+
+.otp-send-verify {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+.otp-send-verify label {
+    color: #fff;
+}
+.otp-send-verify button {
+    white-space: nowrap;
+    text-transform: none;
+    padding: 0px;
+}
+
+.otp-text-field {
+    width: 50px !important;
+}
+
+.otp-text-field fieldset, .otp-text-field input {
+    text-align: center !important;
+}
+.otp-box-flex-row{
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+input.otp-text-field {
+    background: transparent;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    height: 40px;
+    text-align: center;
+    width: 40px !important;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+button.back-button-style {
+    text-transform: capitalize;
+    padding: 20px 0 0;
+    color: #25deb0;
+    align-items: center;
+    justify-content: center;
+}
+
+div.balance-blocks-trade-view {
+    max-width: 1063px;
+    margin: 0 auto;
+}
+
+div.balance-blocks-trade-view table#common-color-white {
+    border: 1px solid;
+}
+
+div.balance-blocks-trade-view table#common-color-white tbody tr:nth-child(odd) {
+    background: #174a486b;
+}

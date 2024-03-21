@@ -1,0 +1,134 @@
+.top-group {
+    display: flex;
+    column-gap: 10px;
+}
+
+.full-his {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    text-align: left;
+    row-gap: 5px;
+}
+
+.bottom-group {
+    display: flex;
+    column-gap: 10px;
+}
+
+.middle-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.middle-first {
+    display: flex;
+    flex-direction: column;
+}
+
+.fu-input div#demo-select-small {
+    padding: 0px;
+}
+
+.middle-last .fu-input label#demo-select-small-label {
+    top: -6px;
+    font-size: 13px;
+}
+
+.fu-input {    
+    color: white;
+    height: 27px;
+    width: 133px;
+    outline: none;
+    outline: none !important;
+    border: solid 1px #ffffff4d !important;
+}
+
+.fu-input input {
+    padding: 3px;
+    border: solid 1px #ffffff4d;
+    background: #00000061;
+    outline: none !important;
+    border: none !important;
+    font-size: 13px;
+}
+
+.fu-input input:focus{
+    outline: none !important;
+}
+
+.middle-last {
+    display: flex;
+    column-gap: 11px;
+}
+
+button.fu-btn {
+    background: #7c77772e;
+    height: 32px;
+    font-size: 13px;
+    border-radius: 14%;
+}
+
+.fu-input.fu-select-input input:focus {
+    outline: none !important;
+    border: none !important;
+}
+
+.fu-input.fu-select-input input {
+    border: none !important;
+}
+
+
+.fu-input.fu-select-input fieldset{border: none !important;}
+
+.first {
+    display: flex;
+    column-gap: 9px;
+}
+
+span.fu-type, span.fu-lo {
+    font-size: 12px;
+}
+
+.top-group {
+    align-items: center;
+}
+
+span.fu-type {
+    background: #cccccc7d;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+span.fu-lo {
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.green-spot{color: #08e751;}
+.red-spot{color: #ff0000;}
+
+.middle-group {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.middle-group label {
+    color: #ccc;
+}
+
+.bottom-group {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.bottom-group span:last-child {
+    cursor: pointer;
+    background: #cccccc7d;
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+
+.middle-last {
+    align-items: center;
+}

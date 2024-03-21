@@ -1,0 +1,114 @@
+.loginItem{
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative
+  }
+
+
+.loginLeft {
+    color:white !important;
+    background:transparent !important;
+    border-radius:0px !important;
+    box-shadow:none !important;
+    width:100%;
+    margin-top: 2%;
+  }
+
+
+
+  .paragraph{
+    padding: .5rem ;
+    color: #f85656 ;
+    text-align: center ;
+  }
+
+
+
+  .loginpage{
+    display:flex !important;
+    justify-content: center !important;
+    height:100%;
+  }
+  .loginform{
+    display:flex !important;
+    flex-direction:column;
+    margin-left:0px;
+    margin-right:0px;
+  } 
+  .formFlex{
+    display: flex;
+
+  }
+  .formButton{
+    display: flex;
+justify-content: space-around;
+  }
+  .modal {
+    width: 50% !important;
+    padding: 0px 15px 20px 15px  !important;
+    border: 1px solid #25DEB0 !important;
+backdrop-filter: blur(2px) !important;
+border-radius: 30px !important;
+background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important;
+overflow: auto;
+height: max-content;
+background: #000000b3 !important;
+
+}
+
+.fixedIcon{
+    position: sticky;
+    top: 10%;
+    align-items: center;
+    background-color: black;
+    z-index: 9;
+}
+  @media only screen and (max-width: 800px) {
+    /* .formFlex{
+        display: flex;
+        flex-wrap: wrap;
+      } */
+  }
+
+
+
+  /* Hide the default checkbox */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #aaa; /* Set the border color here */
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Custom styles for checked state */
+.custom-checkbox:checked {
+  background-color: #4caf50; /* Set the background color when checked */
+}
+
+/* Styles for the checkmark (optional) */
+.custom-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: none;
+}
+
+/* Show the checkmark when the checkbox is checked */
+.custom-checkbox:checked::after {
+  display: block;
+}

@@ -1,0 +1,139 @@
+.tradingviewcls {
+    border: 1.16639px solid rgba(37, 222, 176, 0.1);
+    border-radius: 30px !important;
+    background: transparent !important;
+    padding: 20px !important;
+    text-align: center;
+    margin-top: 20px;
+}
+
+p.welcome-msg.option-label {
+    padding-top: 0px;
+    text-align: center;
+    color: #25DEB0 !important;
+}
+
+span.option-value {
+    font-size: 24px;
+    color: #fff;
+    font-weight: 700;
+    line-height: 30px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.flex-box-options {
+    gap: 20px;
+    justify-content: center;
+}
+
+.flex-box-options .MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-4.MuiGrid-grid-xl-4 {
+    max-width: 30% !important;
+}
+
+
+
+
+.coin-block {
+    background: transparent;
+    box-shadow: none;
+    border-bottom: 1.16639px solid rgba(37, 222, 176, 0.1);
+    border-radius: 17.4958px;
+    padding-bottom: 20px;
+}
+
+.coin-block-outer {
+    margin-top: 20px;
+}
+
+.coin-inner-imaage span {
+    font-size: 19px;
+    color: #fff;
+    font-weight: 700;
+    margin-left: 20px;
+}
+
+.coin-inner-imaage {
+    display: flex;
+    align-items: center;
+}
+
+.coin-value {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 19px;
+}
+
+span.coin-rate {
+    color: #fff;
+}
+
+span.coin-price {
+    color: #25DEB0;
+}
+
+.coin-img-caption {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-balance-radial {
+    margin-bottom: 15px;
+}
+
+.tradingview-pricechart {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-align: left !important; 
+}
+
+h3.price-usd {
+    margin: 0px;
+    font-size: 28px;
+    color: #25DEB0;
+    margin-bottom: 15px;
+}
+
+span.compare-percentage {
+    font-size: 19px;
+    color: #10D876;
+}
+
+.tradingview-buttons {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+    height: 100% !important;
+}
+
+.periodic-buttons {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    align-items: center;
+}
+
+.periodic-buttons button {
+    border: 1.16639px solid rgba(37, 222, 176, 0.1);
+    border-radius: 5.83193px;
+    color: #25DEB0;
+    font-weight: 700;
+}
+
+.periodic-buttons button:hover {
+    border-color: #000;
+    /* background: #000; */
+}
+
+@media (max-width:767.98px){
+
+    .periodic-buttons {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+    .flex-box-options .MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-4.MuiGrid-grid-xl-4 {
+        max-width: 100% !important;
+    }
+
+}

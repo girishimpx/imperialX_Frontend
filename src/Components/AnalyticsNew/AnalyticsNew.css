@@ -1,0 +1,133 @@
+div#id-analytics-top-bar {
+    display: flex;
+    gap: 20px;
+    border-radius: 10px !important;
+    border: 1px solid var(--01, #25DEB0);
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%) !important;
+    backdrop-filter: blur(2px);
+    margin-bottom: 20px;
+}
+
+.select-option-token {
+    width: 25%;
+}
+.DataNotFound{
+    color: white;
+    text-align: center;
+}
+.select-option-token-tabs button {
+    color: rgba(146, 146, 146, 1);
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.select-option-token-tabs button.Mui-selected {color: #fff;}
+
+.select-option-token fieldset {
+    border-radius: 4px;
+    border: 1px solid #25DEB0 !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    text-align: left !important;
+}
+
+.select-option-token {
+    width: 25%;
+}
+
+.select-option-token-tabs button {
+    color: rgba(146, 146, 146, 1);
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.select-option-token label {
+    color: #fff !important;
+    background: #2e4c4f;
+}
+
+.select-option-token div#demo-simple-select {
+    text-align: left;
+}
+.analytics-body {
+    padding-top: 30px;
+}
+.analy-inner-block-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.analy-inner-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 80%;
+}
+div#comon-id-style-1 {
+    padding: 20px !important;
+    border-radius: 37.238px !important;
+    border: 1.241px solid var(--01, #25DEB0);
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%) !important;
+    backdrop-filter: blur(2.4825291633605957px);
+}
+
+.analy-inner-block h5 {
+    color: #fff;
+    text-align: left;
+    min-height: 54px;
+}
+
+.comon-tab-division {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #000;
+    color: #25deb0;
+    height: 30px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+}
+
+.tab-hours {
+    display: flex;
+    margin-top: 20px;
+}
+
+span.duration-period {
+    display: inline-block;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(146, 146, 146, 1);
+    border-radius: 4.965px;
+}
+
+span.duration-period.active {background: #25DEB0;color: #000;}
+
+#comon-id-style-1 div#chart {
+    padding-top: 25px;
+}
+
+.analytics-body .MuiBox-root {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.analytics-body .MuiBox-root .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-4.MuiGrid-grid-xl-4.css-1qm8set-MuiGrid-root {
+    padding: 15px;
+}
+
+span.Spot-block.comon-tab-division {
+    /* background: rgba(37, 222, 176, 1); */
+    border-radius: 2.483px;
+    background: rgba(37, 222, 176, 0.19);
+}
+
+span.Options-block.comon-tab-division {
+    border-radius: 2.483px;
+    background: #868F8B;
+}

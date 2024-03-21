@@ -1,0 +1,29 @@
+table#common-color-white th {
+    color: #fff !important;
+}
+table#common-color-white td {
+    color: #fff !important;
+}
+
+
+#pagination-button-color ul li button {
+    color:#25DEB0;
+    
+}
+
+.paginationdiv{
+    padding:.5rem;
+    float:right;
+}
+
+.css-1aczowp-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    border:1px solid #25DEB0 !important;
+}
+
+#red{
+    color:#CA3F64 !important
+}
+
+#green{
+    color:#25DEB0 !important;
+}

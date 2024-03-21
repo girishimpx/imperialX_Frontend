@@ -1,0 +1,109 @@
+.StrategyHistory-contain h4{font-size: 30px !important;}
+.StrategyHistory-contain {
+border-radius: 30px;
+border: 1px solid var(--01, #25DEB0);
+background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+padding: 35px 25px !important;
+}
+.StrategyHistory-contain h4.strat {
+  color: #FFF;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  margin: 0px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+.StrategyHistory-contain .whole-rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 70px;
+  width: 100%;
+}
+.StrategyHistory-contain .whole-rate.ending::before{
+  display: none;
+}
+.StrategyHistory-contain .strategy-rate.first {
+  border-top: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+.StrategyHistory-contain .whole-rate .rate label {
+  color: #CCC;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  text-transform: capitalize;
+  padding-right: 25px;
+}
+.rate label {
+  color: #CCC;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  text-transform: capitalize;
+  padding-right: 25px;
+}
+.sub {
+  color: #FFF;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+  /* padding: 20px; */
+  text-align: center;
+  /* width: 15%; */
+  padding: 0px;
+}
+.sub span {
+  color: #25DEB0;
+}
+.StrategyHistory-contain .strategy-rate {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.StrategyHistory-contain .strategy-rate.second {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+}
+.StrategyHistory-contain .strategy-rate .sub {
+  color: #FFF;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+  padding: 20px;
+  text-align: center;
+  width: 15%;
+}
+.StrategyHistory-contain .strategy-rate .sub span {
+  color: #25DEB0;
+}
+@media (min-width: 450px) and (max-width: 767.98px){
+  .StrategyHistory-contain h4.strat {
+    font-size: 22px !important;
+    margin-bottom: 0px !important;
+}
+}
+@media (max-width: 767.98px){
+  .StrategyHistory-contain h4.strat {
+    font-size: 20px !important;
+    margin-bottom: 0px !important;
+}
+}
+
+
+@media  (min-width:502px) and (max-width:900px){
+  .StrategyHistory-contain{
+    padding:35px
+  }
+}
+@media (max-width:550px){
+.StrategyHistory-contain{
+  padding:25px
+}
+}

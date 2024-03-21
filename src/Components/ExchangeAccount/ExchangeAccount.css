@@ -1,0 +1,251 @@
+.btc-usdt-outer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btc-usdt-outer h4{color: #fff;}
+div#Exchange-Accounts-top-left {
+    padding: 40px 60px;
+    height: 100%;
+    border-radius: 30px !important;
+border: 1px solid var(--01, #25DEB0);
+background: #010712 !important;
+backdrop-filter: blur(2px);
+}
+
+div#main-top-tab span.MuiTabs-indicator {
+    display: none;
+}
+
+div#main-top-tab button.Mui-selected {
+    color: #25deb0;
+}
+
+div#main-top-tab button {
+    color: #fff;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-weight: 600;
+}
+
+.ExchangeAccountBody h3 {
+    text-align: left;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+div#Exchange-Accounts-top-left-inner > .MuiBox-root {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+div#Exchange-Accounts-top-left-inner > .MuiBox-root button {
+    color: #fff;
+    font-weight: 600;
+}
+
+div#Exchange-Accounts-top-left-inner > .MuiBox-root button.Mui-selected {
+    color: #25deb0;
+}
+div#account-connect-id {
+    padding: 50px 20px !important;
+    margin-left: 20px;
+    height: auto !important;
+    border-radius: 30px !important;
+    border: 1px solid var(--01, #25DEB0);
+    background: radial-gradient(65.96% 95.89% at 50.00% 50.00%, #29C5A1 0%, #1C7063 100%) !important;
+    backdrop-filter: blur(2px);
+}
+
+.ac-block span {
+    font-size: 60px !important;
+    font-weight: 700;
+    color: #fff;
+}
+
+.ac-block label {
+    width: 110px;
+    display: inline-block;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-left: 10px;
+}
+.active-stop-block {
+    font-size: 32px;
+    color: #fff;
+}
+
+.active-stoped {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.active-stop-block span {
+    font-size: 32px !important;
+    font-weight: 700;
+}
+
+.active-stop-block.green span {
+    color: #25deb0;
+}
+
+.active-stop-block.orange span {
+    color: rgba(252, 189, 104, 1);
+}
+
+.staus-block-right button {
+    color: rgba(19, 26, 38, 1);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+    padding: 15px 60px;
+    /* box-shadow: none; */
+    border-radius: 8px;
+    background: var(--01, #25DEB0) !important;
+    box-shadow: 0px 2px 12px 0px rgba(139, 237, 210, 0.30);
+}
+
+div#portfolio-connect-id {
+    padding: 50px 30px !important;
+    height: auto !important;
+    text-align: left;
+    color: #fff;
+    border-radius: 30px !important;
+    border: 1px solid var(--01, #25DEB0);
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+    backdrop-filter: blur(2px);
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.btc-usdt-outer-bottom {
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 1);
+    text-align: left;
+    display: flex;
+    gap: 35px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.flex-box-left-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-box-left-1 span {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.flex-box-left-1 label {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+div#Exchange-Accounts-top-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px !important;
+}
+
+h3.margin-60px-50px {
+    margin: 60px 0 50px;
+}
+
+.noaccounts-content h4 {
+    font-size: 30px;
+    color: #fff;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.noaccounts-content p {
+    color: rgba(255, 255, 255, 0.30);
+    font-size: 20px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.noaccounts-img {
+    position: relative;
+}
+
+.noaccounts-img::before {
+    content: '';
+    position: absolute;
+    border-radius: 270px;
+    background: var(--01, #25DEB0);
+    filter: blur(116.5px);
+    width: 270px;
+    height: 270px;
+    top: 0;
+}
+div#Exchange-Accounts-bottom-bottom {
+    padding: 65px 0 120px;
+    margin-bottom: 100px;
+}
+
+.noaccounts-img img {
+    position: relative;
+}
+
+@media (max-width:650px) {
+    div#Exchange-Accounts-top-left{
+        padding: 30px;
+    }    
+    div#Exchange-Accounts-top-left-inner > .MuiBox-root button.Mui-selected{
+
+    }
+}
+@media (max-width:450px){
+    div#main-top-tab button.Mui-selected{
+        font-size: 12px !important;
+    }
+    div#main-top-tab button{
+        font-size: 12px !important;
+    }
+    div#Exchange-Accounts-top-left-inner > .MuiBox-root button.Mui-selected{
+font-size: 12px !important;
+    }
+    div#Exchange-Accounts-top-left-inner > .MuiBox-root button{
+        font-size: 12px !important;
+            }
+}
+@media (max-width:767px){
+    .flex-box-left-1 label{
+        font-size: 17px !important;
+    }
+}
+ @media (min-width:450px) and (max-width:767.98px){
+    div#main-top-tab button.Mui-selected{
+        font-size: 13px !important;
+        font-weight: 400 !important;
+    }
+    div#main-top-tab button{
+        font-size: 13px !important;
+        font-weight: 400 !important;
+    }
+    div#Exchange-Accounts-top-left-inner > .MuiBox-root button.Mui-selected{
+font-size: 13px !important;
+font-weight: 400 !important;
+    }
+    div#Exchange-Accounts-top-left-inner > .MuiBox-root button{
+        font-size: 13px !important;
+        font-weight: 400 !important;
+            }
+}
+@media (max-width:899.98px){
+    div#account-connect-id{
+        margin:20px 0px !important
+    }
+    div#portfolio-connect-id{
+        margin:20px 0px !important  
+    }
+}

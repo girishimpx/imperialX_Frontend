@@ -1,0 +1,106 @@
+.wallet-with-percent {
+    border: 0.926846px solid #25DEB0 !important;
+    padding: 20px 23px !important;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(1.85369px) !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+div#wallet-blocks {
+    gap: 0 !important;
+    justify-content: space-between;
+}
+
+table#common-color-white th {
+    color: #25DEB0 !important;
+    font-size: 17px;
+    font-weight: 500 !important;
+}
+table#common-color-white td {
+    color: #fff !important;
+}
+
+h3.welcome-msg {
+    color: #25DEB0;
+    font-weight: 500;
+    font-size: 21px;
+    text-align: left;
+    margin: 0px;
+    padding-top: 60px;
+}
+
+p.welcome-txt {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.apexcharts-canvas {
+    width: 100% !important;
+}
+
+div#chart {
+    padding-top: 70px;
+}
+
+.css-1ygcj2i-MuiTableCell-root {
+    /* border-bottom: 1px solid #25DEB0 !important; */
+    /* color: rgb(255, 255, 255) !important; */
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+.css-1ex1afd-MuiTableCell-root {
+    /* border-bottom: 1px solid #25DEB0 !important; */
+    color: rgb(255, 255, 255) !important;
+    font-size: 12px !important;
+}
+
+button.Deposit,
+button.Withdraw,
+button.Trade {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 2px 6px !important;
+}
+
+button.Withdraw,
+button.Withdraw:hover,
+button.Withdraw:focus,
+button.Withdraw:active {
+    background: #fd5959;
+    border: 1px solid #fd5959;
+    color: #fff;
+}
+
+button.Trade,
+button.Trade:hover,
+button.Trade:focus,
+button.Trade:active {
+    background: #0a9e79;
+    border: 1px solid #0a9e79;
+    color: #fff;
+}
+
+button.Deposit,
+button.Deposit:hover,
+button.Deposit:focus,
+button.Deposit:active {
+    background: #2ab720;
+    border: 1px solid #2ab720;
+    color: #fff;
+}
+
+span.apexcharts-legend-text {
+    color: #fff !important;
+}
+
+.Top-Trading-Plartform-head {
+    text-align: start;
+}

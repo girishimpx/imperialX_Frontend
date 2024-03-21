@@ -1,0 +1,227 @@
+.master-trader-join-btn {
+    margin-top: 20px;
+}
+
+.master-trader-join-btn button {
+    padding: 15px 30px;
+    font-size: 20px;
+    text-transform: none;
+    font-weight: 600;
+    background: #25deb0!important;
+    color: #131a26!important;
+    letter-spacing: 0;
+}
+
+.master-trader-join p {
+    color: rgba(255, 255, 255, 0.30);
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.master-trader-join {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mastertraderjoin {
+    position: relative;
+}
+
+.mastertraderjoin::before {
+    content: '';
+    position: absolute;
+    border-radius: 270px;
+    background: var(--01, #25DEB0);
+    filter: blur(116.5px);
+    width: 270px;
+    height: 270px;
+}
+
+.mastertraderjoin img {
+    position: relative;
+}
+.account-inner h6, .account-inner span {
+    color: #fff;
+}
+
+.account-inner h6 {
+    font-size: 27px;
+    margin-bottom: 14px;
+}
+
+.account-inner {
+    text-align: left;
+    padding-left: 50px;
+    border-right: 1px solid #ccc;
+}
+
+.account-price-popup-inner h6 {
+    font-size: 27px;
+    color: #fff;
+    text-align: right;
+    padding-right: 50px;
+}
+
+.contain-account-qr-code {
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.pay-input-container {
+    align-items: center;
+    justify-content: center;
+}
+
+.pay-input-container input {
+    background: transparent !important;
+    outline: none;
+    width: 100%;
+}
+
+.pay-input-container fieldset {
+    border: 1px solid #ccc !important;
+    border-radius: 10px 0px 0px 10px !important;
+    outline: none;
+}
+
+.pay-input {
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
+
+.pay-input .MuiFormControl-root {
+    width: 80%;
+}
+
+.pay-input button {
+    border-radius: 0 10px 10px 0;
+    height: 56px;
+    min-height: auto;
+    max-height: initial;
+    font-size: 20px;
+    text-transform: none;
+    font-size: 20px;
+    text-transform: none;
+    background: #25deb0!important;
+    color: #131a26!important;
+    letter-spacing: 0;
+}
+
+.pay-input-select button, .submit-api-key-master-trade button {
+    padding: 10px 30px;
+    font-size: 20px;
+    text-transform: none;
+    font-weight: 600;
+    background: #25deb0!important;
+    color: #131a26!important;
+    border-radius: 0 10px 10px 0;
+}
+
+.submit-api-key-master-trade button{border-radius: 10px !important;}
+
+.pay-input-select {
+    display: flex;
+    width: 30%;
+    margin-top: 30px;
+}
+
+.pay-input-select .MuiFormControl-root {
+    width: 100%;
+}
+
+.pay-input-select fieldset {
+    border: 1px solid #ccc !important;
+    border-radius: 10px 0 0 10px;
+    text-align: left !important;
+}
+
+.pay-input-select label {
+    color: #fff;
+    background-color: #131a26;
+}
+
+.pay-input-select input {
+    text-align: left !important;
+}
+
+.pay-input-select  div{text-align: left !important;}
+
+.modal-close-icon {
+    text-align: right;
+}
+
+.submit-api-key-master-trade {
+    text-align: center;
+}
+
+.jmt-common-bg {
+    margin: 50px 0px;
+    padding: 30px;
+    /* border-radius: 20px; */
+}
+
+.jmt-common-bg .master-trader-join {
+    border-radius: 20px;
+    background: #00000000;
+    box-shadow: -10px 12px 21px #000;
+}
+
+.right-blllocckk .master-trader-join {
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+    backdrop-filter: blur(2px);
+}
+
+.jmt-common-bg {
+    margin: 50px 0px;
+    padding: 30px;
+    /* border-radius: 20px; */
+}
+
+.jmt-common-bg .master-trader-join {
+    border-radius: 20px;
+    background: #00000000;
+    box-shadow: -10px 12px 21px #000;
+}
+
+.right-blllocckk .master-trader-join {
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+    backdrop-filter: blur(2px);
+    padding: 30px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.right-blllocckk .master-trader-join ul.ticket {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.right-blllocckk .master-trader-join ul.ticket li {
+    width: 100%;
+    display: flex;
+    margin: 10px 0;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #565656;
+}
+
+.right-blllocckk .master-trader-join ul.ticket li span {
+    color: #fff;
+}
+
+.right-blllocckk .master-trader-join ul.ticket li span:first-child {
+    font-size: 19px;
+}
+
+.right-blllocckk .master-trader-join h3 {
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+}

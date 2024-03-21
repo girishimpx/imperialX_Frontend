@@ -1,0 +1,58 @@
+.total-balance-radial {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.total-balance-radial label {
+    margin-right: 10px;
+    color: #ccc;
+}
+.coin-block {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-bottom: 1.16639px solid rgba(37, 222, 176, 0.1) !important;
+    border-radius: 17.4958px !important;
+    padding-bottom: 20px !important;
+}
+
+.coin-block-outer {
+    margin-top: 20px !important;
+}
+
+.coin-inner-imaage span {
+    font-size: 19px;
+    color: #fff;
+    font-weight: 700;
+    margin-left: 20px;
+}
+
+.coin-inner-imaage {
+    display: flex;
+    align-items: center;
+}
+
+.coin-value {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+    font-size: 19px !important;
+}
+
+span.coin-rate {
+    color: #fff;
+}
+
+span.coin-price {
+    color: #25DEB0;
+}
+
+.coin-img-caption {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-balance-radial {
+    margin-bottom: 15px;
+}

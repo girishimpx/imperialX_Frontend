@@ -1,0 +1,17 @@
+<svg width="30" height="28" viewBox="0 0 30 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1410091788">
+<g id="Vector">
+<path d="M1 8V27Z" fill="#F1F6FF" fill-opacity="0.5"/>
+<path d="M1 8V27" stroke="#F1F6FF" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+</g>
+<g id="Vector_2">
+<path d="M14 8V27Z" fill="#F1F6FF" fill-opacity="0.5"/>
+<path d="M14 8V27" stroke="#F1F6FF" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+</g>
+<g id="Vector_3">
+<path d="M8 15V27Z" fill="#F1F6FF" fill-opacity="0.5"/>
+<path d="M8 15V27" stroke="#F1F6FF" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round"/>
+</g>
+<path id="Vector_4" fill-rule="evenodd" clip-rule="evenodd" d="M22.5 0C20.567 0 19 1.067 19 3V7C18.4477 7 18 7.4477 18 8V14C18 14.5523 18.4477 15 19 15H29C29.5523 15 30 14.5523 30 14V8C30 7.4477 29.5523 7 29 7V2.98047C29 1.04747 27.433 0 25.5 0H22.5ZM28 7V3C28 1.61929 26.8807 1 25.5 1H22.5C21.1193 1 20 1.61929 20 3V7H28ZM19 8V14H29V8H28H20H19ZM22.5 10C22.2239 10 22 10.2239 22 10.5C22 10.7761 22.2239 11 22.5 11H23C23 11.5523 23.4477 12 24 12C24.5523 12 25 11.5523 25 11H25.5C25.7761 11 26 10.7761 26 10.5C26 10.2239 25.7761 10 25.5 10H24H22.5Z" fill="#F1F6FF" fill-opacity="0.5"/>
+</g>
+</svg>

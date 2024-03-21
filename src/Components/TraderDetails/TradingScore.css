@@ -1,0 +1,109 @@
+.rating-score p {
+    margin-top: 0px;
+}
+.inner-popup{
+    justify-content: center !important;
+}
+#inner-popup{
+    display: flex;
+    justify-content: center !important;
+    flex-direction: column;
+    align-items: center !important;
+}
+#inner-popup{
+    color:white;
+    margin-top: 10px;
+}
+.rating-risk-head span {
+    color: #FFF;
+    font-size: 20px !important;
+    font-family: Plus Jakarta Sans;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    margin-right: 8px;
+}
+.rating-risk-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.whole-score {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+.rating-score {
+    border-radius: 19.178px;
+    border: 0.639px solid var(--01, #25DEB0);
+    background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+    -webkit-backdrop-filter: blur(1.2785571813583374px);
+    backdrop-filter: blur(1.2785571813583374px);
+    padding: 30px 30px;
+    height:90%;
+    width: 94%; 
+    margin: 10px;
+}
+.ratingstar.postn-abslte {
+    position: relative;
+    min-height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ratingstar.postn-abslte span.rating-value {
+    font-size: 35px !important;
+    font-weight: 700;
+    color: #fff;
+    position: absolute;
+   
+}
+
+.ratingstar.postn-abslte span.rating-value.risk-value {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    top: 0 !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px !important;
+    
+}
+
+.common-value-style-trader {
+    color: #FFF;
+    font-size: 25px;
+    font-family: Plus Jakarta Sans;
+    font-weight: 600;
+    letter-spacing: 0.25px;
+    text-transform: capitalize;
+}
+
+.ratingstar.postn-abslte img {
+    object-fit: cover;
+    width: 100%;
+     height: 100%;
+    min-height: 143px;
+}
+.chart-cnt div#chart, .chart-cnt div#chart2 {
+    padding-top: 20px;
+}
+@media (max-width:450px){
+
+    .ratingstar.postn-abslte img {
+        object-fit: cover;
+        width: 75%;
+    }
+}
+@media (min-width:450px) and (max-width:767.98px){
+    .ratingstar.postn-abslte img {
+        object-fit: contain;
+        width: 100%;
+    }
+    .ratingstar.postn-abslte span.rating-value.risk-value span{
+        font-size: 15px !important;
+    }
+}

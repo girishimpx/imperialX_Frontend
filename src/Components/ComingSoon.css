@@ -1,0 +1,61 @@
+.coming-soon-page p {
+    color: #25DEB0;
+    font-family: Plus Jakarta Sans;
+    font-size: 50.131px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    text-align: center !important;
+    margin-top: 35px;
+    margin-bottom: 30px;
+}
+
+.coming-soon-page .images-not-found-logo {
+    text-align: center;
+}
+
+div#back-icon-page-id {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.coming-soon-page .MuiGrid-container {
+    max-width: 1300px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.coming-soon-img img {
+    width: 320px;
+}
+
+.coming-soon-page {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coming-soon-img {
+    position: relative;
+}
+
+.coming-soon-img::before {
+    content: '';
+    position: absolute;
+    width: 370px;
+    height: 370px;
+    border-radius: 368px;
+    background: var(--01, #25DEB0);
+    filter: blur(158.78518676757812px);
+    z-index: -1;
+    left: 50%;
+    margin-left: -100px;
+    top: 50%;
+    margin-top: -200px;
+}
+button.back-icon-page {
+    background: #25deb0;
+    text-transform: none;
+    font-weight: 700;
+}

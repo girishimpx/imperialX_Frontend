@@ -1,0 +1,85 @@
+events {}
+
+http {
+  client_max_body_size 20M;
+#   upstream userloadbalancer {
+#     ip_hash;
+#     server rest_server1:3500;
+#   }
+  server {
+        listen 80;
+        server_name 34.93.24.63;
+        location / {
+           proxy_set_header      X-Real-IP $remote_addr;
+           proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_pass http://imperialx_user:3000;
+        }
+        location /imperialApi/ {
+           proxy_set_header      X-Real-IP $remote_addr;
+           proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_pass http://imperial_back:3500/imperialApi;
+        }
+      #   location /admin/ {
+      #      proxy_set_header      X-Real-IP $remote_addr;
+      #      proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+      #      proxy_pass http://quantum_admin:3000/admin;
+      #      proxy_http_version 1.1;
+      #      proxy_set_header Connection "";
+      #   }
+        # return 301 https://$host$request_uri;
+    }
+    # server {
+
+    #     listen 443 ssl;
+    #     server_name cifdaq.in;
+        
+    #     ssl_certificate      /ssl/server.crt;
+    #     ssl_certificate_key  /ssl/server.key;
+    
+        
+    #     #if ($host != "beta-front.cifdaq.com") {
+    #     #    return 301 https://www.coinfirexpay.com$request_uri;
+    #     #}
+    
+    #     location / {
+    #         proxy_set_header      X-Real-IP $remote_addr;
+    #         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_pass http://cifdaq_user:4000;
+    #     }
+    #     location /admin/ {
+    #         proxy_set_header      X-Real-IP $remote_addr;
+    #         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_pass http://cifaq_admin:4000/;
+    #     }
+    #     location /adminapi/ {
+    #         proxy_set_header      X-Real-IP $remote_addr;
+    #         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_pass http://adminloadbalancer/adminapi/;
+    #         proxy_http_version 1.1;
+    #         proxy_set_header Connection "";
+    #     }
+    #     location /api/ {
+    #         proxy_set_header      X-Real-IP $remote_addr;
+    #         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_pass http://userloadbalancer/api/;
+    #         proxy_http_version 1.1;
+    #         proxy_set_header Connection "";
+    #     }
+    #     location /usersocket/ {
+    #         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_set_header Host $host;
+    #         proxy_pass http://userloadbalancer/socket.io/;
+    #         proxy_http_version 1.1;
+    #         proxy_set_header Upgrade $http_upgrade;
+    #         proxy_set_header Connection "upgrade";
+    #     }
+    #     location /adminsocket/ {
+    #         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #         proxy_set_header Host $host;
+    #         proxy_pass http://adminloadbalancer/socket.io/;
+    #         proxy_http_version 1.1;
+    #         proxy_set_header Upgrade $http_upgrade;
+    #         proxy_set_header Connection "upgrade";
+    #     }
+    # }
+}

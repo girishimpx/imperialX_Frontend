@@ -1,0 +1,16 @@
+.duration-buttons-row button.MuiButtonBase-root.MuiButton-root.MuiButton-contained {
+    background: #514f4f;
+}
+
+.duration-buttons-row button {
+    color: #fff;
+}
+
+.duration-buttons-row {
+    display: inline-block;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px !important;
+}
+.duration-buttons-row-outer{text-align: left;}

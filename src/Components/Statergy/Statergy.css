@@ -1,0 +1,80 @@
+/*** stategy history **/
+.outer-copys-trade {
+  background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%);
+  border: 0.938201px solid #25DEB0;
+  backdrop-filter: blur(1.8764px);
+  border-radius: 28.146px;
+  padding: 10px 20px;
+}
+.StrategyHistory-contain h4{font-size: 30px !important;}
+.StrategyHistory-contain {
+border-radius: 30px;
+border: 1px solid var(--01, #25DEB0);
+background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%);
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+padding: 50px 58px 0px;
+}
+.StrategyHistory-contain h4.strat {
+  color: #FFF;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  margin: 0px;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.StrategyHistory-contain .whole-rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 70px;
+  width: 100%;
+}
+.StrategyHistory-contain .whole-rate.ending::before{
+  display: none;
+}
+.StrategyHistory-contain .strategy-rate.first {
+  border-top: 1px solid rgba(255, 255, 255, 0.20);
+}
+#lists li{
+  list-style-type:  none !important;
+}
+#lists li::before {
+    content: "\2022";
+    color: #25DEB0;
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: -1em;
+  }
+.StrategyHistory-contain .whole-rate .rate label {
+  color: #CCC;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  text-transform: capitalize;
+  padding-right: 25px;
+}
+.StrategyHistory-contain .strategy-rate {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.StrategyHistory-contain .strategy-rate.second {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+}
+.StrategyHistory-contain .strategy-rate .sub {
+  color: #FFF;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+  padding: 20px;
+  text-align: center;
+  width: 15%;
+}
+.StrategyHistory-contain .strategy-rate .sub span {
+  color: #25DEB0;
+}

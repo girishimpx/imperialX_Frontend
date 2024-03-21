@@ -1,0 +1,158 @@
+.view-rules-btn button {
+    font-size: 14px;
+    color: #25DEB0;
+    text-transform: capitalize;
+    border-color: #25DEB0;
+    padding: 10px 20px;
+}
+
+.view-rules-btn {
+    text-align: left;
+}
+
+.view-rules-btn {
+    text-align: left;
+    margin-top: 30PX;
+}
+
+.view-rules-btn button {
+    color: #25DEB0;
+    border-color: #25DEB0;
+    text-transform: none;
+    padding: 10px 20px;
+}
+
+.referrals-body-content {
+    padding-top: 60px;
+}
+
+.inviteslash {
+    position: absolute;
+    left: 50%;
+    z-index: 999;
+    top: 3px;
+    margin-left: -58px;
+    height: 100%;
+}
+
+div#invitefriendsright::before {
+    content: '';
+    position: absolute;
+    height: 270px;
+    width: 270px;
+    right: 10%;
+    top: 50px;
+    background: #25DEB0;
+    filter: blur(116.5px);
+}
+
+.three-block-common-cls span {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 32px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.three-block-common-cls p {
+    color: #D3D3D3;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 16px;
+    line-height: 27px;
+}
+
+.three-block-common-cls {
+    padding: 50px 0;
+}
+
+.commission-tiers-section h2 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 32px;
+    text-align: left !important;
+}
+
+.percentage-commission label {
+    font-weight: 700;
+    font-size: 110px;
+    background: linear-gradient(164.76deg, #17393D 0%, #25DEB0 88.15%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.percentage-commission span {
+    font-weight: 700;
+    font-size: 40px;
+    background: linear-gradient(164.76deg, #17393D 0%, #25DEB0 88.15%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.percentage-commission-para p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+}
+
+.referal-code-link-outer {
+    text-align: left;
+    padding: 30px;
+    position: relative;
+}
+
+.referal-code-link-outer h5 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.My-Commission {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.My-Commission span {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.referal-code-link-outer label {
+    font-size: 16px;
+    color: #fff;
+}
+
+.refer-code label, .refer-link label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.refer-code, .refer-link {
+    margin-bottom: 20px;
+}
+
+button.invite-friends-button {
+    background: #25DEB0;
+    border-radius: 8px;
+    width: 100%;
+    text-transform: none;
+    font-size: 18px;
+}
+
+.copytradebanner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 9;
+}

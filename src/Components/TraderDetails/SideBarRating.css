@@ -1,0 +1,131 @@
+body {
+  font-family: Plus Jakarta Sans !important;
+}
+p {
+  color: white ;
+}
+.Rating-contain {
+  border-radius: 30px;
+  border: 1px solid var(--01, #25deb0);
+  background: radial-gradient(
+    138.71% 122.96% at 50% 50%,
+    rgba(41, 197, 161, 0.2) 0%,
+    rgba(28, 112, 99, 0.2) 100%
+  );
+  backdrop-filter: blur(2px);
+  padding: 15px;
+}
+.rate {
+  display: inline;
+  text-align: left;
+}
+.rate p,
+.whole-rate p {
+  color: #20b26c !important;
+  font-size: 18.433px;
+  font-weight: 600;
+  line-height: 34.233px;
+  margin-bottom: 10px;
+}
+p.spec-clr {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.whole-rate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.rate-cont {
+  color: #81858c;
+  font-size: 18.433px;
+  font-family: Plus Jakarta Sans;
+  line-height: 28.967px;
+  text-align: left;
+}
+hr.line.rate {
+  border: 1px solid black;
+}
+p.bg-rate {
+  background: #25a750;
+  padding: 5px;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.whole-rate.ending::before {
+    content: "";
+    display: block;
+    width: 93%;
+    height: 1px;
+    background: #545454;
+    top: 31%;
+    position: absolute;
+    display: none;
+}
+.whole-rate.top {
+  margin-top: 50px;
+}
+.rate-cont.final {
+  text-align: left;
+  margin-left: 0px;
+  font-size: 16px;
+}
+
+.whole-rate p.spec-clr {
+  font-size: 18.433px;
+}
+
+.rate.Master-PnL-rate p {
+  text-align: right;
+}
+
+.Rating-contain .whole-rate .rate-cont, .Rating-contain .whole-rate p.spec-clr {
+  width: 44%;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+.Rating-contain .whole-rate p.spec-clr {
+  text-align: right;
+}
+
+.whole-rate.top {
+  border-top: 1px solid #545454;
+  padding-top: 30px;
+  margin-top: 0px;
+}
+
+.rate.d-roi-rate .rate-cont, .rate.Master-PnL-rate .rate-cont {
+  width: 100%;
+}
+
+@media (max-width:450px){
+ 
+  .rate-cont{
+    font-size: 13px !important;
+  }
+  .rate p, .whole-rate p {
+      font-size: 15px !important;
+      line-height: 20px !important;
+  }
+  span{
+      font-size: 11px !important;
+      line-height: 20px !important;
+  }
+  .whole-rate{
+    margin-bottom: 20px;
+  }
+}
+@media (min-width:450px) and (max-width:767.98px){
+  .rate-cont{
+    font-size: 18px !important;
+  }
+ .rate p, .whole-rate p {
+      font-size: 18px !important;
+      line-height: 20px !important;
+  }
+  .whole-rate{
+    margin-bottom: 25px !important;
+    /* border: 1px solid; */
+  }
+ 
+}

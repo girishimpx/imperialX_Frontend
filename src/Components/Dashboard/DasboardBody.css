@@ -1,0 +1,401 @@
+p.welcome-msg {
+    color: #25DEB0;
+    font-weight: 500;
+    font-size: 21px;
+    text-align: left;
+    margin: 0px;
+    padding-top: 60px;
+}
+p.welcome-msg span {
+    color: #fff;
+}
+div#balance-blocks {
+    gap: 15px;
+    justify-content: space-between;
+}
+div#balance-blocks {
+    gap: 15px;
+    justify-content: space-between;
+}
+.balance-left span {
+    color: #25DEB0;
+    font-size: 19px;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+.balance-amount, .balance-point {
+    font-size: 27px;
+    color: #fff;
+}
+.balance-with-percent {
+    display: flex;
+    justify-content: space-between;
+}
+.balance-left {
+    text-align: left;
+}
+.balance-percentage-right {
+    text-align: right;
+}
+.percentage-balace-top {
+    font-size: 19px;
+    color: #10D876;
+    padding-bottom: 15px;
+}
+.coin-type {
+    color: #25DEB0;
+    font-size: 19px;
+}
+.Top-Trading-Plartform-head{
+    font-size: 27px;
+    color: #25DEB0;
+}
+.top-trade-tab-table-outer.top-trade-tab-table{
+    width: 100%;
+    padding: 30px;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%);
+    border: 0.926846px solid #25DEB0;
+    backdrop-filter: blur(1.85369px);
+    border-radius: 30px;
+}
+.top-trade-tab-table .MuiTabs-flexContainer {
+    gap: 15px;
+}
+
+.top-trade-tab-table .MuiBox-root {
+    border-bottom: none;
+    padding-left: 0;
+    padding-right: 0px;
+}
+
+.top-trade-tab-table button {
+    padding: 0px;
+    color: #fff;
+    text-transform: none;
+}
+
+.top-trade-tab-table button.Mui-selected {
+    color: #fff;
+}
+
+span.MuiTabs-indicator {
+    height: 3px;
+    background: #25DEB0;
+}
+a.trade-button {
+    color: #25DEB0;
+    text-decoration: none;
+    border: 1px solid #25DEB0;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+.pair-coin {
+    font-weight: 700;
+}
+
+span.coinpair-pair {
+    color: #25DEB0;
+}
+
+.pair-coin-coins {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.coinimg {
+    margin-right: 5px;
+}
+
+.coinimg img {
+    width: 35px;
+}
+h4.Top-performer-copy-trade-head {
+    margin: 0px;
+    font-weight: 500;
+    font-size: 20.9949px;
+    color: #fff;
+    text-align: left;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #25DEB0;
+    margin-bottom: 30px;
+}
+
+.top-trade-tab-table button.Mui-selected {
+    position: relative;
+}
+
+.top-trade-tab-table button.Mui-selected::before {
+    content: '';
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: #25DEB0;
+    bottom: 0;
+}
+
+.top-trade-tab-table span.MuiTabs-indicator {
+    display: none;
+}
+
+div#Top-Trading-Plartform {
+    padding-top: 40px;
+}
+
+h4.Top-Trading-Plartform-head {
+    margin: 20px 0;
+}
+.welcome-btn {
+    background: #25DEB0 !important;
+    box-shadow: 0px 2px 12px rgba(139, 237, 210, 0.3) !important;
+    border-radius: 8px !important;
+    margin-right: 30px !important;
+    color: #131A26 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 10px 20px !important;
+    text-transform: capitalize !important;
+}
+
+.chosse-btn {
+    background: transparent !important;
+    box-shadow: 0px 2px 12px rgba(139, 237, 210, 0.3) !important;
+    border-radius: 8px !important;
+    margin-right: 30px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 10px 20px !important;
+    color: #25DEB0 !important;
+    border: 1px solid #25DEB0 !important;
+    text-transform: capitalize !important;
+}
+.css-1wnsr1i {
+    width: 1200px !important;
+    padding: 20px 15px !important;
+    border: 1px solid #25DEB0 !important;
+backdrop-filter: blur(2px) !important;
+border-radius: 30px !important;
+background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important;
+overflow: auto;
+height: 55%;
+background: #000000b3 !important;
+}
+h6.xchange {
+    text-align: start;
+    color: #fff !important;
+    font-style: normal;
+font-weight: 700;
+font-size: 30px ;
+color: #FFFFFF;
+margin: 35px 0;
+}
+.user-icon.binance {
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important; 
+}
+
+.user-icon.binance img {
+    width: 15% !important;
+}
+.text-binance span {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+.text-binance p {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-top: 10px !important;
+}
+.inner-popup .text-binance {
+    text-align: center;
+}
+.inner-popup {
+    display: flex;
+justify-content: center !important;}
+button.binance-btn{
+    background: #25DEB0;
+box-shadow: 0px 2px 12px rgba(139, 237, 210, 0.3);
+border-radius: 8px;
+padding: 8px 30px;
+font-weight: 600;
+font-size: 14px;
+color: #131A26;
+}
+button.binance-btn:hover {
+    background: #25DEB0;
+    box-shadow: 0px 2px 12px rgba(139, 237, 210, 0.3);
+    border-radius: 8px;
+}
+.heading-account {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+p.welcome-msg {
+    padding-top: 10px !important;
+}
+.heading-account svg {
+    color: #b6b4b4;
+    cursor: pointer;
+    border-radius: 30px;
+    border: 2px solid #7D7D7D;
+    padding: 2px;
+    font-size: 26px;
+    font-weight: 600;
+}
+.binance-popup .user-icon.binance img {
+    width: 200px !important;
+}
+.binance-popup .user-icon {
+    justify-content: start;
+}
+.binance-popup .inner-popup{
+ border-bottom: none !important;
+}
+.sub-head h4 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: #FFFFFF;
+}
+
+.sub-head p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-bottom:15px;
+}
+.sub-head {
+    text-align: start;
+    margin-top: 40px;
+}
+.chosse-btn img, .welcome-btn img {
+    margin: 0 5px;
+}
+.leftside-binace{
+    border-right: 1px solid rgba(37, 222, 176, 0.2);
+}
+.rightside-binace {
+    justify-content: end;
+    align-items: center;
+    display: flex;
+}
+.text-binance.inactive span, .text-binance.inactive p {
+    color: rgba(255, 255, 255, 0.6);
+}
+.leftside-binance::nth-child(2){
+    position:relative;
+}
+.leftside-binance::nth-child(2){
+    content:'';
+    position:absolute;
+    left:0;
+    top:0;
+}
+.yellow-card {
+    background: rgba(255, 199, 0, 0.51);
+    border-radius: 15px;
+    padding: 50px 30px;
+    display: flex;
+    margin-bottom: 30px;
+}
+.yellow-card p {
+    margin-left: 93px;
+    margin-bottom: 0;
+}
+.yellow-card .symbol {
+    display: flex;
+    position: relative;
+}
+.yellow-card .symbol :after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    border-right: 1px solid rgba(19, 26, 38, 0.3);
+    width: 30px;
+    height: 50px;
+}
+.sub-head ul li {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+.accordion-popup{
+    margin-bottom: 20px;
+}
+.css-1wnsr1i::-webkit-scrollbar-track
+{
+	display:none;
+}
+
+.css-1wnsr1i::-webkit-scrollbar
+{
+	display:none;
+}
+
+.css-1wnsr1i::-webkit-scrollbar-thumb
+{
+	display:none;
+}
+
+.formtxt fieldset {
+    border-color: rgb(255 251 251 / 23%) !important;
+}
+
+.MuiOutlinedInput-root {
+    color: #ccc !important;
+}
+.formtxt label {
+    color: #fff !important;
+}
+.formtxt .text-field{
+    width: 50%;
+}
+.formtxt {
+    margin-bottom: 30px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    width: 100% !important;
+    margin: 20px 0;
+    z-index: 1;
+}
+.heading-account.acc {
+    justify-content: end !important;
+    display: flex;
+}
+
+
+
+
+
+@media (max-width:767.98px){
+
+.top-trade-tab-table-outer.top-trade-tab-table{padding: 5px !important;}
+.top-trade-tab-table .MuiTabs-flexContainer{justify-content: center;flex-wrap: wrap;}
+.coin-img-caption {
+    flex-direction: column;
+}
+
+.coin-inner-imaage {
+    justify-content: center;
+}
+
+.coin-img-caption .coin-value {
+    justify-content: center !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 10px;
+}
+
+}

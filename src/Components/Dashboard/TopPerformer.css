@@ -1,0 +1,102 @@
+.user-icon img {
+    width: 13px !important;
+}
+
+.user-icon {
+    width: 28px;
+    height: 28px;
+    background: #25DEB0;
+    text-align: center !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+}
+
+.user-status h5 {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.user-name > span {
+    color: #25DEB0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.user-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.user-vol-increase-percent {
+    display: flex;
+    align-items: center;
+    color: #25DEB0;
+}
+
+.user-vol-increase-percent h5 {
+    font-size: 18px;
+    margin: 0px;
+}
+
+.user-vol-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.user-vol-left > p, .user-vol-left > span {
+    left: 20px;
+    position: relative;
+}
+.user-vol-left > p {
+    margin: 5px 0px !important;
+    color: #fff !important;
+}
+
+.user-vol-left > span {
+    font-size: 11px !important;
+    color: #fff !important;
+    background: #58BD7D !important; 
+    border-radius: 10.629px !important;
+    display: inline-block;
+    padding: 3px
+}
+
+#top-performer-id .item {
+    background: #010712;
+    border: 0.485499px solid #25DEB0;
+    border-radius: 30px;
+    padding: 0 20px 20px;
+}
+
+div#Top-performer-copy-trade {
+    margin-top: 40px;
+    overflow: hidden;
+    position: relative;
+    padding: 30px;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%);
+    border: 0.926846px solid #25DEB0 !important;
+    -webkit-backdrop-filter: blur(1.85369px) !important;
+    backdrop-filter: blur(1.85369px) !important;
+    border-radius: 30px;
+}
+.user-name {
+    padding: 20px 0;
+}
+
+@media (max-width:767.98px){
+
+    div#Top-performer-copy-trade{
+        padding: 10px !important;
+    }
+
+}

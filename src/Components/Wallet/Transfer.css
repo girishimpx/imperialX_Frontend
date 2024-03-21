@@ -1,0 +1,107 @@
+.MuiTabs-root.transfer-tabs-class button {
+    text-transform: none;
+    color: #fff;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 16px;
+    margin-right: 20px;
+    position: relative;
+}
+
+.MuiTabs-root.transfer-tabs-class button.Mui-selected::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: #25DEB0;
+    bottom: 0;
+    left: 0;
+}
+
+.MuiTabs-root.transfer-tabs-class {
+    margin-left: 10px;
+}
+
+span.MuiTabs-indicator {
+    display: none;
+}
+
+.tanfer-form-field {
+    display: flex;
+    flex-direction: column !important;
+    gap: 20px !important;
+}
+
+.tanfer-form-field button {
+    text-transform: none;
+    background: #25deb0 !important;
+    color: #fff;
+}
+
+.tanfer-form-field fieldset {
+    border-color: #ccc !important;
+}
+
+.tanfer-form-field .MuiFormControl-root label {
+    color: #fff;
+    background: #131a26;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.flex-row-swapping {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.swapping-button img {
+    width: 25px;
+}
+
+.flex-row-swapping-from, .flex-row-swapping-to {
+    width: 45%;
+}
+
+.flex-row-swapping > div > label {
+    display: inline-block;
+}
+
+.tanfer-form-field .MuiInputAdornment-root p {
+    color: #fff;
+}
+
+.available-balance-for-transfer {
+    font-size: 13px;
+}
+
+.available-balance-for-transfer label {
+    font-weight: 600;
+}
+
+.available-balance-for-transfer span {color: #ccc;}
+
+.available-balance-for-transfer {
+    margin-top: 5px;
+}
+
+.table-transfer-table {
+    margin-top: 50px;
+}
+
+.table-transfer-table td, .table-transfer-table th {
+    padding: 15px 0;
+    color: #fff;
+    font-size: 16px !important;
+}
+
+@media (max-width:575.98px){
+
+    .flex-row-swapping {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .flex-row-swapping-from, .flex-row-swapping-to {
+        width: 100%;
+    }
+
+}

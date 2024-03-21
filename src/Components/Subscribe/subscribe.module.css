@@ -1,0 +1,72 @@
+.loginItem{
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative
+  }
+
+
+.loginLeft {
+    color:white !important;
+    background:transparent !important;
+    border:1px solid #25DEB0;
+    border-radius:0px !important;
+    box-shadow:none !important;
+    width:100%;
+    margin-top: 9%;
+  }
+
+
+
+
+
+  .paragraph{
+    padding: .5rem ;
+    color: #f85656 ;
+    text-align: center ;
+  }
+
+
+
+  .loginpage{
+    display:flex !important;
+    justify-content: center !important;
+    height:100%;
+  }
+  .loginform{
+    display:flex !important;
+    flex-direction:column;
+    margin-left:0px;
+    margin-right:0px;
+  } 
+  .formFlex{
+    display: flex;
+  }
+  .modal {
+    width: 50% !important;
+    padding: 0px 15px 20px 15px  !important;
+    border: 1px solid #25DEB0 !important;
+backdrop-filter: blur(2px) !important;
+border-radius: 30px !important;
+background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important;
+overflow: auto;
+height: max-content;
+background: #000000b3 !important;
+
+}
+
+.fixedIcon{
+    position: sticky;
+    top: 10%;
+    align-items: center;
+    background-color: black;
+    z-index: 9;
+}
+  @media only screen and (max-width: 800px) {
+    .formFlex{
+        display: flex;
+        flex-wrap: wrap;
+      }
+  }

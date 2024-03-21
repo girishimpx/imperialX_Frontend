@@ -1,0 +1,313 @@
+/* .kyc-form-portion{
+    background-color: #000 !important;
+} */
+
+h3.sub-heading-part {
+    padding: 30px 0 20px;
+    color: #ccc;
+    font-size: 20px;
+    border-bottom: 2px dashed;
+}
+
+.kyc-form-portion .MuiInputBase-root:hover fieldset {
+    border: rgb(0, 0, 0, 0.23) !important;
+}
+
+.address-box input {
+    height: 100px;
+}
+
+p.color-dim {
+    margin-top: 0;
+    color: #ccc;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+ul.color-dim {
+    padding-left: 0px;
+    list-style: none;
+    margin-top: 0px;
+}
+
+ul.color-dim li {
+    color: #ccc;
+    line-height: 27px;
+}
+
+.datepicpart {
+    display: flex;
+    align-items: center;
+}
+
+.country-get-box-modal .MuiFormControl-root {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.country-get-box-modal .MuiFormControl-root input {
+    border: none !important;
+}
+
+.country-get-box-modal svg,
+.datepicpart svg {
+    color: #ccc !important;
+}
+
+.datepicpart .MuiInputBase-root {
+    border: 1px solid #ccc;
+}
+
+.datepicpart input {
+    border: none !important;
+}
+
+.datepicpart div#demo-simple-select {
+    color: #ccc !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-right: 60px;
+}
+
+.ID-document-number {
+    padding-left: 60px;
+}
+
+.id-type {
+    margin-bottom: 25px !important;
+}
+
+p.para-cmn {
+    margin-top: 0px;
+    color: #ccc;
+}
+
+.inner-doc {
+    color: #fff;
+    text-align: center;
+    background: #363636;
+    padding: 1.2rem;
+    border-radius: 10px;
+    margin: 20px 0 10px;
+    width: 100%;
+    
+}
+
+.inner-doc h3 {
+    font-size: 18px;
+}
+
+.inner-doc button {
+    background: #0963d2;
+    color: #fff;
+}
+
+
+.img-logo {
+    width: 100px;
+}
+
+.img-user {
+    max-width: 100%;
+}
+
+label.upload-btn {
+    background: #0963d2 !important;
+    color: #fff;
+    padding: 8px;
+    font-size: 16px;
+    margin-top: 20px !important;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+h2.alpha-login-text {
+    font-size: 30px;
+    color: #fff;
+    text-align: left;
+}
+
+.datepicpart div {
+    width: 100%;
+}
+
+
+
+.flag-image-code img {
+    height: 15px;
+}
+
+ul.coin-list-menu.country-detailed-list {
+    list-style: none;
+    padding-left: 0px;
+    min-height: 270px;
+    max-height: 270px;
+    overflow: auto;
+}
+
+.coin-img.country-img {
+    display: flex;
+    color: #fff;
+    font-size: 12px;
+    gap: 20px;
+    justify-content: space-between;
+    /* padding: 0 5px; */
+}
+
+.coin-img-inner.country-dtls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+ul.coin-list-menu.country-detailed-list li {
+    padding: 10px 5px;
+}
+
+.flag-image-code h3 {
+    margin: 0px !important;
+}
+
+.coin-img.country-img h3,
+.coin-img.country-img h4 {
+    margin: 0px;
+}
+
+
+ul.coin-list-menu.country-detailed-list::-webkit-scrollbar {
+    width: 1px;
+}
+
+/* Track */
+ul.coin-list-menu.country-detailed-list::-webkit-scrollbar-track {
+    background: #1c1b1b;
+}
+
+/* Handle */
+ul.coin-list-menu.country-detailed-list::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+ul.coin-list-menu.country-detailed-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+ul.coin-list-menu.country-detailed-list h3, ul.coin-list-menu.country-detailed-list h4 {
+    font-size: 12px;
+    line-height: 25px;
+}
+button.kyc-form-submit-btn {
+    background: #25DEB0;
+    border-radius: 10px;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 600;
+    letter-spacing: 0px;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+
+/*** kyc new design ***/
+
+.kyc-form-portion.kyc-form-body-new h3.sub-heading-part {
+    border-bottom: 0px;
+    padding: 5px 0 !important;
+    line-height: 27px;
+}
+
+.kyc-step-number-heading {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.kyc-step-number {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    border: 1px solid #fff;
+    border-radius: 50%;
+}
+
+.kyc-form-portion.kyc-form-body-new .MuiGrid-root.MuiGrid-container .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-6.MuiGrid-grid-xl-6 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.kyc-form-portion.kyc-form-body-new .MuiFormControl-root {
+    margin-top: 15px;
+}
+
+.kyc-form-portion.kyc-form-body-new label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.pncdl .MuiTabs-flexContainer {
+    justify-content: space-between;
+}
+
+.pncdl .MuiTabs-flexContainer button.Mui-selected {
+    border: 1px solid #25deb0;
+    color: #25deb0;
+    opacity: 1;
+}
+.pncdl .MuiTabs-flexContainer button {
+    width: 30%;
+    border: 1px solid #25deb0;
+    color: #25deb0;
+    text-transform: capitalize;
+    font-weight: 600;
+    letter-spacing: 0px;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.pncdl .MuiTabs-flexContainer button .MuiAvatar-root.MuiAvatar-circular {
+    height: 80px;
+    width: 80px;
+    border-radius: 0px;
+}
+
+.pncdl {
+    padding: 0 20px;
+}
+
+@media (max-width:767.98px){
+
+    .kyc-step-number-heading {
+        flex-direction: column;
+        gap: 10px;
+        justify-content: flex-start !important;
+        align-items: flex-start;
+    }
+    
+    .pncdl .MuiTabs-flexContainer {
+        flex-direction: column;
+        margin-bottom: 30px;
+    }
+    
+    .pncdl .MuiTabs-flexContainer button {
+        width: 100%;
+    }
+
+}

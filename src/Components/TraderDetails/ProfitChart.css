@@ -1,0 +1,107 @@
+.ProfitChart-contain {
+  border-radius: 19.178px;
+  border: 0.639px solid var(--01, #25deb0);
+  background: radial-gradient(
+    138.71% 122.96% at 50% 50%,
+    rgba(41, 197, 161, 0.2) 0%,
+    rgba(28, 112, 99, 0.2) 100%
+  );
+  -webkit-backdrop-filter: blur(1.2785571813583374px);
+  backdrop-filter: blur(1.2785571813583374px);
+  padding: 30px 50px;
+}
+.ProfitChart-contain h4 {
+  color: #fff;
+  font-size: 30px;
+  line-height: 120%;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  margin: 0px;
+}
+.ProfitChart-contain p {
+  color: #ababab !important;
+  font-weight: 700;
+  line-height: 120%;
+  letter-spacing: 0.2px;
+  text-transform: capitalize;
+  margin: 0px;
+  margin-top: 7px;
+}
+.profit-head {
+  text-align: left;
+  margin-bottom: 60px;
+}
+.chart-text {
+  border-radius: 10px;
+  border: 1px solid var(--01, #25deb0) !important;
+  width: 100%;
+}
+.text-field .inputImg{
+  position: absolute;
+  bottom: 15px !important;
+  right: 15px;
+}
+.inputFields {
+  display: flex;
+}
+Button.graphbtn{
+  border-radius: 10px;
+  border: 1px solid var(--01, #25deb0);
+  background: var(--01, #25deb0);
+  padding: 16px;
+}
+Button.lockbtn{
+  border-radius: 10px;
+  border: 1px solid var(--01, #25deb0);
+}
+.btns-graph {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+.inputFields {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.inputFields .text-field {
+    width: 100%;
+    position: relative;
+}
+.ProfitChart-contain-inner .profit-head h4 {
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+    margin: 0px;
+}
+.ProfitChart-contain-inner .profit-head {
+    margin-bottom: 30px;
+}
+.graph-btm label {
+    color: #FFF;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+    text-transform: uppercase;
+}
+.graph-btm{
+    display: flex;  
+    gap: 20px;
+}
+.btm{
+    display: flex;
+    align-items: center;
+}
+label.dif-rate{
+    color: #25DEB0;
+}
+.graph-btm.two {
+    gap: 4% !important;
+    margin-top: 5px;
+}
+.graph-btm.first {
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+.profit-chart-graph{padding-top: 15px !important;}

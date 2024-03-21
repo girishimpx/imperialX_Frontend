@@ -1,0 +1,193 @@
+.support-main-page .support-body {
+    padding-top: 60px;
+}
+
+.ticket-list-left-head {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* div#ticket-list-left {
+    display: flex;
+    width: 100%;
+} */
+
+.ticket-list-left-head h5 {
+    color: #fff;
+}
+
+.ticket-list-left-head svg {
+    color: #25deb0;
+}
+.timing{
+    color:white;
+    width:96%;
+    font-size: 11px;
+    margin:auto;
+    display:block;
+    text-align: end;
+}
+.timing1{
+    color:white;
+    width:96%;
+    font-size: 11px;
+    margin:auto;
+    display:block;
+    text-align: start;
+}
+.search-box-and-ticket-addition > div {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0px;
+}
+
+.search-box-and-ticket-addition {
+    margin: 10px 0;
+}
+
+.avatarchat1, .avatarchat2 {
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-person-1 {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.avatarchat1-outer, .avatarchat2-outer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-person-2 {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 50%;
+    margin-left: auto;
+}
+
+.avatarchat2-outer {
+    flex-direction: row-reverse;
+}
+
+.avatarchat1 img, .avatarchat2 img {
+    width: 50px;
+}
+
+.avatarchat1 label, .avatarchat2 label {
+    color: #fff;
+}
+
+.avatarchat1-outer label, .avatarchat2-outer label {
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.chat-person-1 p {
+    text-align: left;
+    margin-top: 10px;
+    padding: 10px;
+    background: #716c6c;
+    border-radius: 10px;
+}
+
+.chat-person-2 p {
+    text-align: left;
+    margin-top: 10px;
+    padding: 10px;
+    background: #25deb0;
+    border-radius: 10px;
+}
+
+.chat-box-inner {
+    padding: 10px;
+}
+
+.chat-box-inner {
+    padding: 10px;
+    max-height: 500px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+
+/* width */
+.chat-box-inner::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  /* Track */
+  .chat-box-inner::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  .chat-box-inner::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  .chat-box-inner::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .message-text-box {
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.message-text-box > div {
+    width: 100%;
+}
+
+.message-text-box svg {
+    background: #25deb0;
+    position: absolute;
+    right: 6px;
+    height: 83%;
+    border-radius: 0 10px 10px 0;
+    color: #fff;
+    width: 28px;
+}
+
+.message-text-box fieldset {
+    border-radius: 11px;
+    border-color: #eee !important;
+}
+
+button.back-icon-page {
+    background: #25deb0;
+    text-transform: none;
+    font-weight: 700;
+}
+
+button.back-icon-page {
+    background: #25deb0;
+    text-transform: none;
+    font-weight: 700;
+}
+
+.support-title {
+    color: #fff;
+    font-size: 20px;
+    text-align: left;
+    font-weight: 700;
+    background: #57545478;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 6px;
+}

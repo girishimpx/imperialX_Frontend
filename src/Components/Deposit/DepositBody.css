@@ -1,0 +1,485 @@
+.view-rules-btn button {
+    font-size: 14px;
+    color: #25DEB0;
+    text-transform: capitalize;
+    border-color: #25DEB0;
+    padding: 10px 20px;
+}
+
+.view-rules-btn {
+    text-align: left;
+}
+
+.view-rules-btn {
+    text-align: left;
+    margin-top: 30PX;
+}
+
+#backButton{
+    border:1px solid transparent;
+    background-color: #25DEB0 !important;
+    color:#010712;
+    font-weight: bold;
+}
+#backButton:active{
+    border:1px solid transparent;
+    background-color: black !important;
+    color:#25DEB0;
+}
+#backButton:hover{
+    background-color: black !important;
+    color:#25DEB0;
+    border: 1px solid #25DEB0;
+}
+
+.view-rules-btn button {
+    color: #25DEB0;
+    border-color: #25DEB0;
+    text-transform: capitalize;
+    padding: 10px 20px;
+}
+
+.referrals-body-content {
+    padding-top: 60px;
+}
+
+
+.copy-trade-body-part .inviteslash {
+    position: absolute;
+    left: 50%;
+    z-index: 999;
+    top: 3px;
+    margin-left: -57px;
+    height: 100%;
+}
+
+.copy-trade-body-part .inviteslash img {
+    width: 100%;
+    height: 100%;
+}
+
+div#invitefriendsright::before {
+    content: '';
+    position: absolute;
+    height: 270px;
+    width: 270px;
+    right: 10%;
+    top: 50px;
+    background: #25DEB0;
+    filter: blur(116.5px);
+}
+
+.three-block-common-cls span {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 32px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.three-block-common-cls p {
+    color: #D3D3D3;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 16px;
+    line-height: 27px;
+}
+
+.three-block-common-cls {
+    padding: 50px 0;
+}
+
+.commission-tiers-section h2 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 32px;
+    text-align: left !important;
+}
+
+.percentage-commission label {
+    font-weight: 700;
+    font-size: 110px;
+    background: linear-gradient(164.76deg, #17393D 0%, #25DEB0 88.15%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.percentage-commission span {
+    font-weight: 700;
+    font-size: 40px;
+    background: linear-gradient(164.76deg, #17393D 0%, #25DEB0 88.15%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.percentage-commission-para p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+}
+
+.referal-code-link-outer {
+    text-align: left;
+    padding: 30px;
+    position: relative;
+}
+
+.referal-code-link-outer h5 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.My-Commission {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.My-Commission span {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.referal-code-link-outer label {
+    font-size: 16px;
+    color: #fff;
+}
+
+.refer-code label, .refer-link label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.refer-code, .refer-link {
+    margin-bottom: 20px;
+}
+
+button.invite-friends-button {
+    background: #25DEB0;
+    border-radius: 8px;
+    width: 100%;
+    text-transform: none;
+    font-size: 18px;
+}
+
+/** copy trade css **/
+
+p.copy-trade-para {
+    color: #fff !important;
+    margin-bottom: 20px;
+    font-size: 14px !important;
+}
+
+ul.copy-trade-list {
+    list-style: none;
+    text-align: left;
+    padding-left: 0px;
+    line-height: 27px;
+}
+
+ul.copy-trade-list li {
+    color: #fff;
+    font-size: 14px;
+}
+
+.copy-trade-body-part .inviteslash img {
+    width: 100%;
+    height: 100%;
+}
+
+.copytrade-contain .Mui-selected {
+    color: #25DEB0 !important;
+}
+
+.copytradebanner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 9;
+}
+
+.copytrade-contain .Mui-selected {
+    color: #25DEB0 !important;
+}
+
+.copytrade-contain {
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%);
+    border: 1px solid #25DEB0;
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    padding: 0 30px;
+    margin-top: 30px;
+}
+
+h1.copy-trade-heading {
+    font-size: 30px;
+}
+
+.outer-copy-trade {
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%);
+    border: 0.938201px solid #25DEB0;
+    backdrop-filter: blur(1.8764px);
+    border-radius: 28.146px;
+    padding: 35px 50px 20px;
+}
+
+.copy-trade-row-1, .copy-trade-row-2, .copy-trade-row-3 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.copy-trade-row-3-col-1, .copy-trade-row-3-col-2, .copy-trade-row-3-col-3, .copy-trade-row-3-col-4, .copy-trade-row-3-col-5 {
+    display: flex;
+    flex-direction: column;
+}
+
+.copytrade-contain-inner {
+    gap: 0px;
+}
+
+.copytrade-contain-tab-content > div > div {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.copytrade-contain-inner .MuiGrid-item {
+    padding: 10px;
+}
+
+span.heading-ct {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+    color: #fff;
+    text-transform: capitalize;
+    padding-right: 40px;
+}
+
+.copy-trade-row-1 {
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.total-profit-top span {
+    font-size: 12px;
+    color: #fff;
+    text-transform: capitalize;
+    margin-right: 30px;
+}
+
+.total-profit-top label {
+    color: #81858C;
+    border: 1px solid #81858C;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+.total-profit-bottom {
+    margin-top: 10px;
+    color: #0AFFD3;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.copy-trade-row-2 {
+    margin-bottom: 20px;
+}
+
+.copy-trade-row-3 label {
+    color: #FFFFFF;
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.copy-trade-row-3 span {
+    font-weight: 700;
+    font-size: 18.764px;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.copy-trade-row-3-col-1 img, .copy-trade-row-3-col-2 img {
+    height: 18px;
+    margin-right: 10px;
+}
+
+span.yellow {
+    color: #FFD403;
+}
+
+button.LocalFireDepartmentIcon-full {
+    background: #25DEB0;
+    box-shadow: 0px 1.32277px 7.9366px rgba(139, 237, 210, 0.3);
+    border-radius: 5.29107px;
+    margin-top: 30px;
+    width: 80%;
+    padding: 10px;
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: 600;
+    color: #fff;
+    border: 1px solid #25DEB0 !important;
+}
+
+h3.Top-Traders-copy-trade {
+    width: 100%;
+    text-align: left;
+    font-size: 30px;
+    color: #fff;
+    margin: 40px 0;
+}
+
+.all-master-trade-table {
+    width: 100%;
+}
+
+.all-master-trade-table div {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.all-master-trade-table td, .all-master-trade-table th{border-bottom: none !important;}
+
+
+.all-master-trade-table th{background: #010712; color: #fff;}
+
+.all-master-tabs-outer button {
+    background: #010712;
+    border-bottom: 0.786184px solid #25DEB0;
+    color: #909090;
+    text-transform: capitalize;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.all-master-tabs-outer button.Mui-selected {
+    color: #25DEB0 !important;
+}
+
+.tab-1-allmaster-cont > span {
+    text-transform: capitalize;
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.verify-trial {
+    display: flex;
+    gap: 7px;
+    font-size: 13px;
+}
+
+.verify-trial img {
+    margin-right: 7px;
+}
+
+.tab-1-allmaster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab-2-allmaster {
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.tab-3-allmaster {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-3-allmaster span {
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    text-transform: capitalize;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.tab-3-allmaster label {
+    color: #A4A4A4;
+}
+
+.tab-4-allmaster, .tab-5-allmaster, .tab-6-allmaster, .tab-7-allmaster {
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+}
+
+.tab-8-allmaster button {
+    background: #25DEB0;
+    box-shadow: 0px 1.32277px 7.9366px rgba(139, 237, 210, 0.3);
+    border-radius: 5.29107px;
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.all-master-trade-table div {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+h3.Strategies-List-head {
+    text-align: left;
+    font-weight: 700;
+    font-size: 30px;
+    color: #fff;
+}
+
+.My-CopyTrading {
+    display: flex;
+    gap: 40px;
+    padding: 16px;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+/* #01 */
+    border: 1px solid #25DEB0;
+    backdrop-filter: blur(2px);
+/* Note: backdrop-filter has minimal browser support */
+    border-radius: 10px;
+}
+
+.total-assets-strategies-outer {
+    display: flex;
+    gap: 20px;
+}
+
+.My-CopyTrading-heading {
+    display: flex;
+    gap: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+}
+
+.My-CopyTrading label {
+    color: #71757A;
+}
+
+.total-assets-strategies label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.total-assets-strategies-outer span {
+    color: #fff;
+}
+
+.Strategies-List-copytrade-block{margin-bottom: 30px;}
