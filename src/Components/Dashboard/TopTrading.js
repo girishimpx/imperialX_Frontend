@@ -243,7 +243,7 @@ export default function TopTrading() {
     ),
   ];
 
-  let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+  let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 
   const Ticker = () => {
     let datas = {
@@ -374,7 +374,7 @@ export default function TopTrading() {
 
     return () => {
       ws.close(); // Close the WebSocket connection on unmount
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
     };
   }, []);
 

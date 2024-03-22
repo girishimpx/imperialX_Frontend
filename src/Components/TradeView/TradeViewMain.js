@@ -5,7 +5,7 @@ import Axios from '../../Axios';
 import { Button } from '@mui/material';
 import './TradeView.css'
 
-var ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 const TradeViewMain = (props) => {
   const [initialData, setInitialData] = useState([]);
   const [activeClass, setActiveClass] = useState("1");

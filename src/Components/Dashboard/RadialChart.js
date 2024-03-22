@@ -79,7 +79,7 @@ class RadialChart extends React.Component {
   }
 
 
-  // const ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+  // const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
   //   const datas = {
   //     op: "subscribe",
   //     args: [
@@ -132,7 +132,7 @@ class RadialChart extends React.Component {
 
 
   componentWillMount() {
-    this.state.ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+    this.state.ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
     const datas = {
       op: "subscribe",
       args: [

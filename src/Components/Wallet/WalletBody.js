@@ -101,7 +101,7 @@ const WalletBody = () => {
   }, [])
 
   return (
-    <div className='Wallet-Body-Page'>
+    <div className='Wallet-Body-Page Wallet-Body-Page-main-page'>
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={0}>
           

@@ -431,9 +431,20 @@ button.back-button-style {
     justify-content: center;
 }
 
-div.balance-blocks-trade-view {
-    max-width: 1063px;
+div#balance-blocks-trade-view.balance-blocks-trade-view {
+    max-width: 100%;
     margin: 0 auto;
+}
+
+div#wallet-table-id {
+    height: 600px;
+    overflow: auto;
+}
+div#wallet-table-id table thead {
+    position: sticky !important;
+    top: -2px !important;
+    background: #131a26;
+    z-index: 99;
 }
 
 div.balance-blocks-trade-view table#common-color-white {

@@ -58,7 +58,7 @@ const useStyles = makeStyles({
         margin: '10px 0'
     }
 });
-var ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=198");
+var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=198");
 const MarketBody = () => {
 
     const classes = useStyles();
@@ -213,7 +213,7 @@ const MarketBody = () => {
     useEffect(() => {
         if (datas?.args?.length > 0) {
             ws.close();
-            ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+            ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
             socket()
         }
     }, [datas])

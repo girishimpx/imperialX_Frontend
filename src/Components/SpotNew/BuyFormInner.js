@@ -734,7 +734,7 @@ const BuyFormInner = ({ selected, pair, index, market, onDataFromChild,reload })
                 <div>
                   <label>Available</label>
 
-                  <div>{parseFloat(balance).toFixed(3)} USDT</div>
+                  <div>{ balance != "NaN" ? parseFloat(balance).toFixed(3) : 0} USDT</div>
                 </div>
 
                 <div>

@@ -30,7 +30,7 @@ import Axios from "../../Axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import AxiosToken from "../../Axiostoken";
-var ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=198");
+var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=198");
 
 const useStyles = makeStyles({
   tablestructre: {
@@ -379,7 +379,7 @@ export default function AllCryptoTable({ values, searchedvalue }) {
   //   console.log(datas?.args?.length, "len")
   //   if (datas?.args?.length > 0) {
   //     ws.close();
-  //     ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+  //     ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
   //     Ticker()
   //   }
   // }, [datas]);
@@ -564,7 +564,7 @@ export default function AllCryptoTable({ values, searchedvalue }) {
   useEffect(() => {
     if (datas?.args?.length > 0) {
       ws.close();
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
       socket();
     }
   }, [datas, searchedvalue]);

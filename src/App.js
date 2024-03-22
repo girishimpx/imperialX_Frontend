@@ -53,6 +53,8 @@ import WalletDeposit from "./Components/Wallet/WalletDeposit";
 import WithdrawWallet from "./Components/Wallet/WithdrawWallet";
 import TradeViewMain from "./Components/TradeView/TradeViewMain";
 import Transfer from "./Components/Wallet/Transfer";
+import DashboardChart from "./Components/Dashboard/DashboardChart";
+
 
 
 function App() {
@@ -64,7 +66,7 @@ function App() {
       <Router>
         <Routes>
 
-        <Route
+          <Route
             index
             path={`${Constant.route}/trade-view-chart`}
             element={
@@ -99,7 +101,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -114,7 +116,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -129,7 +131,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -144,7 +146,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -159,7 +161,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -176,7 +178,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -191,7 +193,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -218,7 +220,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -233,7 +235,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -261,7 +263,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -276,7 +278,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -293,7 +295,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
                 {/* </WalletPrivateRoute> */}
               </PrivateRoute>
@@ -309,7 +311,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -323,7 +325,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -337,7 +339,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </WalletPrivateRoute>
 
@@ -353,7 +355,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -371,15 +373,15 @@ function App() {
           />
           <Route path={`${Constant.route}/login`} element={<Login />} />
           <Route path={`${Constant.route}/register`} element={<Register />} />
-          <Route path={`${Constant.route}/subscribe`} 
-          element={
-          <Subscribe 
-            sideBarShow={sideBarShow}
-            setSideBarShow={setSideBarShow} 
-            openSideBar={openSideBar}
-            setOpenSideBar={setOpenSideBar}
-          />
-            } 
+          <Route path={`${Constant.route}/subscribe`}
+            element={
+              <Subscribe
+                sideBarShow={sideBarShow}
+                setSideBarShow={setSideBarShow}
+                openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
+              />
+            }
           />
           <Route
             path={`${Constant.route}/register-success`}
@@ -406,7 +408,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
                 {/* </SpotPrivate> */}
               </PrivateRoute>
@@ -423,7 +425,7 @@ function App() {
               />
             }
           />
-          
+
 
           <Route
             path={`${Constant.route}/kycj-verification`}
@@ -433,7 +435,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </KycPrivateRoute>
             }
@@ -447,7 +449,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </KycPrivateRoute>
             }
@@ -456,11 +458,11 @@ function App() {
             path={`${Constant.route}/Subscription`}
             element={
               <PrivateRoute>
-                <Subscription 
+                <Subscription
                   sideBarShow={sideBarShow}
-                  setSideBarShow={setSideBarShow} 
+                  setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
             }
@@ -473,7 +475,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </SpotPrivate>
             }
@@ -486,7 +488,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </SpotPrivate>
             }
@@ -499,7 +501,7 @@ function App() {
                   sideBarShow={sideBarShow}
                   setSideBarShow={setSideBarShow}
                   openSideBar={openSideBar}
-                setOpenSideBar={setOpenSideBar}
+                  setOpenSideBar={setOpenSideBar}
                 />
               </SpotPrivate>
             }
@@ -510,7 +512,21 @@ function App() {
             element={
               // <SpotPrivate>
               <Chart
-                sideBarShow={sideBarShow}
+                sideBarShow={sideBarShow} dashboarde
+                setSideBarShow={setSideBarShow}
+                openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar}
+              />
+              //  </SpotPrivate>
+            }
+          />
+
+          <Route
+            path={`${Constant.route}/dashboard/chart/:id`}
+            element={
+              // <SpotPrivate>
+              <DashboardChart
+                sideBarShow={sideBarShow} dashboarde
                 setSideBarShow={setSideBarShow}
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}

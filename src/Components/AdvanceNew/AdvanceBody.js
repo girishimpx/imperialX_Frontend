@@ -85,10 +85,10 @@ function a11yProps(index) {
   };
 }
 
-let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
-let ws1 = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
+let ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 let wsfuture = new WebSocket(
-  "wss://ws.okex.com:8443/ws/v5/public?brokerId=197"
+  "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
 );
 
 const AdvanceBody = () => {
@@ -217,7 +217,7 @@ const handleReload = (value) => {
     Ticker();
     return () => {
       ws.close();
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
     };
   }, [selPair]);
 
@@ -400,7 +400,7 @@ const handleReload = (value) => {
     AllTicker();
     return () => {
       ws1.close();
-      ws1 = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
     };
   }, [allpairs]);
 
@@ -441,7 +441,7 @@ const handleReload = (value) => {
     return () => {
       wsfuture.close();
       wsfuture = new WebSocket(
-        "wss://ws.okex.com:8443/ws/v5/public?brokerId=197"
+        "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
       );
     };
   }, [futureData]);

@@ -74,7 +74,7 @@ function a11yProps(index) {
   };
 }
 
-var ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 const BasicBody = () => {
   const [btc, setBtc] = useState();
   const [eth, setEth] = useState();
@@ -201,7 +201,7 @@ const BasicBody = () => {
     Ticker();
     return () => {
       ws.close();
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
     };
   }, [selPair]);
 

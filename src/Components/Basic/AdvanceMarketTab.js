@@ -40,7 +40,7 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 export default function AdvanceMarketTab({ pairs, searchpair, selectPairsss }) {
   const [value, setValue] = React.useState(0);
   const [selectedpair, setselectedpair] = React.useState("FUTURES");
@@ -131,7 +131,7 @@ export default function AdvanceMarketTab({ pairs, searchpair, selectPairsss }) {
     return () => {
       
         ws.close();
-        ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+        ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
   
     };
   }, [futureData]);

@@ -73,7 +73,7 @@ function a11yProps(index) {
   };
 }
 
-let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 const AdvanceBody = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -166,7 +166,7 @@ const AdvanceBody = () => {
     Ticker();
     return () => {
       ws.close();
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
     };
   }, [selPair])
 

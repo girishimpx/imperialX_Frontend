@@ -95,12 +95,12 @@ function a11yProps(index) {
   };
 }
 
-var ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
-var ws1 = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
+var ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 let wsfuture = new WebSocket(
-  "wss://ws.okex.com:8443/ws/v5/public?brokerId=197"
+  "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
 );
-// var wss = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+// var wss = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 
 const SpotBody = () => {
   const [btc, setBtc] = useState();
@@ -244,7 +244,7 @@ const SpotBody = () => {
 
     return () => {
       ws1.close();
-      ws1 = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
     };
   }, [allpairs]);
 
@@ -298,7 +298,7 @@ const SpotBody = () => {
     Ticker();
     return () => {
       ws.close();
-      ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
     };
   }, [selPair]);
 
@@ -618,7 +618,7 @@ const SpotBody = () => {
   // useEffect(() => {
   //   if (datas1?.args?.length > 0) {
   //     wss.close();
-  //     wss = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+  //     wss = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
   //     socket();
   //   }
   // }, [datas1, searched]);
@@ -734,7 +734,7 @@ const SpotBody = () => {
   // useEffect(() => {
   //   if (datas?.args?.length > 0) {
   //     ws.close();
-  //     ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+  //     ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
   //     socket();
   //   }
   // }, [datas]);
@@ -784,7 +784,7 @@ const SpotBody = () => {
     return () => {
       wsfuture.close();
       wsfuture = new WebSocket(
-        "wss://ws.okex.com:8443/ws/v5/public?brokerId=197"
+        "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
       );
     };
   }, [futureData]);

@@ -25,7 +25,7 @@ function createData(image, coin, coinname, price, percentage) {
   return { image, coin, coinname, price, percentage };
 }
 
-let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 export default function AdvanceMarketTable({ futurevalue, searchpair, selectPair, futurepairs }) {
   const [coins, setCoin] = useState([]);
   const [load, setLoad] = useState(false);

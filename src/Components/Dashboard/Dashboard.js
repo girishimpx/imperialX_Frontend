@@ -78,7 +78,7 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
   const navigate = useNavigate();
 
   const classes = useStyles();
-  const ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+  const ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
   const datas = {
     op: "subscribe",
     args: [
@@ -102,12 +102,15 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
   };
 
   const Ticker = () => {
+    console.log('TICKER*******');
     ws.onopen = (event) => {
+      console.log('rspse***');
       ws.send(JSON.stringify(datas));
     };
 
     ws.onmessage = (event) => {
       const response = JSON.parse(event.data);
+      console.log(response,'rspse***');
       try {
         if (response?.arg?.instId == "BTC-USDT") {
 

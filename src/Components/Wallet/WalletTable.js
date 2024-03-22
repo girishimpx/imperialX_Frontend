@@ -359,11 +359,11 @@ useEffect(() => {
 
 
   return (
-    <TableContainer component={Paper} className={classes.table}>
+    <TableContainer component={Paper} id="wallet-table-id" className={classes.table}>
       <Table aria-label="simple table" id="common-color-white">
         <TableHead className={classes.tableheader}>
           <TableRow>
-            <TableCell style={{textAlign: "center"}}>Coin</TableCell>
+            <TableCell style={{textAlign: "left"}}>Coin</TableCell>
             <TableCell style={{textAlign: "center"}} align="start">Balance</TableCell>
             <TableCell style={{textAlign: "center"}} align="start">Frozen Balance</TableCell>
             {/* <TableCell align="start">Margin Sell</TableCell> */}

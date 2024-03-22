@@ -7,8 +7,9 @@ import Paper from "@mui/material/Paper";
 import { makeStyles } from "@mui/styles";
 import TradingViewWidget from "./TradingViewWidget";
 import Button from "@mui/material/Button";
+
 import "./AreaChart.css";
-let ws = new WebSocket("wss://ws.okex.com:8443/ws/v5/public?brokerId=197");
+let ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -46,6 +47,7 @@ const AreaChartFunction = (props) => {
   };
 
   const updategraphcoordinate = () => {
+    console.log(tradelistdata,"tradelistdata")
     if (tradelistdata[0]) {
       for (let i = 0; i < tradelistdata.length; i++) {
         let xaxis = Number(tradelistdata[i]?.idxPx);

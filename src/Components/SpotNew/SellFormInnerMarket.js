@@ -351,6 +351,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             });
             setAmount("")
             reload(1)
+            getmyWallet()
           } else {
             setload(true)
             toast.success("Something Went Wrong", {
@@ -436,6 +437,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             });
             setAmount("")
             reload(1)
+            getmyWallet()
           } else {
             setload(true)
             toast.success("Something Went Wrong", {
@@ -585,7 +587,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
   useEffect(() => {
     getmyWallet()
 
-  }, [])
+  }, [pair])
 
   return (
     <>
@@ -649,7 +651,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
                 {pair &&
                   balance &&
                   <div>
-                    {balance.toFixed(3)}{" "}
+                    {parseFloat(balance).toFixed(3)}{" "}
                     {pair.split("-")[0]}
                   </div>
                 }
@@ -658,7 +660,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
                 <label>Maxsell</label>
                 {market ?
                   <div>
-                    {parseFloat(balance * market).toFixed(7)}{" "} {pair.split("-")[1]}
+                    {parseFloat(balance / market).toFixed(7)}{" "} {pair.split("-")[1]}
                   </div>
                   :
                   <div>{0.00}{" "}{pair.split("-")[1]}</div>
