@@ -89,7 +89,7 @@ const ValueLabelComponent = (props) => {
   );
 };
 
-const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
+const BuyForminnerMarket = ({ selected, pair, index, market, reload, cat }) => {
   const user = JSON.parse(window.localStorage.getItem("users"))
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
@@ -100,17 +100,23 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
   const [balance, setBalance] = useState()
   const [value, setValue] = React.useState()
   const [sliderValue, setSliderValue] = useState();
-  const [buyShow,setBuyShow]= React.useState(false);
+  const [buyShow, setBuyShow] = React.useState(false);
   const [kycsubmit, setkycsubmit] = React.useState(false);
   const navigate = useNavigate();
-
+  const [maxbuy, setMaxbuy] = useState();
+  const [quantity, setQuantity] = React.useState(0.01);
+  const [maxquantity, setMaxQuantity] = React.useState(0.01);
+  const [basePrecision, setbasePrecision] = React.useState('0.0');
+  const [quotePrecision, setquotePrecision] = React.useState('0.0');
+  const [precesion, setPrecesion] = React.useState(0.01);
+  const [quoteprecesion, setQuotePrecesion] = React.useState(0.01);
 
   const handleSliderChange = async (event, data) => {
     const bs = parseFloat(balance).toFixed(7)
     const da = data / 100 * bs
     parseFloat()
     console.log(da, 'aidugoi[p');
-    setSliderValue(parseFloat(da).toFixed(7));
+    setSliderValue(parseFloat(da).toFixed(precesion?.length));
   };
 
   const handleChangeTakeProfit = () => {
@@ -124,20 +130,20 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
     setTakeProfit(event.target.value);
   };
 
-  const Amountref = useRef()
+  const Amountref = useRef('0.0000000')
   // const total = useRef()
   React.useEffect(() => {
     console.log("sell", selected, pair)
 
 
     if (selected) {
-      setPrice(selected.price);
+      setPrice(selected?.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
     if (Amount !== "") {
       console.log(Amount)
-      settotal(Amount * price)
+      settotal((Amount * price).toFixed(quoteprecesion?.length))
     } else {
       settotal("")
     }
@@ -148,13 +154,13 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
 
 
     if (selected) {
-      setPrice(selected.price);
+      setPrice(selected?.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
     if (Amount !== "") {
       console.log(Amountref.current.value)
-      settotal(Amountref.current.value * selected.price)
+      settotal((Amountref.current.value * selected?.price).toFixed(quoteprecesion?.length))
     } else {
       settotal("")
     }
@@ -162,7 +168,7 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
 
   useEffect(() => {
     if (Amount !== "") {
-      settotal(Amountref.current.value * selected.price)
+      settotal((Amountref.current.value * selected?.price).toFixed(quoteprecesion?.length))
     } else {
       settotal("")
     }
@@ -181,7 +187,7 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
   };
   const totalupdate = (event) => {
     const newValue = Math.max(0, Number(event.target.value));
-    settotal(newValue)
+    settotal((newValue).toFixed(quoteprecesion?.length))
 
   };
   const [load, setload] = useState(true)
@@ -195,41 +201,466 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
 
   const getdatas = async () => {
 
-    await Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`,{pair:pair},{
-         headers: {
-           Authorization: localStorage.getItem("Mellifluous"),
-         },
-       })
-         .then((res) => {
-           console.log(res,'res');
-           // let data = [];
-           // res?.data?.result.map((item, index) => {
-           //   if(item.trade_at == "future" || item.trade_at == "Future"){
-           //   if (item.status == "init" || item.status == "partially_filled") {
-           //     data.push(item);
-           //   }
-           // }
-           // });
-           // if (data.length > 0) {
-           //   settradelist(data.reverse());
-           // }
-           // setLoading(false);
-         })
-         .catch((err) => {
-     console.log(err,'error');          
-         });
-       }
+    await Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: pair }, {
+      headers: {
+        Authorization: localStorage.getItem("Mellifluous"),
+      },
+    })
+      .then((res) => {
+        console.log(res, 'res');
+        // let data = [];
+        // res?.data?.result.map((item, index) => {
+        //   if(item.trade_at == "future" || item.trade_at == "Future"){
+        //   if (item.status == "init" || item.status == "partially_filled") {
+        //     data.push(item);
+        //   }
+        // }
+        // });
+        // if (data.length > 0) {
+        //   settradelist(data.reverse());
+        // }
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, 'error');
+      });
+  }
 
   const buytrade = async () => {
     try {
-      console.log(Amountref.current.value,"market");
-      if ((Amountref.current.value != "" || Amountref.current.value != "0")) {
-      if (!buyShow && !kycsubmit) {
-        console.log("hai123");
-        toast.error(`Please submit kyc to trade`, {
+      // console.log(Amountref.current.value, "market");
+      if ((Amountref.current.value != "" || Amountref.current.value != "0.0000000")) {
+        if(sliderValue =='0.0000000'){
+          toast.error("Pelase Fill the Amount", {
+
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "red",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        } else if (price == ''){
+          toast.error("Pelase Fill the Price", {
+
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "red",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        } else {
+        if (!buyShow && !kycsubmit) {
+          console.log("hai123");
+          toast.error(`Please submit kyc to trade`, {
+            duration: 1900,
+            position: "top-center",
+
+            // Styling
+            style: {
+              backgroundColor: "#fc1922",
+              padding: "1rem",
+              fontSize: "15px",
+              color: "white",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+
+          setTimeout(() => {
+            navigate("/kycj-verification");
+          }, 1600);
+        } else if (!buyShow && kycsubmit) {
+          // console.log("hai789");
+          toast.error(`Your KYC submission is under verification`, {
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              backgroundColor: "#fc1922",
+              padding: "1rem",
+              fontSize: "15px",
+              color: "white",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        }
+        else if(Amountref === "") {
+          toast.error("Pelese Fill the Amount", {
+
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "red",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        } 
+        // else if (Number(sliderValue) < Number(quantity)) {
+        //   alert(sliderValue);
+        //   toast.error(`Minimum Order Quantiy Is ${quantity}` , {
+  
+        //     duration: 4000,
+        //     position: "top-center",
+  
+        //     // Styling
+        //     style: {
+        //       padding: "1rem",
+        //       fontSize: "15px",
+        //       color: "red",
+        //       fontWeight: "bold",
+        //     },
+        //     className: "",
+  
+        //     // Custom Icon
+        //     icon: "",
+  
+        //     // Change colors of success/error/loading icon
+        //     iconTheme: {
+        //       primary: "#000",
+        //       secondary: "#fff",
+        //     },
+  
+        //     // Aria
+        //     ariaProps: {
+        //       role: "status",
+        //       "aria-live": "polite",
+        //     },
+        //   });
+        // }
+        else {
+
+          // console.log("hai");
+          const usdtBalance = parseFloat(balance || 0);
+          // precesion = basePrecision.split('.')[1]
+
+          setload(false)
+          if (user.trader_type === "user") {
+            // const pair12 = pair.split('-')[1]
+            const pair12 = pair.slice(-cat?.length)
+            const da = {
+              instId: pair,
+              tdMode: "cash",
+              ccy: pair12,
+              tag: "mk1",
+              side: "buy",
+              orderType: index,
+              // sz: `${10}`,
+              sz: `${Number(sliderValue).toFixed(precesion?.length)}`,
+              px: price,
+              trade_at: "spot",
+              lever: "0",
+              market: market
+            }
+            // const { data } = await Axios.post(`/trade/userTrade`, da, {
+            const { data } = await Axios.post(`/bybit/trade`, da, {
+              headers: {
+                Authorization: localStorage.getItem("Mellifluous"),
+              }
+            })
+            if (data.success) {
+              setload(true)
+              toast.success(data.message, {
+
+                duration: 4000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "green",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "👏",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+              // window.location.reload();
+              setAmount("")
+              reload(1)
+            } else {
+              setload(true)
+              if(data?.message == 'Order quantity exceeded lower limit.'){
+                toast.error(`Minimum Order quantity should be ${quantity}`, {
+                  duration: 4000,
+                  position: "top-center",
+    
+                  // Styling
+                  style: {
+                    padding: "1rem",
+                    fontSize: "15px",
+                    color: "red",
+                    fontWeight: "bold",
+                  },
+                  className: "",
+    
+                  // Custom Icon
+                  // icon: "👏",
+    
+                  // Change colors of success/error/loading icon
+                  iconTheme: {
+                    primary: "red",
+                    secondary: "#fff",
+                  },
+    
+                  // Aria
+                  ariaProps: {
+                    role: "status",
+                    "aria-live": "polite",
+                  },
+                });
+              } else {
+              toast.error(data.message, {
+
+                duration: 4000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                // icon: "👏",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "red",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+            }
+            }
+          } else {
+            // const pair12 = pair.split('-')[1]
+            const pair12 = pair.slice(-cat?.length)
+            // const da = {
+            //   instId: pair,
+            //   tdMode: "cash",
+            //   ccy: pair12,
+            //   tag: "mk1",
+            //   side: "buy",
+            //   orderType: index,
+            //   sz: Amountref.current.value,
+            //   px: "1",
+            //   trade_at: "spot",
+            //   lever: "0",
+            //   market: market
+            // }
+            const da = {
+              instId: pair,
+              tdMode: "cash",
+              ccy: pair12,
+              tag: "mk1",
+              side: "buy",
+              orderType: index,
+              sz: `${Number(sliderValue).toFixed(precesion?.length)}`,
+              // sz: `${Amountref.current.value}`,
+              // sz: `${20}`,
+              px: `${price}`,
+              trade_at: "spot",
+              lever: "0",
+              market: market
+            }
+            // const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+            const { data } = await Axios.post(`/bybit/mastertrade`, da, {
+              headers: {
+                Authorization: localStorage.getItem("Mellifluous"),
+              }
+            })
+            if (data.success) {
+              setload(true)
+              toast.success(data.message, {
+
+                duration: 4000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "green",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "👏",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+              // window.location.reload();
+              getTradebalance();
+              setAmount("")
+              reload(1)
+            } else {
+              setload(true)
+              toast.error(data?.message, {
+
+                duration: 4000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+            }
+          }
+
+        }
+      }
+      } else {
+        toast.error(`Please Fill the Amount`, {
           duration: 1900,
           position: "top-center",
-  
+
           // Styling
           style: {
             backgroundColor: "#fc1922",
@@ -239,51 +670,16 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
             fontWeight: "bold",
           },
           className: "",
-  
+
           // Custom Icon
           icon: "",
-  
+
           // Change colors of success/error/loading icon
           iconTheme: {
             primary: "#000",
             secondary: "#fff",
           },
-  
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
-  
-        setTimeout(() => {
-          navigate("/kycj-verification");
-        }, 1600);
-      }else if(!buyShow && kycsubmit){
-        console.log("hai789");
-        toast.error(`Your KYC submission is under verification`, {
-          duration: 4000,
-          position: "top-center",
-  
-          // Styling
-          style: {
-            backgroundColor: "#fc1922",
-            padding: "1rem",
-            fontSize: "15px",
-            color: "white",
-            fontWeight: "bold",
-          },
-          className: "",
-  
-          // Custom Icon
-          icon: "",
-  
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
-  
+
           // Aria
           ariaProps: {
             role: "status",
@@ -291,252 +687,9 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
           },
         });
       }
-      // else if(Amountref === "") {
-      //   toast.error("Pelese Fill the Amount", {
-
-      //     duration: 4000,
-      //     position: "top-center",
-
-      //     // Styling
-      //     style: {
-      //       padding: "1rem",
-      //       fontSize: "15px",
-      //       color: "red",
-      //       fontWeight: "bold",
-      //     },
-      //     className: "",
-
-      //     // Custom Icon
-      //     icon: "",
-
-      //     // Change colors of success/error/loading icon
-      //     iconTheme: {
-      //       primary: "#000",
-      //       secondary: "#fff",
-      //     },
-
-      //     // Aria
-      //     ariaProps: {
-      //       role: "status",
-      //       "aria-live": "polite",
-      //     },
-      //   });
-      // } 
-      else {
-
-        // console.log("hai");
-        const usdtBalance = parseFloat(balance || 0);
-
-
-        setload(false)
-        if (user.trader_type === "user") {
-          const pair12 = pair.split('-')[1]
-          const da = {
-            instId: pair,
-            tdMode: "cash",
-            ccy: pair12,
-            tag: "mk1",
-            side: "buy",
-            orderType: index,
-            sz: Amountref.current.value,
-            px: price,
-            trade_at: "spot",
-            lever: "0",
-            market: market
-          }
-          const { data } = await Axios.post(`/trade/userTrade`, da, {
-            headers: {
-              Authorization: localStorage.getItem("Mellifluous"),
-            }
-          })
-          if (data) {
-            setload(true)
-            toast.success(data.message, {
-
-              duration: 4000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "green",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              // Custom Icon
-              icon: "👏",
-
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-            // window.location.reload();
-            setAmount("")
-            reload(1)
-          } else {
-            setload(true)
-            toast.success("Something Went Wrong", {
-
-              duration: 4000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "green",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              // Custom Icon
-              icon: "👏",
-
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-          }
-        } else {
-          const pair12 = pair.split('-')[1]
-          const da = {
-            instId: pair,
-            tdMode: "cash",
-            ccy: pair12,
-            tag: "mk1",
-            side: "buy",
-            orderType: index,
-            sz: Amountref.current.value,
-            px: "1",
-            trade_at: "spot",
-            lever: "0",
-            market: market
-          }
-          const { data } = await Axios.post(`/trade/CreateTrade`, da, {
-            headers: {
-              Authorization: localStorage.getItem("Mellifluous"),
-            }
-          })
-          if (data) {
-            setload(true)
-            toast.success(data.message, {
-
-              duration: 4000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "green",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              // Custom Icon
-              icon: "👏",
-
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-            // window.location.reload();
-            setAmount("")
-            reload(1)
-          } else {
-            setload(true)
-            toast.error("Something Went Wrong", {
-
-              duration: 4000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "red",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              // Custom Icon
-              icon: "",
-
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-          }
-        }
-
-      }
-    } else{
-      toast.error(`Please Fill the Amount`, {
-        duration: 1900,
-        position: "top-center",
-
-        // Styling
-        style: {
-          backgroundColor: "#fc1922",
-          padding: "1rem",
-          fontSize: "15px",
-          color: "white",
-          fontWeight: "bold",
-        },
-        className: "",
-
-        // Custom Icon
-        icon: "",
-
-        // Change colors of success/error/loading icon
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
-
-        // Aria
-        ariaProps: {
-          role: "status",
-          "aria-live": "polite",
-        },
-      });    }
-  }catch (error) {
+    } catch (error) {
       setload(!false)
-      if (error.response.data.message == 'Parameter sz error'){
+      if (error.message == 'Parameter sz error') {
         toast.error("Please Fill the Amount", {
           // Change colors of success/error/loading icon
           style: {
@@ -545,7 +698,7 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
             color: "red",
             fontWeight: "bold",
           },
-          className: "",  
+          className: "",
 
           // Aria
           ariaProps: {
@@ -554,38 +707,38 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
           },
         });
       } else {
-      console.log(error, "err");
-      toast.error(error?.response?.data?.message, {
+        console.log(error, "err");
+        toast.error(error?.message, {
 
-        duration: 4000,
-        position: "top-center",
+          duration: 4000,
+          position: "top-center",
 
-        // Styling
-        style: {
-          padding: "1rem",
-          fontSize: "15px",
-          color: "red",
-          fontWeight: "bold",
-        },
-        className: "",
+          // Styling
+          style: {
+            padding: "1rem",
+            fontSize: "15px",
+            color: "red",
+            fontWeight: "bold",
+          },
+          className: "",
 
-        // Custom Icon
-        icon: "",
+          // Custom Icon
+          icon: "",
 
-        // Change colors of success/error/loading icon
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
+          // Change colors of success/error/loading icon
+          iconTheme: {
+            primary: "#000",
+            secondary: "#fff",
+          },
 
-        // Aria
-        ariaProps: {
-          role: "status",
-          "aria-live": "polite",
-        },
-      });
+          // Aria
+          ariaProps: {
+            role: "status",
+            "aria-live": "polite",
+          },
+        });
+      }
     }
-  }
   }
 
   useEffect(() => {
@@ -621,19 +774,29 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
 
   const getmyWallet = () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      Axios.get(`/bybit/getWallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
+            console.log(res?.data, "res11")
+
             for (let i = 0; i < res?.data?.result.length; i++) {
-              if (res?.data?.result[i].symbol === "USDT") {
-                setBalance(res?.data?.result[i].balance)
-                setSliderValue(res?.data?.result[i].balance)
+              // if (res?.data?.result[i].symbol == pair?.slice(0,- 4)) {
+              //   setBalance(res?.data?.result[i].balance)
+              //   setSliderValue(res?.data?.result[i].balance)
+              // }
+              const coin = res?.data?.result[i]
+
+              if (coin?.coinname == cat) {
+                setBalance(coin?.balance);
+                // console.log(res?.data?.result[i].balance, "baln")
               }
             }
+            setMaxbuy(parseFloat(Number(balance) / Number(selected?.price)).toFixed(7));
+
           }
         })
         .catch((err) => {
@@ -644,10 +807,63 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
     }
 
   }
-  useEffect(() => {
-    getmyWallet()
 
-  }, [])
+  const getTradebalance = async () => {
+    try {
+      await Axios.post(`/bybit/gettradebalance`,{ pair : cat }, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          if (res?.data?.success) {
+            const tradebalance = res?.data?.result?.result?.list[0]?.coin[0]?.availableToWithdraw
+              
+                setBalance(tradebalance);
+          
+            setMaxbuy(parseFloat(Number(tradebalance ? tradebalance : 0) / Number(selected?.price)).toFixed(7));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // getmyWallet()
+    getTradebalance();
+    setAmount(parseFloat(balance / selected?.price).toFixed(7));
+    setSliderValue(parseFloat(balance / selected?.price).toFixed(precesion?.length));
+  }, [selected, pair]);
+
+
+  const getOrderQty = async () => {
+
+    const { data } = await Axios.post(`${Consts.BackendUrl}/bybit/getpairdetailes`, { type : 'spot' , pair: pair })
+       if(data?.success){
+         setQuantity(data?.result[0]?.lotSizeFilter?.minOrderQty);
+         setMaxQuantity(data?.result[0]?.lotSizeFilter?.maxOrderQty);
+         setquotePrecision(data?.result[0]?.lotSizeFilter?.quotePrecision);
+         setbasePrecision(data?.result[0]?.lotSizeFilter?.basePrecision);
+       } else {
+         setQuantity(0);
+         setMaxQuantity(0);
+         setquotePrecision(0);
+         setbasePrecision(0);
+       }
+   }
+ 
+   useEffect(()=> {
+     getOrderQty()
+   }, [pair])
+
+   useEffect(()=> {
+    setPrecesion(basePrecision.split('.')[1])
+    setQuotePrecesion(quotePrecision.split('.')[1])
+  },[basePrecision])
 
   return (
     <>
@@ -671,7 +887,8 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
           </div> */}
 
           <div className="amount-limit-spot">
-            <label className="form-label-style">Amount ({pair ? pair.split('-')[1] : "USD"})</label>
+            {/* <label className="form-label-style">Amount ({pair ? pair.split('-')[1] : "USD"})</label> */}
+            <label className="form-label-style">Amount ({pair ? pair.slice(-cat?.length) : "USD"})</label>
             <div className="">
               <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
@@ -681,7 +898,8 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
                   inputRef={Amountref}
                   value={sliderValue}
                   onChange={Amountupdate}
-                  placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  // placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  placeholder={`Min ${pair ? pair.slice(0, -cat?.length) : "USD"}`}
 
                   aria-describedby="outlined-weight-helper-text"
                   inputProps={{
@@ -718,25 +936,36 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
 
           <div className="available-max-block available-max-buy">
             <div className="available-max-block-left">
-              <div><label>Availabe</label>
-                {balance &&
+              <div>
+                <label>Availabe</label>
+                {/* <div>
+                <div>{ balance != "NaN" ? parseFloat(balance).toFixed(3) : 0} USDT</div>
+                </div> */}
+                {balance ?
                   <div>
-                    {parseFloat(balance).toFixed(3)}{" "}
-                    USDT
-                  </div>
+                    {parseFloat(balance).toFixed(6)}{" "}
+                    {pair ? pair.slice(-cat?.length) : 'USDT' }
+                  </div> :
+                  <>{(0).toFixed(3)}{" "}{pair ? pair.slice(-cat?.length) : 'USDT'}</>
                 }
               </div>
 
-              <div><label>Maxbuy</label>
-                {market ?
+              <div>
+                <label>Maxbuy</label>
+                {balance ?
                   <div>
-                    {parseFloat(balance / market).toFixed(7)} {pair.split("-")[0]}
+                    {parseFloat(balance / selected?.price).toFixed(7) != 'NaN' ? parseFloat(balance / selected?.price).toFixed(7) : 0} {pair.slice(0, -cat?.length)}
                   </div>
                   :
-                  <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair.slice(0, -cat?.length)}</div>
                 }
 
 
+              </div>
+              <div>
+                <label>MinOrderQty :</label>
+                <div> { Number(quantity).toFixed(6) } </div>
               </div>
               {/* <div><label>Availabe</label> -- USDT</div>
           <div><label>Max buy</label> -- {pair ? pair.split('-')[0] : "USD"}</div> */}
@@ -744,10 +973,10 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
             <div className="available-max-block-right"><SwapHorizIcon /></div>
           </div>
 
-          <div className="take-profit-stop-loss-block">
+          {/* <div className="take-profit-stop-loss-block">
             <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="Take profit" /></div>
             <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div>
-          </div>
+          </div> */}
 
           {isCheckedTakeProfit && (
             <div className="take-profit-stop-loss-forms take-profit-form">
@@ -836,7 +1065,8 @@ const BuyForminnerMarket = ({ selected, pair, index, market, reload }) => {
           }
 
           <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Buy {selected ? selected?.pair.split('-')[0] : ""}
+            {/* Buy {selected ? selected?.pair.split('-')[0] : ""} */}
+            Buy {pair ? pair.slice(0, -cat?.length) : ""}
           </Button>
         </div>
       </div>

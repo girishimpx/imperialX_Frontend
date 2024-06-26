@@ -15,6 +15,10 @@ import consts from '../../Constansts';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Button from '@mui/material/Button';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -65,6 +69,8 @@ const useStyles = makeStyles({
 const WalletBody = () => {
   const [balance, setBalance] = useState()
   const classes = useStyles();
+  const [searched, setsearched] = React.useState('');
+  // console.log(searched, 'searched');
   const navigate = useNavigate()
   // useEffect(()=>{
   //   RequestApp()
@@ -79,10 +85,7 @@ const WalletBody = () => {
       })
         .then((res) => {
           if (res?.data?.success) {
-            // console.log(res?.data?.success, "dates")
-            // console.log(res.data.total_price_in_usd,'success');
-            setBalance(res.data.total_price_in_usd)
-            // console.log(res?.data?.result, "respon")
+            console.log('success');
           }
         })
         .catch((err) => {
@@ -91,34 +94,80 @@ const WalletBody = () => {
     } catch (error) {
       console.log(error)
     }
-  
+
   }
-  
+
+  const getmyWalletBalance = async () => {
+    try {
+      await Axios.get(`/bybit/getwallets`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+
+        .then((res) => {
+          // console.log(res, 'resss');
+          if (res?.data?.success) {
+            // console.log(res,'WALLET BALANCE',pair.substring(0,pair.length - 4) );
+            for (let i = 0; i < res?.data?.result.length; i++) {
+              setBalance(res?.data?.total_price_in_usd);
+              // console.log(res?.data?.result[i].balance, "baln")
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClearClick = () => {
+    setsearched('')
+  }
 
   useEffect(() => {
+    getmyWalletBalance()
     getmyWallet()
-
   }, [])
 
   return (
     <div className='Wallet-Body-Page Wallet-Body-Page-main-page'>
       <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={0}>
-          
+        <Grid container spacing={0}>
+
         </Grid>
-        
+
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Item className={classes.walletbodycls}>
               <h3 className='welcome-msg'>My Wallet</h3>
               {/* <p className='welcome-txt'>We are on a mission to help developers like you to build beautiful projects for free.</p> */}
-              <p className='welcome-msg1'> TOTAL BALANCE : <div className='balance-span1'> ${ balance ? balance.toFixed(6) : 0} <span className='balance-span'> USDT </span> </div> </p>
+              <p className='welcome-msg1'> TOTAL BALANCE : <div className='balance-span1'> ${balance ? balance.toFixed(6) : 0} <span className='balance-span'> USDT </span> </div> </p>
             </Item>
           </Grid>
-
         </Grid>
 
-
+        <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <Paper
+            component="form"
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              value={searched}
+              placeholder="Search"
+              inputProps={{ 'aria-label': 'search google maps' }}
+              onChange={(e) => {
+                setsearched(e.target.value.toUpperCase())
+              }}
+            />
+            <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => { handleClearClick() }}>
+              <CloseIcon />
+            </IconButton>
+          </Paper>
+        </Grid>
 
         <Grid container spacing={0} className='balance-blocks-trade-view' id='balance-blocks-trade-view'>
 
@@ -126,7 +175,7 @@ const WalletBody = () => {
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12} className={classes.tradeview}>
             <Item className={classes.tradeviewinner}>
 
-              <WalletTable />
+              <WalletTable searchValue={searched} />
             </Item>
           </Grid>
         </Grid>

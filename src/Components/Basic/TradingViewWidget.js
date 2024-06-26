@@ -10,10 +10,12 @@ export default function TradingViewWidget(props) {
   useEffect(
     () => {
      console.log(props,'imperial')
-     let  data1 = props?.selec?.split("-")
-     console.log("data123",data1)
-      let data = data1.join("")
+    //  let  data1 = props?.selec?.split("-")
+    //  console.log("data123",data1)
+    //   let data = data1.join("")
       
+    let data = props?.selec?.data?.instId
+
      let dpair =  "Binance:" + data
 
       onLoadScriptRef.current = createWidget;

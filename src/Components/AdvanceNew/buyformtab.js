@@ -39,7 +39,7 @@ function a11yProps(index) {
   };
 }
 
-const Buyformtab = ({ selected, pair,index, market, ordertype, reload }) => {
+const Buyformtab = ({ selected, pair,index, market, ordertype, reload, cat }) => {
 
   
     const [value, setValue] = React.useState(0);
@@ -55,10 +55,10 @@ const Buyformtab = ({ selected, pair,index, market, ordertype, reload }) => {
     {/* <Tab label="Repay" {...a11yProps(2)} /> */}
   </Tabs>
   <TabPanel value={value} index={0}>
-    <BuyFormInner selected={selected} pair={pair} index={'cross'} ordertype={index} market={market} reload={reload} />
+    <BuyFormInner selected={selected} pair={pair} index={'cross'} ordertype={index} market={market} reload={reload} cat={cat}/>
   </TabPanel>
   <TabPanel value={value} index={1}>
-    <BuyFormInner selected={selected} pair={pair} index={'isolated'} ordertype={index} market={market}  />
+    <BuyFormInner selected={selected} pair={pair} index={'isolated'} ordertype={index} market={market}  cat={cat}/>
   </TabPanel>
   {/* <TabPanel value={value} index={2}>
     <BuyFormInner selected={selected} pair={pair} index={'stop'} />

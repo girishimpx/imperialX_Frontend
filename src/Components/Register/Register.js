@@ -18,7 +18,7 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import Button from '@mui/material/Button';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams  } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -30,6 +30,9 @@ import { useRef } from 'react';
 import { red } from '@mui/material/colors';
 import Constant from '../../Constansts'
 import Axios from '../../Axios'
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import BeatLoader from "react-spinners/BeatLoader";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -78,7 +81,10 @@ const useStyles = makeStyles({
     background: 'transparent !important',
     borderRadius: '0px !important',
     boxShadow: 'none !important',
-    width: '50%'
+    width: '50%',
+    '@media(max-width:575.98px)': {
+      width: '90%'
+    }
   },
   loginright: {
     background: 'transparent !important',
@@ -103,10 +109,13 @@ const useStyles = makeStyles({
 });
 
 
+
 const Register = () => {
+  const { id } = useParams('');
 
   const [confirmPass, setConfirmPass] = useState(null)
   const [referralErr, setReferralErr] = useState(null)
+  const [refee, setRefee] = useState(null)
   const [mail, setMail] = useState("")
   const [username, setUsername] = useState("")
   const [ischecked, setIschecked] = useState(false)
@@ -121,6 +130,7 @@ const Register = () => {
   const [usernameerr, setusernameerr] = useState(null)
   const [passworderr, setpassworderr] = useState(null)
   const [cpassworderr, setcpassworderr] = useState(null)
+  const [loadingGoogle, setLoadingGoogle] = useState(false)
 
   const classes = useStyles();
   const navigate = useNavigate();
@@ -142,6 +152,7 @@ const Register = () => {
 
   const responseGoogle = async (response) => {
     try {
+      setLoadingGoogle(true);
       var decoded = jwt_decode(response.credential);
       const datas = await Axios.post(`${Constant.BackendUrl}/users/register`,
         {
@@ -176,8 +187,8 @@ const Register = () => {
         console.log("Error")
       }
     } catch (error) {
-      console.log(error)
-      toast.error(`${error.response.data.message}`, {
+      console.log(error, 'erererer')
+      toast.error(`${error?.message ? error?.message : error.response.data.message}`, {
 
         duration: 1000,
         position: "top-center",
@@ -206,6 +217,8 @@ const Register = () => {
           "aria-live": "polite",
         },
       });
+    } finally {
+      setLoadingGoogle(false);
     }
 
   };
@@ -227,7 +240,7 @@ const Register = () => {
     if (inpassref.current.value === inputconfrimRef.current.value) {
       setConfirmPass(null);
     } else {
-      setConfirmPass("Password Miss-Match");
+      setConfirmPass("Password Miss Match");
     }
   }
 
@@ -239,7 +252,7 @@ const Register = () => {
     } else if (email.current.value === "") {
       setMail("")
     } else {
-      setMail("Invalid-Email-Format")
+      setMail("Invalid Email Format")
     }
   }
   const handleChange = (event) => {
@@ -249,7 +262,10 @@ const Register = () => {
 
   const handleSuccessRegister = async () => {
     try {
-
+      const passwordregex = new RegExp(
+        /(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,16}$)+/,
+        "gm"
+      );
       // console.log(name.current.value, email.current.value, inputconfrimRef.current.value, inpassref.current.value, passworderr, cpassworderr, usernameerr, emailerr, confirmPass, "redfs")
       // if (name.current.value !== "" && email.current.value !== "" && inputconfrimRef.current.value !== "" && inpassref.current.value !== ""
       //   && passworderr === null && cpassworderr === null && usernameerr === null && emailerr === null && confirmPass === null)
@@ -260,10 +276,17 @@ const Register = () => {
         setemailerr("Please Enter Email")
       } else if (inpassref.current.value === "") {
         setpassworderr("Please Enter Password")
-      } else if (inputconfrimRef.current.value === "") {
+      }
+      else if (!passwordregex.test(inpassref.current.value)) {
+        console.log(inpassref.current.value, 'inpassref');
+        setpassworderr(
+          "Password must be a minimum 8 characters & Maximum 16 characters.Eg: Abc@1234"
+        );
+      }
+      else if (inputconfrimRef.current.value === "") {
         setcpassworderr("Please Enter Confirm Password")
       } else if (inpassref.current.value !== inputconfrimRef.current.value) {
-        setConfirmPass("Password Miss-Match");
+        setConfirmPass("Password Miss Match");
       }
       else {
 
@@ -303,8 +326,8 @@ const Register = () => {
       } else if (inputconfrimRef.current.value === "") {
         setcpassworderr("Please Enter Confirm Password")
       } else if (inpassref.current.value !== inputconfrimRef.current.value) {
-        setConfirmPass("Password Miss-Match");
-      } else if (referral.current.value === "") {
+        setConfirmPass("Password Miss Match");
+      } else if (refee === "") {
         setReferralErr("Enter Refferal Code");
       }
       else {
@@ -313,7 +336,8 @@ const Register = () => {
             name: name.current.value,
             email: email.current.value,
             password: inpassref.current.value,
-            referred_by_code: referral.current.value,
+            // referred_by_code: referral.current.value,
+            referred_by_code: refee,
             signup_type: "gmail"
           }
         )
@@ -332,6 +356,36 @@ const Register = () => {
       } else {
         setpassworderr(error?.response?.data?.message)
       }
+    }
+  }
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
+  useEffect(() => {
+
+    setTimeout(() => {
+
+      if (id !== undefined && `${referral?.current}` !== null) {
+ 
+        setIschecked(!ischecked);
+        checkreferral.current.checked = true;
+        setRefee(id);
+      } 
+
+    }, 500);
+
+  }, [id]);
+
+  const handleRederalError = (e) => {
+    if(e != ''){
+      setRefee(e);
+      if(referralErr != ''){
+        setReferralErr(null);
+      }
+    } else {
+      setRefee(e);
+      setReferralErr("Enter Refferal Code");
     }
   }
 
@@ -428,8 +482,10 @@ const Register = () => {
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type="text"
+                    value={refee}
                     inputRef={referral}
-                    onChange={() => setReferralErr(null)}
+                    onChange={(e) => handleRederalError(e.target.value)}
+                    // onChange={() => setReferralErr(null)}
                     label="Reffral Code"
                   />
                 </FormControl>
@@ -439,14 +495,27 @@ const Register = () => {
 
                 {checkreferral?.current?.checked === true ? <Button className='login-button' variant="contained" onClick={() => handleSuccessRegisters()}>Continue</Button> :
                   <Button className='login-button' variant="contained" onClick={() => handleSuccessRegister()}>Continue</Button>}
-                <div style={{ "display": "flex", justifyContent: "center" }}>
-                  <GoogleLogin
-                    clientId="498193022448-gb2na1hmb13r8modis57mh51osc8rp3q.apps.googleusercontent.com"
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogles}
+                {loadingGoogle ?
 
-                  />
-                </div>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Button className='login-button' variant="contained" style={{ display: 'flex', alignItems: 'center' }}>
+                      <span style={{ marginRight: '10px' }}>Loading Assets</span>
+                      <BeatLoader size={8} color={"grey"} />
+                    </Button>
+                  </div> :
+
+                  <div style={{ "display": "flex", justifyContent: "center" }}>
+                    <GoogleLogin
+                      // clientId="498193022448-gb2na1hmb13r8modis57mh51osc8rp3q.apps.googleusercontent.com" // old  unknown
+                      clientId="415667471984-p7kh2ms3d4dqt9suvdvfqi40ei28mdms.apps.googleusercontent.com" // ramesh id
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogles}
+
+                    />
+                  </div>
+
+
+                }
                 {/* <div className='login-with'>
                   <p>Or Sign Up With</p>
                   <ul className='login-with-list'>
@@ -457,14 +526,14 @@ const Register = () => {
               </Box>
             </Item>
           </Grid>
-
-          <Grid item xs={12} sm={12} md={12} lg={6} xl={6} className={classes.loginrightouter}>
-            <Item className={classes.loginright}>
-              <div className='loginright'><img src={loginright} alt="loginright" /></div>
-              <div className='text-big-login'>ImperialX for Investors</div>
-              <div className='text-small-login'>Replicate successful trading strategies on autopilot</div>
-            </Item>
-          </Grid>
+          {matches ?
+            <Grid item xs={12} sm={12} md={12} lg={6} xl={6} className={classes.loginrightouter}>
+              <Item className={classes.loginright}>
+                <div className='loginright'><img src={loginright} alt="loginright" /></div>
+                <div className='text-big-login'>ImperialX for Investors</div>
+                <div className='text-small-login'>Replicate successful trading strategies on autopilot</div>
+              </Item>
+            </Grid> : null}
 
         </Grid>
 

@@ -697,7 +697,7 @@ const BuyForminnermarket = ({ selected, pair, index, ordertype, labe, market }) 
             </FormControl>
           }
 
-          {labe === "open-long" ? <div style={{ "width": "98%" }}>
+          {labe === "open-long" ? <div style={{ "width": "89%" }}>
             <ThumbSlider
               aria-label="Temperature"
               defaultValue={0}
@@ -710,7 +710,7 @@ const BuyForminnermarket = ({ selected, pair, index, ordertype, labe, market }) 
               max={20}
               ValueLabelComponent={ValueLabelComponent}
             />
-          </div> : <div style={{ "width": "98%" }}>
+          </div> : <div style={{ "width": "89%" }}>
             <ThumbSlider
               aria-label="Temperature"
               defaultValue={0}

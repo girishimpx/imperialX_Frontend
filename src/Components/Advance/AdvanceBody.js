@@ -85,12 +85,12 @@ const AdvanceBody = () => {
   const [dash, setdash] = useState();
   const [buyspot, setbuyspot] = useState();
   const [sellspot, setSellspot] = useState();
-  const [selected, setSelected] = useState(); 
+  const [selected, setSelected] = useState();
   const [coinlist, setCoinList] = useState();
   const [oldpair, setoldpair] = useState("");
   const [assetList, setAssetList] = useState(["BTC-USDT", "ETH-USDT"]);
-  const [searchedpair,setsearchpair] = useState('');
-  
+  const [searchedpair, setsearchpair] = useState('');
+
   const [selPair, setSelPair] = useState("")
 
 
@@ -245,7 +245,7 @@ const AdvanceBody = () => {
 
   return (
     <div className="dashboard-body spot-body advance-body-part">
-      <Toaster/>
+      <Toaster />
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -338,15 +338,15 @@ const AdvanceBody = () => {
                     id="outlined-basic"
                     label="Search"
                     variant="outlined"
-                    onChange={(e)=>{
-                   setsearchpair(e.target.value.toUpperCase())
+                    onChange={(e) => {
+                      setsearchpair(e.target.value.toUpperCase())
                     }}
                   />
                 </div>
-                <AdvanceMarketTab pairs = {pair} searchpair={searchedpair} />
+                <AdvanceMarketTab pairs={pair} searchpair={searchedpair} />
               </Grid>
-              
-              <Grid item xs={12} sm={12} md={12} lg={7.5} xl={7.5}  id="chart-top-bottom">
+
+              <Grid item xs={12} sm={12} md={12} lg={7.5} xl={7.5} id="chart-top-bottom">
                 <Item className={classes.dashboarbodycls} id="basic-graph-chart">
                   <Box sx={{ width: "100%" }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -417,7 +417,7 @@ const AdvanceBody = () => {
                   pair={pair}
                 />
               </Grid>
-              
+
             </Grid>
             <Grid container spacing={0}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>

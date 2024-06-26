@@ -63,7 +63,7 @@ function a11yProps(index) {
 }
 
 export default function BuyForm({ selected, pair , la,market, reload }) {
-  console.log(selected, pair , la,market,  'BUY FROM');
+  // console.log(selected, pair , la,market,  'BUY FROM');
   const [value, setValue] = React.useState(0);
   const [narmalvalues, setnormalValues] = React.useState(0);
   const [borrowvalues, setborrowValues] = React.useState(0);
@@ -276,7 +276,7 @@ export default function BuyForm({ selected, pair , la,market, reload }) {
           <FormControl fullWidth className='select-tpsl-options-form-control'>
         {/* <InputLabel id="demo-simple-select-label">Isolated</InputLabel> */}
       
-        <Select
+        {/* <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           className='select-tpsl-options'
@@ -302,13 +302,13 @@ export default function BuyForm({ selected, pair , la,market, reload }) {
           <MenuItem value={50}>Scaled Order</MenuItem>
           <MenuItem value={60}>Iceberg</MenuItem>
           <MenuItem value={70}>TWAP</MenuItem>
-        </Select>
+        </Select> */}
       </FormControl>
         </Tabs>
         </div>
       </Box>
       <TabPanel value={value} index={0}> 
-      <Buyformtab selected={selected} pair={pair} index={"limit"} mgnmode={isolate} lever={leveragePercent}  lab={la} reload={reload}/>
+      <Buyformtab selected={selected} pair={pair} index={"limit"} market={market} mgnmode={isolate} lever={leveragePercent}  lab={la} reload={reload}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <Buyformtabmarket selected={selected} pair={pair} index={"market"} mgnmode={isolate} lab={la} lever={leveragePercent} market={market} reload={reload}/>

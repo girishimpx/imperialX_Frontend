@@ -23,10 +23,19 @@ import { Link } from 'react-router-dom';
 import asseteye from '../../images/asset-eye.png'
 import readmorenew from '../../images/read-more-new.png'
 import Announcementimg from '../../images/Announcement-img.png'
-
+import { toast, Toaster, ToastBar } from "react-hot-toast";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import clipboardCopy from "clipboard-copy";
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { Verified } from '@mui/icons-material';
 import { faLinesLeaning } from '@fortawesome/free-solid-svg-icons';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import IconButton from '@mui/material/IconButton';
+import PersonSharpIcon from '@mui/icons-material/PersonSharp';
+import consts from '../../Constansts';
+import Avatar from '@mui/material/Avatar';
+import Profile from '../../../src/images/profile.jpg';
+
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -48,20 +57,20 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-  const useStyles = makeStyles({
-    dashboarbodycls:{
-        background: 'transparent !important',
-        borderRadius: '0px !important',
-        boxShadow:'none !important',
-    },
-    highspan:{
-      color:'green',
-      '& ::after':{
-        content:"Hidh"
-      }
-    },
-    lowspan:{
-      color:'red !important',
+const useStyles = makeStyles({
+  dashboarbodycls: {
+    background: 'transparent !important',
+    borderRadius: '0px !important',
+    boxShadow: 'none !important',
+  },
+  highspan: {
+    color: 'green',
+    '& ::after': {
+      content: "Hidh"
+    }
+  },
+  lowspan: {
+    color: 'red !important',
     '& span': {
       content: '""',
       width: '5px',
@@ -75,7 +84,19 @@ const Item = styled(Paper)(({ theme }) => ({
     },
   }
 });
-  
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -143,12 +164,13 @@ function a11yProps(index) {
   };
 }
 
-const ProfileBody = () => {
+const ProfileBody = ({ profileRender }) => {
 
 
   const classes = useStyles();
 
   const [value, setValue] = React.useState(0);
+  const [img, setImg] = React.useState()
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -156,13 +178,10 @@ const ProfileBody = () => {
   const navigate = useNavigate()
   const [user, setUser] = React.useState();
   const [plan, setPlan] = React.useState();
-  const [usd,setUsd] = React.useState()
+  const [usd, setUsd] = React.useState()
+  const [render, setRender] = React.useState(false)
   const [loading, setLoading] = React.useState(true);
-  useEffect(() => {
-    console.log("Referrals}")
-    getMydetail()
-    getPlans()
-  }, [])
+
   const getMydetail = async () => {
     try {
       await Axios.get(`${Consts.BackendUrl}/users/get_profile`, {
@@ -170,15 +189,15 @@ const ProfileBody = () => {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       }).then((res) => {
+        // console.log(res, 'profile');
         if (res?.status === 200) {
-
-          console.log(res?.data,'********************************');
+          // console.log(res?.data, '********************************');
           setUser(res?.data?.result)
+          setImg(res?.data?.result?.image)
           setUsd(res?.data?.total_price_in_usd)
           setLoading(false);
-
         }
-        console.log(res?.data?.total_price_in_usd)
+        // console.log(res?.data?.total_price_in_usd)
         setLoading(false);
       })
     } catch (error) {
@@ -186,6 +205,13 @@ const ProfileBody = () => {
     }
 
   }
+
+  useEffect(() => {
+    // console.log("Referrals}")
+    getMydetail()
+    getPlans()
+  }, [])
+
   const getPlans = async () => {
     try {
       await Axios.get(`${Consts.BackendUrl}/users/getmyplan`, {
@@ -195,12 +221,12 @@ const ProfileBody = () => {
       }).then((res) => {
         if (res?.status === 200) {
 
-          console.log(res?.data?.result[0]);
+          // console.log(res?.data?.result[0]);
           setPlan(res?.data?.result[0])
           setLoading(false);
 
         }
-        console.log(res?.data?.result[0])
+        // console.log(res?.data?.result[0])
         setLoading(false);
       })
     } catch (error) {
@@ -209,32 +235,189 @@ const ProfileBody = () => {
 
   }
 
-  return (
-    <div className='dashboard-body spot-body basic-page-body'>
+  const updateRedeem = async (id, referralPoint) => {
+    const data = {
+      id: id,
+      redeem_points: referralPoint
+    }
+    try {
+      const response = await Axios.post(`${Consts.BackendUrl}/wallet/updateRedeem`, data, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+      // console.log(response, 'response');
+      if (response.data.success == true) {
+        getMydetail()
+        toast.success(response.data.message, {
+          duration: 1000,
+          position: "top-center",
+          // Styling
+          style: {
+            padding: "1rem",
+            fontSize: "15px",
+            color: "green",
+            fontWeight: "bold",
+          },
+          className: "",
 
+          // Custom Icon
+          icon: "",
+
+          // Change colors of success/error/loading icon
+          iconTheme: {
+            primary: "#000",
+            secondary: "#fff",
+          },
+
+          // Aria
+          ariaProps: {
+            role: "status",
+            "aria-live": "polite",
+          },
+        });
+
+      }
+
+    } catch (error) {
+      console.log(error, 'err');
+    }
+  }
+
+  const handleCopy = (status) => {
+    clipboardCopy(status);
+    toast.success("code copied", {
+
+      duration: 800,
+      position: "top-center",
+
+      // Styling
+      style: {
+        padding: "1rem",
+        fontSize: "15px",
+        color: "green",
+        fontWeight: "bold",
+      },
+      className: "",
+
+      // Custom Icon
+      icon: "👏",
+
+      // Change colors of success/error/loading icon
+      iconTheme: {
+        primary: "#000",
+        secondary: "#fff",
+      },
+
+      // Aria
+      ariaProps: {
+        role: "status",
+        "aria-live": "polite",
+      },
+    });
+  };
+
+  const handleFileUpload = async (event) => {
+    const files = event.target.files[0];
+    try {
+      let formData = await new FormData();
+      formData.append("image", files);
+      // console.log(formData, 'formData');
+      const fileName = files.name
+      var idxDot = fileName.lastIndexOf(".") + 1;
+      var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+      if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+        const imgResponse = await Axios.post(`${consts.BackendUrl}/users/imageUpload`, formData, {
+          headers: {
+            Authorization: localStorage.getItem("Mellifluous"),
+          },
+        })
+        // console.log(imgResponse, 'imgres');
+        if (imgResponse?.data?.success) {
+          const { data } = await Axios.post(`${consts.BackendUrl}/users/updateprofile`, { url : imgResponse?.data?.result }, {
+            headers: {
+              Authorization: localStorage.getItem("Mellifluous"),
+            },
+          })
+
+          if(data?.success){
+            toast.success(data?.message)
+            getMydetail();
+            setRender(!render);
+            profileRender(!render);
+          } else {
+            toast.success(data?.message)
+          }
+        }
+        // const result = await data.data.result
+      }
+      else {
+        toast.error("Only jpg, jpeg, png and gif files are allowed!");
+      }
+
+
+    } catch (error) {
+      console.log(error, 'img error');
+    }
+  }
+
+  return (
+
+    <div className='dashboard-body spot-body basic-page-body'>
+      <Toaster />
       <Box sx={{ flexGrow: 1 }}>
-  
+
         <Grid container spacing={0}>
 
 
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
 
-    <Grid container spacing={0}>
-    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} id="my-profile-details">
-      <div className='top-part-all-page basic-page-top-part'>
-         <div className='top-col-2'><div></div><span>{user?.name}</span></div>
-         {/* <div className='top-col-3 comon-flex-top-bot-style'><span>USDT</span><span>{user?.referal_money ? user?.referal_money:"0"}</span></div> */}
-         <div className='top-col-3 comon-flex-top-bot-style'><span>USD Balance</span><span>{usd ? usd.toFixed(2):"0"}USD</span></div>
-         <div className='top-col-4 comon-flex-top-bot-style'><span>Referal Code</span><span>{user?.referral_code ? user?.referral_code :"-"}</span></div>
-         <div className='top-col-4 comon-flex-top-bot-style'><span>Account Info</span><span>{user?.email}</span></div>
-         <div className='top-col-5 comon-flex-top-bot-style'><span>Identity Verification</span>{user?.email_verify ?<span style={{color:"#25DEB0"}}><img src={tick} /> Verified</span>:
-         <span style={{color:"red"}}>Not Verified</span>}</div>
-         <div className='top-col-6 comon-flex-top-bot-style'><span>Security Level</span>
-         {user?.f2A_Status === true ? <span className={classes.highspan}>High</span> : <span className={classes.lowspan}>Low</span>}
-         </div>
-      </div>
-    </Grid>
-    </Grid>
+            <Grid container spacing={0}>
+              <Grid item xs={12} sm={12} md={12} lg={12} xl={12} id="my-profile-details">
+                <div className='top-part-all-page basic-page-top-part'>
+                  <div className='top-col-2'>
+                    <div>
+                      <input
+                        style={{
+                          display: "none"
+                        }}
+                        // accept=".jpg"  // specify the file type that you wanted to accept
+                        id="choose-file"
+                        type="file"
+                        onChange={handleFileUpload}
+                      />
+                      <label htmlFor="choose-file">
+                        {/* <IconButton aria-label="upload"> */}
+                        {/* <PersonSharpIcon style={{
+                                    color: "#25DEB0"
+                                  }} /> */}
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={img ? img : Profile}
+                          sx={{ width: 40, height: 40 }}
+                          className='profile-img'
+                        ></Avatar>
+                        {/* </IconButton> */}
+                      </label>
+                    </div>
+
+                    <span>{user?.name}
+                    </span>
+                  </div>
+                  {/* <div className='top-col-3 comon-flex-top-bot-style'><span>USDT</span><span>{user?.referal_money ? user?.referal_money:"0"}</span></div> */}
+                  <div className='top-col-3 comon-flex-top-bot-style'><span>USD Balance</span><span>{usd ? usd.toFixed(2) : "0"}USD</span></div>
+                  <div className='top-col-4 comon-flex-top-bot-style'><span>Referal Code</span><span>{user?.referral_code ?
+                    <>{user?.referral_code} <span className='copy-icon'> <ContentCopyIcon onClick={() => handleCopy(user?.referral_code)} /></span></>
+                    : "-"}</span></div>
+                  <div className='top-col-4 comon-flex-top-bot-style'><span>Account Info</span><span>{user?.email}</span></div>
+                  <div className='top-col-5 comon-flex-top-bot-style'><span>Identity Verification</span>{user?.email_verify ? <span style={{ color: "#25DEB0" }}><img src={tick} /> Verified</span> :
+                    <span style={{ color: "red" }}>Not Verified</span>}</div>
+                  <div className='top-col-6 comon-flex-top-bot-style'><span>Security Level</span>
+                    {user?.f2A_Status === true ? <span className={classes.highspan}>High</span> : <span className={classes.lowspan}>Low</span>}
+                  </div>
+                </div>
+              </Grid>
+            </Grid>
 
             <Grid container spacing={0}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12} className='margin-none'>
@@ -245,9 +428,40 @@ const ProfileBody = () => {
                         <div className='part-left-part part-top-part'>
                           <h3>30,000 USDT Deposit Blast-Off Rewards</h3>
                           <div className='redeem-block-right'>
-                          <h5>{user?.redeem_points ? user?.redeem_points : "0.00"}</h5>
-                        <div className='rightmove'><div className='task-right'><Button className='redeem-btn-cls-style' disabled={user?.iseligible == 'Approved' ? false : true} variant="contained" >Redeem <div><img src={rightmove} alt="rightmove" /></div></Button></div></div>
-                        </div>
+                            <h5>{user?.redeem_points ? user?.redeem_points : "0.00"} INR</h5>
+                            {
+                              (Number(user?.redeem_points) > 0 && user?.is_reward == 0) ?
+                                <div className='rightmove'>
+                                  <div className='task-right'>
+                                    <Button className='redeem-btn-cls-style'
+                                      // disabled={user?.iseligible == 'Approved' ? false : true} 
+                                      variant="contained"
+                                      onClick={() => {
+                                        updateRedeem(user._id, user.redeem_points)
+                                      }}
+
+                                    // onClick={user?.is_reward == 0 ? updateRedeem(user._id, user.redeem_points) : ''}
+                                    >
+                                      Redeem
+                                      <div>
+                                        <img src={rightmove} alt="rightmove" />
+                                      </div>
+                                    </Button>
+                                  </div>
+                                </div> :
+                                user?.is_reward == 1 ?
+                                  <div className='rightmove'>
+                                    <div className='task-right'>
+                                      <Button className='redeem-btn-cls-style' variant="contained" >
+                                        Pending
+                                        <div>
+                                          <img src={rightmove} alt="rightmove" />
+                                        </div>
+                                      </Button>
+                                    </div>
+                                  </div> : ""
+                            }
+                          </div>
                         </div>
                         <div className='part-left-part part-mid-part'>
                           <div className='mid-left-img'><img src={midleftimg} alt="mid-left-img" /></div>
@@ -273,55 +487,55 @@ const ProfileBody = () => {
                           <h3>Recommended</h3>
                           <div className='recommend-block-outer'>
 
-            <div className='recommend-1'>
-                <div className='recommend-top-line'><div className='ec-img-new'><img src={recommmend1} alt="recommmend1"/></div><span className='rec-head-new'>SUI Liquidity Mining</span></div>
-                <div className='recommend-bot-line'>24h APR: 159.5 % - 478.5 %</div>
-            </div>
-            <div className='recommend-2 cmn-flex-block-type'>
-            <div className='recommend-block-left'><h6>Download & Trade in App Now</h6><Link>Get App</Link></div>
-            <div className='recommend-block-right'><img src={recommmend3} alt="Download-&-Trade-in-App-No"/></div>
-            <div className='notice-block'>Limited</div>
-         </div>
-         <div className='recommend-3 cmn-flex-block-type'>
-           <div className='recommend-block-left'><h6>Invite friends and Earn 25 USDT Cashback and 10,000 USDT Lucky Draw</h6><Link>Invite now</Link></div>
-            <div className='recommend-block-right'><img src={recommmend4} alt="Invite-friends"/></div>
-            <div className='notice-block'>New</div>
-         </div>
-            <div className='recommend-1 recommend-4'>
-                <div className='recommend-top-line'><div className='ec-img-new'><img src={recommmend2} alt="recommmend2"/></div><span className='rec-head-new'>Tools Discovery</span></div>
-                <div className='recommend-bot-line'>Discover Tools Tailored to Your Trading Style</div>
-            </div>
-        
-         </div>
-         </div>
-         </div>
-    </Grid>
-    <Grid item xs={12} sm={12} md={12} lg={5} xl={5}>
-        <div className='complete-task'>
-            <h6>Complete the following tasks to grab more rewards</h6>
-            <div className='task-1 complete-common'>
-               <div className='task-left'>
-                <label>Deposit ≥ $100</label>
-                    <div className='depoit-trade-progress'>
-                    <BorderLinearProgress variant="determinate" value={50} />
-                    <span>0/100 USDT</span>
-                    </div>
-               </div>
-               <div className='task-right'><Button variant="contained">Deposit Now</Button></div>
-            </div>
-            <span className='add-mid-round'>Add</span>
-            <div className='task-1 task-2 complete-common'>
-               <div className='task-left'>
-                <label>Trade ≥ $500</label>
-                    <div className='depoit-trade-progress'>
-                    <BorderLinearProgress variant="determinate" value={50} />
-                    <span>0/500 USDT</span>
-                    </div>
-               </div>
-               <div className='task-right'><Button variant="contained">Trade Now</Button></div>
-            </div>
-        </div>
-        <div className='plan-task current-plan-details'>
+                            <div className='recommend-1'>
+                              <div className='recommend-top-line'><div className='ec-img-new'><img src={recommmend1} alt="recommmend1" /></div><span className='rec-head-new'>SUI Liquidity Mining</span></div>
+                              <div className='recommend-bot-line'>24h APR: 159.5 % - 478.5 %</div>
+                            </div>
+                            <div className='recommend-2 cmn-flex-block-type'>
+                              <div className='recommend-block-left'><h6>Download & Trade in App Now</h6><Link>Get App</Link></div>
+                              <div className='recommend-block-right'><img src={recommmend3} alt="Download-&-Trade-in-App-No" /></div>
+                              <div className='notice-block'>Limited</div>
+                            </div>
+                            <div className='recommend-3 cmn-flex-block-type'>
+                              <div className='recommend-block-left'><h6>Invite friends and Earn 25 USDT Cashback and 10,000 USDT Lucky Draw</h6><Link>Invite now</Link></div>
+                              <div className='recommend-block-right'><img src={recommmend4} alt="Invite-friends" /></div>
+                              <div className='notice-block'>New</div>
+                            </div>
+                            <div className='recommend-1 recommend-4'>
+                              <div className='recommend-top-line'><div className='ec-img-new'><img src={recommmend2} alt="recommmend2" /></div><span className='rec-head-new'>Tools Discovery</span></div>
+                              <div className='recommend-bot-line'>Discover Tools Tailored to Your Trading Style</div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={5} xl={5}>
+                      <div className='complete-task'>
+                        <h6>Complete the following tasks to grab more rewards</h6>
+                        <div className='task-1 complete-common'>
+                          <div className='task-left'>
+                            <label>Deposit ≥ $100</label>
+                            <div className='depoit-trade-progress'>
+                              <BorderLinearProgress variant="determinate" value={50} />
+                              <span>0/100 USDT</span>
+                            </div>
+                          </div>
+                          <div className='task-right'><Link to='/wallet'><Button variant="contained">Deposit Now</Button></Link></div>
+                        </div>
+                        <span className='add-mid-round'>Add</span>
+                        <div className='task-1 task-2 complete-common'>
+                          <div className='task-left'>
+                            <label>Trade ≥ $500</label>
+                            <div className='depoit-trade-progress'>
+                              <BorderLinearProgress variant="determinate" value={50} />
+                              <span>0/500 USDT</span>
+                            </div>
+                          </div>
+                          <div className='task-right'><Link to='/spot'><Button variant="contained">Trade Now</Button></Link></div>
+                        </div>
+                      </div>
+                      <div className='plan-task current-plan-details'>
                         <h6>Current Plan - Details</h6>
                         <div className='task-1 plan-common'>
                           <div className='task-left'>
@@ -330,7 +544,7 @@ const ProfileBody = () => {
 
                                 <Grid id="current-plan-details-left" container className={classes.price} justifyContent="center" alignItems='center'>
                                   <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                                  {plan?.isActivate ? <h4>{plan?.planType} <span>({plan?.planMode})</span></h4> : <></>}
+                                    {plan?.isActivate ? <h4>{plan?.planType} <span>({plan?.planMode})</span></h4> : <></>}
                                     {plan?.isActivate ? <>
 
                                       {plan?.planMode === "Month" ? <h1>{plan?.plans[0].per_month}</h1> : <h1>{plan?.plans[0].per_year}</h1>}
@@ -360,11 +574,11 @@ const ProfileBody = () => {
 
                       </div>
 
-    </Grid>
-    </Grid>
-    </Item>
-    </Grid>
-    </Grid>
+                    </Grid>
+                  </Grid>
+                </Item>
+              </Grid>
+            </Grid>
 
             <Grid container spacing={0}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6} className='margin-none'>
@@ -374,20 +588,20 @@ const ProfileBody = () => {
                     <div className='asset-read-more'><label>My Assets<img src={asseteye} alt="asseteye" /></label><Link>Assets Details<img src={readmorenew} alt="read-more-new" /></Link></div>
 
                     <div className='flex-box-my-asset'>
-                    <div className='total-asset-user'>
-                      <span>Total Assets</span>
-                      <label>0.00 USD</label>
-                      <span>≈ 0.00000000 BTC</span>
-                    </div>
-                    <div className='make-first-deposit'>
-                      <div className='make-deposit-inner'>
-                        <span>Make your first deposit to win exclusive coupons</span>
-                        <Stack spacing={2} direction="row" className='make-your-first-deposit'>
-                          <Button variant="contained">Deposit</Button>
-                          <Button variant="outlined">Buy Crypto</Button>
-                        </Stack>
+                      <div className='total-asset-user'>
+                        <span>Total Assets</span>
+                        <label>0.00 USD</label>
+                        <span>≈ 0.00000000 BTC</span>
                       </div>
-                    </div>
+                      <div className='make-first-deposit'>
+                        <div className='make-deposit-inner'>
+                          <span>Make your first deposit to win exclusive coupons</span>
+                          <Stack spacing={2} direction="row" className='make-your-first-deposit'>
+                            <Link to='/wallet'><Button variant="contained">Deposit</Button></Link>
+                            <Link to='/spot'><Button variant="outlined">Buy Crypto</Button></Link>
+                          </Stack>
+                        </div>
+                      </div>
                     </div>
 
                   </div>
@@ -426,7 +640,7 @@ const ProfileBody = () => {
         </Grid>
       </Box>
 
-    </div>
+    </div >
   )
 }
 

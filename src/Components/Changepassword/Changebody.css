@@ -1,8 +1,10 @@
-.margin-none div#basic-graph-chart, .margin-none div#sell-buy-form-outer-id {
+.margin-none div#basic-graph-chart,
+.margin-none div#sell-buy-form-outer-id {
     padding: 10px;
 }
 
-.margin-none div#basic-graph-chart, .margin-none div#sell-buy-form-outer-id {
+.margin-none div#basic-graph-chart,
+.margin-none div#sell-buy-form-outer-id {
     padding: 10px;
     margin-top: 20px;
 }
@@ -11,8 +13,9 @@ div#my-profile-details .top-part-all-page.basic-page-top-part {
     padding: 32px 25px;
     gap: 74px;
 }
-.form-div{
-  
+
+.form-div {
+
     border: 0.931864px solid #25DEB0;
     -webkit-backdrop-filter: blur(1.86373px);
     backdrop-filter: blur(1.86373px);
@@ -39,7 +42,7 @@ div#my-profile-details .top-part-all-page.basic-page-top-part {
 .form-div .MuiFormControl-root {
     margin-left: 0px !important;
     margin-right: 0px !important;
-   
+
     margin-top: 15px !important;
     margin-bottom: 15px !important;
 }
@@ -52,9 +55,11 @@ div#my-profile-details .top-part-all-page.basic-page-top-part {
 .form-div form label {
     color: rgb(255 251 251 / 100%) !important;
 }
+
 .form-div .MuiOutlinedInput-root {
-    width:500px
- }
+    width: 500px
+}
+
 .login-button {
     background-color: #25DEB0 !important;
     margin-left: 0px !important;
@@ -127,28 +132,31 @@ a.forgot-password {
     margin: 0px;
     outline: none !important;
 }
-@media screen and (max-width: 500px){
-   .form-div{
-    padding: 20px;
-   }
- 
+
+@media screen and (max-width: 500px) {
+    .form-div {
+        padding: 20px;
+    }
+
 }
-@media screen and (max-width: 600px){
- 
+
+@media screen and (max-width: 600px) {
+
     .form-div .MuiOutlinedInput-root {
-     width:300px
-  }
-  .form-div h2 {
-   font-size: 20px;
+        width: 215px
+    }
+
+    .form-div h2 {
+        font-size: 20px;
+    }
 }
- }
 
 
- @media screen and (max-width: 900px){
- 
+@media screen and (max-width: 900px) {
+
     .form-div {
         width: 90%;
         margin: auto;
-  }
+    }
 
- }
+}

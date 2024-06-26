@@ -889,7 +889,8 @@ div#common-color-for-rate {
     font-size: 12px !important;
 }
 
-.coin-block-first svg, .pair-menu-lists-top svg {
+.coin-block-first svg,
+.pair-menu-lists-top svg {
     font-size: 15px;
     color: #ffe900 !important;
 }
@@ -897,6 +898,16 @@ div#common-color-for-rate {
 .coin-block-first {
     display: flex;
     gap: 5;
+}
+
+.button-stack-coin {
+    overflow-x: auto;
+    width: 100% !important;
+    display: flex;
+    flex: 1 !important;
+    min-width: 100% !important;
+    flex-wrap: nowrap !important;
+    position: relative;
 }
 
 @media (max-width:767.98px) {
@@ -1025,7 +1036,7 @@ input#slidechange {
 }
 
 span.MuiSlider-root {
-    width: 95%;
+    width: 75%;
 }
 
 /** new style pair coin menu top **/
@@ -1043,8 +1054,9 @@ span.MuiSlider-root {
     color: #b1b0b0;
     justify-content: space-between;
 }
+
 .pair-menu-lists-top {
-display: flex;
+    display: flex;
     gap: 10px;
     font-size: 12px;
     padding: 10px 6px 10px 8px;
@@ -1052,11 +1064,12 @@ display: flex;
     color: #b1b0b0;
     justify-content: space-between;
 }
-.iconDiv svg{
-    color:white;
+
+.iconDiv svg {
+    color: white;
 }
 
-.iconDiv{
+.iconDiv {
     display: flex;
     align-items: center;
 }
@@ -1064,10 +1077,14 @@ display: flex;
 .menu-pair-heads form.MuiPaper-root {
     background-color: #131a26;
     box-shadow: none;
+    margin-top: 15px;
     border: 1px solid #ccc;
 }
 
-.menu-pair-heads form.MuiPaper-root .MuiInputBase-root input, .menu-pair-heads form.MuiPaper-root button svg{color: #ccc;}
+.menu-pair-heads form.MuiPaper-root .MuiInputBase-root input,
+.menu-pair-heads form.MuiPaper-root button svg {
+    color: #ccc;
+}
 
 .pair-menu-list-top>div,
 .menu-pair-head-1 {
@@ -1106,26 +1123,26 @@ display: flex;
     justify-content: space-between;
     border: 1px solid #25DEB0;
     overflow-x: auto;
-    max-height: 600px;
+    max-height: 500px;
     width: auto;
 }
 
-  .menu-pair-heads::-webkit-scrollbar {
+.menu-pair-heads::-webkit-scrollbar {
     width: 0.5em !important;
-  }
-  
+}
+
 .menu-pair-heads::-webkit-scrollbar-thumb {
     background-color: transparent;
-  }
-  
-  /* For other browsers */
+}
+
+/* For other browsers */
 .menu-pair-heads {
     scrollbar-width: none;
-  }
-  
+}
+
 .menu-pair-heads::-webkit-scrollbar {
     display: none;
-  }
+}
 
 li.pair-menu-list-top {
     padding: 10.2px 6px 10.2px 8px;
@@ -1155,8 +1172,9 @@ ul.MuiList-root {
     color: #e44b44;
 }
 
-.remove.high-rate {
-    color: #67ad5b;
+.remove.high-rate,
+.activecls {
+    color: #25DEB0 !important;
 }
 
 @media screen and (min-width: 1280px) {

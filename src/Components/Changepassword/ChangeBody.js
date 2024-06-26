@@ -1,4 +1,4 @@
-import React,{ useEffect,useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Typography from '@mui/material/Typography';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -31,6 +31,7 @@ import { Link } from 'react-router-dom';
 import asseteye from '../../images/asset-eye.png'
 import readmorenew from '../../images/read-more-new.png'
 import Announcementimg from '../../images/Announcement-img.png'
+import BeatLoader from "react-spinners/BeatLoader";
 
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { Verified } from '@mui/icons-material';
@@ -48,27 +49,27 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
-  const useStyles = makeStyles({
-    dashboarbodycls:{
-        background: 'transparent !important',
-        borderRadius: '0px !important',
-        boxShadow:'none !important',
-    },
-    highspan:{
-      color:'green',
-      '& ::after':{
-        content:"Hidh"
-      }
-    },
-    lowspan:{
-      color:'red !important',
+const useStyles = makeStyles({
+  dashboarbodycls: {
+    background: 'transparent !important',
+    borderRadius: '0px !important',
+    boxShadow: 'none !important',
+  },
+  highspan: {
+    color: 'green',
+    '& ::after': {
+      content: "Hidh"
+    }
+  },
+  lowspan: {
+    color: 'red !important',
     '& span': {
       content: '""',
       width: '5px',
@@ -80,134 +81,134 @@ const Item = styled(Paper)(({ theme }) => ({
       left: '50%',
       transform: 'translate(-50%, -50%)',
     },
+  },
+  dashboarbodycls: {
+    background: "transparent !important",
+    borderRadius: "0px !important",
+    boxShadow: "none !important",
+  },
+  dashboarbalancecls: {
+    background:
+      "radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important",
+    border: "0.926846px solid #25DEB0 !important",
+    backdropFilter: "blur(1.85369px) !important",
+    borderRadius: "30px !important",
+    padding: "20px 23px !important",
+  },
+  blockwidthcmn: {
+    maxWidth: "23% !important",
+    margin: "40px 0 !important",
+  },
+  loginleftouter: {
+    background: "transparent !important",
+    borderRadius: "0px !important",
+    boxShadow: "none !important",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  loginrightouter: {
+    background:
+      "linear-gradient(171.72deg, rgba(37, 222, 176, 0.42) 12.7%, rgba(115, 250, 237, 0) 100%), linear-gradient(320.64deg, #25DEB0 0%, #131A26 100.03%) !important",
+    borderRadius: "0px !important",
+    boxShadow: "none !important",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginleft: {
+    background: "transparent !important",
+    borderRadius: "0px !important",
+    boxShadow: "none !important",
+    '& h2': {
+      color: "white"
     },
-    dashboarbodycls: {
-      background: "transparent !important",
-      borderRadius: "0px !important",
-      boxShadow: "none !important",
-    },
-    dashboarbalancecls: {
-      background:
-        "radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) !important",
-      border: "0.926846px solid #25DEB0 !important",
-      backdropFilter: "blur(1.85369px) !important",
-      borderRadius: "30px !important",
-      padding: "20px 23px !important",
-    },
-    blockwidthcmn: {
-      maxWidth: "23% !important",
-      margin: "40px 0 !important",
-    },
-    loginleftouter: {
-      background: "transparent !important",
-      borderRadius: "0px !important",
-      boxShadow: "none !important",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "relative",
-    },
-    loginrightouter: {
-      background:
-        "linear-gradient(171.72deg, rgba(37, 222, 176, 0.42) 12.7%, rgba(115, 250, 237, 0) 100%), linear-gradient(320.64deg, #25DEB0 0%, #131A26 100.03%) !important",
-      borderRadius: "0px !important",
-      boxShadow: "none !important",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    loginleft: {
-      background: "transparent !important",
-      borderRadius: "0px !important",
-      boxShadow: "none !important",
-      '& h2':{
-        color:"white"
-      },
-    },
-    inputLabel: {
+  },
+  inputLabel: {
+    color: 'red', // Change this color to your desired label color
+  },
+  input: {
+    color: '#fff', // Change this color to your desired placeholder color
+  },
+  loginpage: {
+    display: "flex",
+    height: "100%",
+  },
+  loginform: {
+    display: "flex !important",
+    flexDirection: "column",
+    marginLeft: "0px",
+    marginRight: "0px",
+    alignItems: "center",
+
+  },
+  textField: {
+    '& label': {
       color: 'red', // Change this color to your desired label color
     },
-    input: {
-      color: 'blue', // Change this color to your desired placeholder color
-    },
-    loginpage: {
-      display: "flex",
-      height: "100%",
-    },
-    loginform: {
-      display: "flex !important",
-      flexDirection: "column",
-      marginLeft: "0px",
-      marginRight: "0px",
-      alignItems:"center",
-      
-    },
-    textField: {
-      '& label': {
-        color: 'red', // Change this color to your desired label color
-      },
   }
-    // passwordfield:{
-    //   '& .MuiOutlinedInput-input':{
-    //     border:'1px solid white',
-    //     borderRadius:"10px",
-    //     color:"white",
-    //   },
-    //   '& .MuiOutlinedInput-input:hover':{
-    //     border:'none',
-    //     borderRadius:"10px",
-    //     color:"white",
-    //   },
-    //   '& .MuiOutlinedInput-input:active':{
-    //     border:'none',
-    //     borderRadius:"10px",
-    //     color:"white",
-    //   },
-    //   '& MuiOutlinedInput-notchedOutline':{
-    //     border:'none',
-    //   },
+  // passwordfield:{
+  //   '& .MuiOutlinedInput-input':{
+  //     border:'1px solid white',
+  //     borderRadius:"10px",
+  //     color:"white",
+  //   },
+  //   '& .MuiOutlinedInput-input:hover':{
+  //     border:'none',
+  //     borderRadius:"10px",
+  //     color:"white",
+  //   },
+  //   '& .MuiOutlinedInput-input:active':{
+  //     border:'none',
+  //     borderRadius:"10px",
+  //     color:"white",
+  //   },
+  //   '& MuiOutlinedInput-notchedOutline':{
+  //     border:'none',
+  //   },
 
-    //   '& .Mui-focused .MuiOutlinedInput-notchedOutline':{
-    //     border:'1px solid white',
-    //   }
-    // },
-  });
+  //   '& .Mui-focused .MuiOutlinedInput-notchedOutline':{
+  //     border:'1px solid white',
+  //   }
+  // },
+});
 
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-  
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
-  
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
-  
+}
+
 const ChangeBody = (props) => {
- 
+
   const classes = useStyles();
   const { classStyle } = props;
   const [value, setValue] = React.useState(0);
@@ -220,93 +221,107 @@ const ChangeBody = (props) => {
   const [oldpassworderr, setOldpassworderr] = React.useState(null);
   const [newpassworderr, setNewpassworderr] = React.useState(null);
   const [user, setUser] = React.useState();
-  const [loading, setLoading] = React.useState(true);
-useEffect(()=>{
-  console.log("Change Password")
+  const [loading, setLoading] = React.useState(false);
+  useEffect(() => {
+    console.log("Change Password")
+  }, [])
 
-},[])
-
-const onSubmit = async () => {
-  try {
-    console.log("==>",oldPassword.current.value,newPassword.current.value)
-    if(!oldPassword.current.value){
-      setOldpassworderr("* Required")
-    }else if(oldPassword.current.value.length<7){
-      setOldpassworderr("Lenth is too short")
-    }
-    else if(!newPassword.current.value){
-      setNewpassworderr("* Required")
-    }else if(newPassword.current.value.length<7){
-      newPassword("Lenth is too short")
-    }
-    else{
-      await Axios.post(`${Consts.BackendUrl}/profile/changePassword`, 
-    {
-      oldPassword: oldPassword.current.value,
-          newPassword: newPassword.current.value,
-    },{
-      headers: {
-        Authorization: localStorage.getItem("Mellifluous"),
-      },
-    }).then((res) => {
-      if (res?.status === 200) {
-          console.log(res?.data);
-          toast.success("Password changed Successfully", {
-           
-            duration: 1200,
-            position: "top-center",
-  
-            // Styling
-            style: {
-              padding: "1rem",
-              fontSize: "15px",
-              color: "green",
-              fontWeight: "bold",
-            },
-            className: "",
-  
-            // Custom Icon
-            icon: "👏",
-  
-            // Change colors of success/error/loading icon
-            iconTheme: {
-              primary: "#000",
-              secondary: "#fff",
-            },
-  
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
-          setTimeout(() => {
-            navigate(`${Consts.route}/`);
-          }, 1200);
+  const onSubmit = async () => {
+    try {
+      const passwordregex = new RegExp(
+        /(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,16}$)+/,
+        "gm"
+      );
+      // console.log("==>", oldPassword.current.value, newPassword.current.value)
+      if (!oldPassword.current.value) {
+        setOldpassworderr("Please Enter OldPassword")
       }
-      console.log(res.data)     
-    })
+      // else if (oldPassword.current.value.length < 7) {
+      //   setOldpassworderr("Length is too short")
+      // }
+      else if (!newPassword.current.value) {
+        setNewpassworderr("Please Enter New Password")
+      }
+      // else if (newPassword.current.value.length < 7) {
+      //   newPassword("Lenth is too short")
+      // }
+      else if (!passwordregex.test(newPassword.current.value)) {
+        setNewpassworderr(
+          "Password must be a minimum 8 characters & Maximum 16 characters.Eg: Abc@1234"
+        );
+      }
+      else {
+        setLoading(true)
+        await Axios.post(`${Consts.BackendUrl}/profile/changePassword`,
+          {
+            oldPassword: oldPassword.current.value,
+            newPassword: newPassword.current.value,
+          }, {
+          headers: {
+            Authorization: localStorage.getItem("Mellifluous"),
+          },
+        }).then((res) => {
+          if (res?.status === 200) {
+            setLoading(false)
+            console.log(res?.data);
+            toast.success("Password changed Successfully", {
+
+              duration: 1200,
+              position: "top-center",
+
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
+
+              // Custom Icon
+              icon: "👏",
+
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+            setTimeout(() => {
+              navigate(`${Consts.route}/`);
+            }, 1200);
+          }
+          console.log(res.data)
+        })
+      }
+
+    } catch (error) {
+      setLoading(false)
+      if (error.response.data.message === "Old Password is Wrong") {
+        setOldpassworderr(error?.response?.data?.message)
+      }
+      setOldpassworderr("Old Password is Wrong")
+
     }
-    
-  } catch (error) {
-    if(error.response.data.message === "Old Password is Wrong"){
-      setOldpassworderr(error?.response?.data?.message)
-    }
-  
-  }
-};
+  };
   return (
     <div className='dashboard-body spot-body basic-page-body'>
-<Toaster />
-    <Box sx={{ flexGrow: 1 }}>
+      <Toaster />
+      <Box sx={{ flexGrow: 1 }}>
 
-   
-    <Grid container spacing={0}>
-    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} id="my-profile-details">
-      <div className='form-div'>
-      
+
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12} id="my-profile-details">
+            <div className='form-div'>
+
               <Item className={classes.loginleft}>
-                
+
                 <h2>Change Password</h2>
                 <Box
                   component="form"
@@ -317,9 +332,9 @@ const onSubmit = async () => {
                   autoComplete="off"
                   className={classes.loginform}
                 >
-                 <FormControl
+                  <FormControl
                     className={classes.passwordfield}
-                    sx={{ m: 1,}}
+                    sx={{ m: 1, }}
                     variant="outlined"
                   >
                     <InputLabel htmlFor="outlined-adornment-password">
@@ -330,9 +345,9 @@ const onSubmit = async () => {
                       onChange={() => {
                         setOldpassworderr(null);
                       }}
-                     
+
                       id="outlined-adornment-password"
-                      
+
                       label="Old Password"
                       InputLabelProps={{
                         className: classes.inputLabel,
@@ -341,7 +356,7 @@ const onSubmit = async () => {
                         className: classes.input,
                       }}
                     />
-                </FormControl>
+                  </FormControl>
                   {oldpassworderr !== null ? (
                     <span style={{ color: "red" }}>{oldpassworderr}</span>
                   ) : (
@@ -350,7 +365,7 @@ const onSubmit = async () => {
 
                   <FormControl
                     className={classes.passwordfield}
-                    sx={{ m: 1,}}
+                    sx={{ m: 1, }}
                     variant="outlined"
                   >
                     <InputLabel htmlFor="outlined-adornment-password">
@@ -362,7 +377,7 @@ const onSubmit = async () => {
                         setNewpassworderr(null);
                       }}
                       id="outlined-adornment-password"
-                      
+
                       label="New Password"
                     />
                   </FormControl>
@@ -372,14 +387,24 @@ const onSubmit = async () => {
                     <></>
                   )}
 
-                 
-                  <Button
-                    className="login-button"
-                    variant="contained"
-                    onClick={onSubmit}
-                  >
-                    Change Password
-                  </Button>
+                  {
+                    loading ?
+                      <Button
+                        className="login-button"
+                        variant="contained"
+                      >
+                        Loading <BeatLoader size={10} />
+                      </Button> :
+                      <Button
+                        className="login-button"
+                        variant="contained"
+                        onClick={() => { onSubmit() }}
+                      >
+                        Change Password
+                      </Button>
+
+                  }
+
                   {/* <div className="login-with">
                     <p>Or Log In With</p>
                     <ul className="login-with-list">
@@ -397,18 +422,18 @@ const onSubmit = async () => {
                   </div> */}
                 </Box>
               </Item>
-            
-      </div>
-    
-   
 
-    </Grid>
+            </div>
 
-   
 
-    </Grid>
-    </Box>
-      
+
+          </Grid>
+
+
+
+        </Grid>
+      </Box>
+
     </div>
   )
 }

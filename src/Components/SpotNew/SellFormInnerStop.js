@@ -79,7 +79,7 @@ const ValueLabelComponent = (props) => {
   );
 };
 
-const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
+const SellFormInnerStop = ({ selected, pair, index, market, reload, cat }) => {
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
   const [total, settotal] = React.useState();
@@ -89,7 +89,8 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
   const [pm, setPm] = useState()
 
   const handleSliderChange = async (event, data) => {
-    const bs = parseFloat(balance?.find((item) => item.symbol === "USDT")?.balance).toFixed(2)
+    // const bs = parseFloat(balance?.find((item) => item.symbol === "USDT")?.balance).toFixed(2)
+    const bs = balance
     const da = data / 100 * bs
     parseFloat()
     console.log(da, 'aidugoi[p');
@@ -199,7 +200,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
     <div className="Form-Inner-box">
 
       {/* <label className="form-label-style">Price ({selected ? selected?.pair.split('-')[1] : "USD"})</label> */}
-      <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+      <label className="form-label-style">Price ({pair ? pair.slice(-cat?.length) : "USD"})</label>
 
       <div className="">
       {pm === undefined &&  <TextField
@@ -220,7 +221,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
                 onChange={priceupdate}
               />}
       </div>
-      <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
+      <label className="form-label-style">Amount ({pair ? pair.split(0, -cat?.length) : "USD"})</label>
       <div className="">
         <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
           <OutlinedInput
@@ -248,7 +249,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
         {/* <Slider defaultValue={0} min={0} step={25} max={100} graduated /> */}
       </div>
 
-      {/* <div style={{ "width": "98%" }}>
+      {/* <div style={{ "width": "89%" }}>
           <ThumbSlider
             aria-label="Temperature"
             defaultValue={0}
@@ -270,7 +271,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
             InputProps={{ inputProps: { min: "0" } }}
             onChange={totalupdate}
             id="outlined-adornment-weight"
-            endAdornment={<InputAdornment position="end">{pair ? pair.split('-')[1] : "USD"}</InputAdornment>}
+            endAdornment={<InputAdornment position="end">{pair ? pair.slice(-cat?.length) : "USD"}</InputAdornment>}
             aria-describedby="outlined-weight-helper-text"
             inputProps={{
               "aria-label": "weight",
@@ -282,7 +283,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
             Available <span>-- USDC</span>
           </span>
           <span>
-            Max buy <span>-- {pair ? pair.split('-')[0] : "USD"}</span>
+            Max buy <span>-- {pair ? pair.split(0, -cat?.length) : "USD"}</span>
           </span>
         </div>
         <FormGroup className="requirmnent">
@@ -293,7 +294,7 @@ const SellFormInnerStop = ({ selected, pair, index, market, reload }) => {
           <FormControlLabel required control={<Checkbox />} label="Stop loss" />
         </FormGroup>
         <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-          Sell {selected ? selected?.pair.split('-')[0] : ""}
+          Sell {selected ? selected?.pair.split(0, -cat?.length) : ""}
         </Button>
       </div>
     </div>

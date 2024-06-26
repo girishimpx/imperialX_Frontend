@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     '& th': {
       color: '#909090 !important',
-      fontSize: '11px !important',
+      fontSize: '10px !important',
       padding: '2px 0 !important',
       border: 'none !important'
     },
@@ -83,8 +83,10 @@ export default function BuyingTable({ ticker, setSelected, pair }) {
             {/* <TableCell align="left">Price({ticker?ticker[4].split("-")[1] :"USD"})</TableCell>
             <TableCell align="right">Amount({ticker?ticker[4].split("-")[0] :"USD"})</TableCell>
             <TableCell align="right">Total({ticker?ticker[4].split("-")[0] :"USD"})</TableCell> */}
-            <TableCell align="left">Price( {pair ? pair.split('-')[1] : "USDT"} )</TableCell>
-            <TableCell align="right"> Amount({pair ? pair.split('-')[0] : "BTC"} )</TableCell>
+            {/* <TableCell align="left">Price( {pair ? pair.split('-')[1] : "USDT"} )</TableCell>
+            <TableCell align="right"> Amount({pair ? pair.split('-')[0] : "BTC"} )</TableCell> */}
+            <TableCell align="left">Price({pair ?  pair.substring(pair.length - 4) : "USDT"})</TableCell>
+            <TableCell align="right">Amount({pair ? pair.substring(0, pair.length - 4) : "BTC"})</TableCell>
             <TableCell align="right">Total</TableCell>
           </TableRow>
         </TableHead>

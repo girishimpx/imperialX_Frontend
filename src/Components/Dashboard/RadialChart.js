@@ -224,7 +224,7 @@ class RadialChart extends React.Component {
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12} className='coin-block-outer'>
             <Item className='coin-block'>
               {/* <div className="coin-img-caption"><div className="coin-inner-imaage"><img src={Etherium} alt="Litecoin" /><span>Etherium</span></div><div className="coin-value"><span className="coin-rate">{`${this.state.eth ? Number(this.state?.eth?.open24h).toFixed(3).toLocaleString() : '0'  } ${this.state?.eth ? this.state?.eth.instId.split('-')[0] : "ETH"}`}</span><span className="coin-price">{`${this.state.eth ? Number(this.state?.eth?.idxPx).toFixed(3).toLocaleString() : '0'  } USDT`}</span></div></div> */}
-              <div className="coin-img-caption"><div className="coin-inner-imaage"><img src={Etherium} alt="Litecoin" /><span>Etherium</span></div><div className="coin-value"><span className="coin-rate">{`${this.props.eth ? Number(this.props?.eth).toFixed(3).toLocaleString() : '0'} `}</span><span className="coin-price">{`${this.props.eth ? Number(this.props?.eth).toFixed(3).toLocaleString() : '0'} USDT`}</span></div></div>
+              <div className="coin-img-caption"><div className="coin-inner-imaage"><img src={Etherium} alt="Litecoin" /><span>Ethereum</span></div><div className="coin-value"><span className="coin-rate">{`${this.props.eth ? Number(this.props?.eth).toFixed(3).toLocaleString() : '0'} `}</span><span className="coin-price">{`${this.props.eth ? Number(this.props?.eth).toFixed(3).toLocaleString() : '0'} USDT`}</span></div></div>
             </Item>
           </Grid>
 

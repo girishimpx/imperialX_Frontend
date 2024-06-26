@@ -48,6 +48,7 @@ span.MuiTabs-indicator {
     padding-left: 10px;
     padding-right: 10px;
 }
+
 .flex-row-swapping {
     display: flex;
     justify-content: space-between;
@@ -58,11 +59,12 @@ span.MuiTabs-indicator {
     width: 25px;
 }
 
-.flex-row-swapping-from, .flex-row-swapping-to {
+.flex-row-swapping-from,
+.flex-row-swapping-to {
     width: 45%;
 }
 
-.flex-row-swapping > div > label {
+.flex-row-swapping>div>label {
     display: inline-block;
 }
 
@@ -78,7 +80,9 @@ span.MuiTabs-indicator {
     font-weight: 600;
 }
 
-.available-balance-for-transfer span {color: #ccc;}
+.available-balance-for-transfer span {
+    color: #ccc;
+}
 
 .available-balance-for-transfer {
     margin-top: 5px;
@@ -88,20 +92,27 @@ span.MuiTabs-indicator {
     margin-top: 50px;
 }
 
-.table-transfer-table td, .table-transfer-table th {
+.table-transfer-table td,
+.table-transfer-table th {
     padding: 15px 0;
     color: #fff;
     font-size: 16px !important;
 }
 
-@media (max-width:575.98px){
+@media (max-width:575.98px) {
 
     .flex-row-swapping {
         flex-direction: column;
         gap: 10px;
     }
-    .flex-row-swapping-from, .flex-row-swapping-to {
+
+    .flex-row-swapping-from,
+    .flex-row-swapping-to {
         width: 100%;
+    }
+
+    .token-tab-trade-opt {
+        width: 250px !important;
     }
 
 }

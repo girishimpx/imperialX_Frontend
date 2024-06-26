@@ -11,10 +11,12 @@ div#id-analytics-top-bar {
 .select-option-token {
     width: 25%;
 }
-.DataNotFound{
+
+.DataNotFound {
     color: white;
     text-align: center;
 }
+
 .select-option-token-tabs button {
     color: rgba(146, 146, 146, 1);
     text-transform: capitalize;
@@ -22,7 +24,9 @@ div#id-analytics-top-bar {
     font-weight: 700;
 }
 
-.select-option-token-tabs button.Mui-selected {color: #fff;}
+.select-option-token-tabs button.Mui-selected {
+    color: #fff;
+}
 
 .select-option-token fieldset {
     border-radius: 4px;
@@ -50,23 +54,20 @@ div#id-analytics-top-bar {
 .select-option-token div#demo-simple-select {
     text-align: left;
 }
+
 .analytics-body {
     padding-top: 30px;
 }
+
 .analy-inner-block-head {
     display: flex;
     justify-content: space-between;
 }
 
-.analy-inner-block {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    width: 80%;
-}
+
 div#comon-id-style-1 {
     padding: 20px !important;
-    border-radius: 37.238px !important;
+    border-radius: 15px !important;
     border: 1.241px solid var(--01, #25DEB0);
     background: radial-gradient(138.71% 122.96% at 50.00% 50.00%, rgba(41, 197, 161, 0.20) 0%, rgba(28, 112, 99, 0.20) 100%) !important;
     backdrop-filter: blur(2.4825291633605957px);
@@ -74,22 +75,22 @@ div#comon-id-style-1 {
 
 .analy-inner-block h5 {
     color: #fff;
-    text-align: left;
-    min-height: 54px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
 }
 
 .comon-tab-division {
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
     padding-left: 10px;
     padding-right: 10px;
-    background: #000;
+    background: rgba(37, 222, 176, 0.19);
     color: #25deb0;
     height: 30px;
     display: inline-block;
     font-size: 14px;
     line-height: 30px;
+    border-radius: 5px;
 }
 
 .tab-hours {
@@ -106,10 +107,13 @@ span.duration-period {
     border-radius: 4.965px;
 }
 
-span.duration-period.active {background: #25DEB0;color: #000;}
+span.duration-period.active {
+    background: #25DEB0;
+    color: #000;
+}
 
 #comon-id-style-1 div#chart {
-    padding-top: 25px;
+    padding-top: 10px;
 }
 
 .analytics-body .MuiBox-root {
@@ -130,4 +134,12 @@ span.Spot-block.comon-tab-division {
 span.Options-block.comon-tab-division {
     border-radius: 2.483px;
     background: #868F8B;
+}
+
+.token-tab-trade-opt {
+    width: 100%;
+}
+
+.token-tab-trade-opt .MuiTabs-scroller {
+    overflow-x: scroll !important;
 }

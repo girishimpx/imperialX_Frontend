@@ -2,6 +2,8 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import Bybit from "./Components/Dashboard/BybitSocket"
+import Ticker from "./Components/Dashboard/Tickers"
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
 import RegisterSuccess from "./Components/Register/RegisterSuccess";
@@ -54,6 +56,8 @@ import WithdrawWallet from "./Components/Wallet/WithdrawWallet";
 import TradeViewMain from "./Components/TradeView/TradeViewMain";
 import Transfer from "./Components/Wallet/Transfer";
 import DashboardChart from "./Components/Dashboard/DashboardChart";
+import CandleStick from "./Components/CandleStick";
+import Landing from "./Components/Landing";
 
 
 
@@ -61,10 +65,28 @@ function App() {
   const [sideBarShow, setSideBarShow] = useState(true);
   const [openSideBar, setOpenSideBar] = useState(true);
 
+
+
   return (
     <div className="App imperial-exchange-app-platform">
       <Router>
         <Routes>
+
+          <Route
+            index
+            path={`${Constant.route}/candlechart`}
+            element={
+              <CandleStick />
+            }
+          />
+
+          <Route
+            index
+            path={`${Constant.route}`}
+            element={
+              <Landing />
+            }
+          />
 
           <Route
             index
@@ -81,7 +103,7 @@ function App() {
 
           <Route
             index
-            path={`${Constant.route}`}
+            path={`${Constant.route}/dashboard`}
             element={
               <Dashboard
                 sideBarShow={sideBarShow}
@@ -104,6 +126,14 @@ function App() {
                   setOpenSideBar={setOpenSideBar}
                 />
               </PrivateRoute>
+            }
+          />
+
+          <Route
+            index
+            path={`${Constant.route}/bit`}
+            element={
+              <Ticker />
             }
           />
 
@@ -372,7 +402,7 @@ function App() {
             }
           />
           <Route path={`${Constant.route}/login`} element={<Login />} />
-          <Route path={`${Constant.route}/register`} element={<Register />} />
+          <Route path={`${Constant.route}/register/:id?`} element={<Register />} />
           <Route path={`${Constant.route}/subscribe`}
             element={
               <Subscribe

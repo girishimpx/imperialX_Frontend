@@ -103,9 +103,9 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
   const [balance, setBalance] = useState()
   const [activeClass, setActiveClass] = useState("1");
 
- const percentageValue = async(e) => {
+  const percentageValue = async (e) => {
     setActiveClass(e.target.id);
-    console.log(e.target.value,"value");
+    console.log(e.target.value, "value");
   }
 
 
@@ -191,8 +191,11 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
 
 
   const buytrade = async () => {
+    // alert("else")
+    // alert(labe)
     try {
-      const pa = pair.split('-')[2]
+      // const pa = pair.split('-')[2]
+      const pa = pair.split(-4);
       if (pa !== undefined) {
         if (labe === "open-short") {
           if (price === "") {
@@ -213,14 +216,14 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
               // Custom Icon
               icon: "",
 
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
-        }
-         else if (Amount === "" || Amount == '0') {
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+          }
+          else if (Amount === "" || Amount == '0') {
             toast.error("Please Fill the Amount", {
 
               duration: 1500,
@@ -251,7 +254,8 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
               },
             });
           } else {
-            const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0);
+            // const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0);
+            const usdtBalance = balance;
 
 
             setload(false)
@@ -397,7 +401,7 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
                 setAmount("")
               } else {
                 setload(true)
-                toast.success("Something Went Wrong", {
+                toast.success(data?.message, {
 
                   duration: 4000,
                   position: "top-center",
@@ -431,24 +435,37 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
 
           }
         } else {
-          const { data } = await Axios.post(`/trade/positionHistory`, { id: pair }, {
-            headers: {
-              Authorization: localStorage.getItem("Mellifluous"),
-            }
-          })
-          let his = data.result[0]
+          // alert("else")
+          // const { data } = await Axios.post(`/trade/positionHistory`, { id: pair }, {
+          //   headers: {
+          //     Authorization: localStorage.getItem("Mellifluous"),
+          //   }
+          // })
+          // let his = data.result[0]
           if (user.trader_type === "user") {
             var a = ["future-", labe]
             var b = a.join("")
+            // const da = {
+            //   instId: his?.instId,
+            //   tdMode: his?.mgnMode,
+            //   ccy: his?.ccy,
+            //   tag: "mk1",
+            //   side: "buy",
+            //   orderType: ordertype,
+            //   sz: his?.notionalUsd,
+            //   px: "0",
+            //   trade_at: b,
+            //   lever: value,
+            //   market: market
+            // }
             const da = {
-              instId: his?.instId,
-              tdMode: his?.mgnMode,
-              ccy: his?.ccy,
-              tag: "mk1",
+              instId: pair,
+              tdMode: index,
+              ccy: pair,
               side: "buy",
               orderType: ordertype,
-              sz: his?.notionalUsd,
-              px: "0",
+              sz: Amount,
+              px: `${price}`,
               trade_at: b,
               lever: value,
               market: market
@@ -458,7 +475,7 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
                 Authorization: localStorage.getItem("Mellifluous"),
               }
             })
-            if (data) {
+            if (data.success) {
               setload(!false)
               toast.success(data.message, {
 
@@ -492,7 +509,7 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
               setAmount("")
             } else {
               setload(!false)
-              toast.success("Something Went Wrong", {
+              toast.error(data?.message, {
 
                 duration: 4000,
                 position: "top-center",
@@ -501,17 +518,17 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
                 style: {
                   padding: "1rem",
                   fontSize: "15px",
-                  color: "green",
+                  color: "red",
                   fontWeight: "bold",
                 },
                 className: "",
 
                 // Custom Icon
-                icon: "👏",
+                // icon: "👏",
 
                 // Change colors of success/error/loading icon
                 iconTheme: {
-                  primary: "#000",
+                  primary: "red",
                   secondary: "#fff",
                 },
 
@@ -526,14 +543,26 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
 
             var a = ["future-", labe]
             var b = a.join("")
+            // const da = {
+            //   instId: his?.instId,
+            //   tdMode: his?.mgnMode,
+            //   ccy: his?.ccy,
+            //   tag: "mk1",
+            //   side: "buy",
+            //   orderType: ordertype,
+            //   sz: his?.notionalUsd,
+            //   px: "0",
+            //   trade_at: b,
+            //   lever: value
+            // }
             const da = {
-              instId: his?.instId,
-              tdMode: his?.mgnMode,
-              ccy: his?.ccy,
+              instId: pair,
+              tdMode: index,
+              ccy: pair,
               tag: "mk1",
-              side: "buy",
+              side: "sell",
               orderType: ordertype,
-              sz: his?.notionalUsd,
+              sz: Amount,
               px: "0",
               trade_at: b,
               lever: value
@@ -675,28 +704,58 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
     }
   }
 
-  const getmyWallet = () => {
+  // const getmyWallet = () => {
+  //   try {
+  //     Axios.get(`/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res?.data?.success) {
+  //           console.log(res?.data?.success, "dates")
+  //           setBalance(res?.data?.result)
+  //           console.log(res?.data?.result, "respon")
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
+
+  const getmyWallet = async () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      await Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
-            console.log(res?.data?.success, "dates")
-            setBalance(res?.data?.result)
-            console.log(res?.data?.result, "respon")
+            console.log(res, 'WALLET BALANCE', pair.substring(0, pair.length - 4));
+            for (let i = 0; i < res?.data?.result.length; i++) {
+              // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+              //   setBalance(res?.data?.result[i].balance);
+              // }
+              if (res?.data?.result[i].coinname == pair?.slice(0, - 4)) {
+                setBalance(res?.data?.result[i].balance);
+                console.log(res?.data?.result[i].balance, "baln")
+              }
+            }
+            // setBalance(res?.data?.result)
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
   useEffect(() => {
     getmyWallet()
 
@@ -796,10 +855,10 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
 
           </div>
           <Stack className="percentage-button-row">
-        <Button key={1} className={activeClass === "1" ? "active-select" : "non-active"} id={"1"} value="10" onClick={(value) => percentageValue(value)}>10%</Button>
-        <Button key={2} className={activeClass === "2" ? "active-select" : "non-active"} id={"2"} value="15" onClick={(value) => percentageValue(value)}>15%</Button>
-        <Button key={3} className={activeClass === "3" ? "active-select" : "non-active"} id={"3"} value="20" onClick={(value) => percentageValue(value)}>20%</Button>
-</Stack>
+            <Button key={1} className={activeClass === "1" ? "active-select" : "non-active"} id={"1"} value="10" onClick={(value) => percentageValue(value)}>10%</Button>
+            <Button key={2} className={activeClass === "2" ? "active-select" : "non-active"} id={"2"} value="15" onClick={(value) => percentageValue(value)}>15%</Button>
+            <Button key={3} className={activeClass === "3" ? "active-select" : "non-active"} id={"3"} value="20" onClick={(value) => percentageValue(value)}>20%</Button>
+          </Stack>
         </div>
 
         <div>
@@ -825,7 +884,7 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
           <div className="available-max-block available-max-buy">
             <div className="available-max-block-left">
               <div>
-                <label>Availabe</label> 
+                <label>Availabe</label>
                 {balance &&
                   balance.find((item) => item.symbol === "USDT") &&
                   balance.find((item) => item.symbol === "USDT").balance !==
@@ -963,7 +1022,8 @@ const SellForminnermarket = ({ selected, pair, index, ordertype, labe, market })
 
 
           <Button className="Sell-SOL Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Short {selected ? selected?.pair.split('-')[1] : ""}
+            {/* Short {selected ? selected?.pair.split('-')[1] : ""} */}
+            Short {selected?.pair ? selected?.pair.slice(-4) : ""}
           </Button>
         </div>
       </div>

@@ -91,7 +91,7 @@ const ValueLabelComponent = (props) => {
 };
 
 
-const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
+const BuyForminnerStop = ({ selected, pair, index, market, reload, cat }) => {
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
   const [total, settotal] = React.useState();
@@ -106,11 +106,14 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
   const [buyShow,setBuyShow]= React.useState(false);
   const [kycsubmit, setkycsubmit] = React.useState(false);
   const navigate = useNavigate();
+  const [maxbuy, setMaxbuy] = useState();
+
 
 
 
   const handleSliderChange = async (event, data) => {
-    const bs = parseFloat(balance?.find((item) => item.symbol === "USDT")?.balance).toFixed(2)
+    // const bs = parseFloat(balance?.find((item) => item.symbol === "USDT")?.balance).toFixed(2)
+    const bs = balance
     const da = data / 100 * bs
     parseFloat()
     console.log(da, 'aidugoi[p');
@@ -317,28 +320,61 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
   }, []);
 
 
-  const getmyWallet = () => {
+  // const getmyWallet = () => {
+  //   try {
+  //     Axios.get(`/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res?.data?.success) {
+  //           console.log(res?.data?.success, "dates")
+  //           setBalance(res?.data?.result)
+  //           console.log(res?.data?.result, "respon")
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
+  const getmyWallet = async() => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+     await Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
-            console.log(res?.data?.success, "dates")
-            setBalance(res?.data?.result)
-            console.log(res?.data?.result, "respon")
+            console.log(res,'WALLET BALANCE',pair.substring(0,pair.length - 4) );
+            for (let i = 0; i < res?.data?.result.length; i++) {
+              // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+              //   setBalance(res?.data?.result[i].balance);
+              // }
+              if ( res?.data?.result[i].coinname == pair?.slice(0,- 4) ) {
+                setBalance(res?.data?.result[i].balance);
+                console.log(res?.data?.result[i].balance,"baln")
+              }
+            }
+            // setBalance(res?.data?.result)
+
+            setMaxbuy(parseFloat(balance / selected.price).toFixed(7));
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
 
-  }
+
   useEffect(() => {
     getmyWallet()
 
@@ -355,7 +391,8 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
     {console.log(selected,'wesxrctfvhyudtrtfbhyunj',sliderValue)}
       <Stack direction="column" spacing={10}>
         <div className="price-limit-spot">
-          <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+          {/* <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label> */}
+          <label className="form-label-style">Price ({pair ? pair.slice(-cat?.length) : "USD"})</label>
           <div className="">
           {pm === undefined && <TextField
               type={"number"}
@@ -379,7 +416,8 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
         </div>
 
         <div className="amount-limit-spot">
-          <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
+          {/* <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label> */}
+          <label className="form-label-style">Amount ({pair ? pair.slice(0,-cat?.length) : "USD"})</label>
           <div className="amount-block-bottom-10px">
             <TextField
               type={"number"}
@@ -389,7 +427,8 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
               InputProps={{ inputProps: { min: "0" } }}
               inputRef={Amountref}
               // onChange={Amountupdate}
-              placeholder={`Min Stop ${pair ? pair.split('-')[0] : "USD"}`}
+              // placeholder={`Min Stop ${pair ? pair.split('-')[0] : "USD"}`}
+              placeholder={`Min Stop ${pair ? pair.slice(0,-cat?.length) : "USD"}`}
             />
             {/* <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
@@ -434,7 +473,7 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
         }}
         defaultValue={100} value={sliderValue} onChange={handleSliderChange} aria-label="Default" />
 
-      {/* <div style={{ "width": "98%" }}>
+      {/* <div style={{ "width": "89%" }}>
           <ThumbSlider
             aria-label="Temperature"
             defaultValue={0}
@@ -449,7 +488,8 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
           />
         </div> */}
       <div className="total-limit-spot">
-        <label className="form-label-style">Total ({pair ? pair.split('-')[1] : "USD"})</label>
+        {/* <label className="form-label-style">Total ({pair ? pair.split('-')[1] : "USD"})</label> */}
+        <label className="form-label-style">Total ({pair ? pair.slice(-cat?.length) : "USD"})</label>
         <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
           <OutlinedInput
             value={total}
@@ -498,7 +538,14 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
         <div className="available-max-block available-max-buy">
           <div className="available-max-block-left">
             <div><label>Availabe</label>
-              {balance &&
+            {balance ? 
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    USDT
+                  </div> : 
+                  <>{(0).toFixed(3)}{" "}USDT</>
+                }
+              {/* {balance &&
                 balance.find((item) => item.symbol === "USDT") &&
                 balance.find((item) => item.symbol === "USDT").balance !==
                 undefined && (
@@ -506,18 +553,26 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
                     {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
                     USDT
                   </div>
-                )}
+                )} */}
             </div>
             <div><label>Maxbuy</label>
-              {pair &&
+            {market ?
+                  <div>
+                    {parseFloat(balance / market).toFixed(7)} {pair.split("-")[0]}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair.slice(0,-cat?.length)}</div>
+                }
+              {/* {pair &&
                 balance &&
                 balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                  <div>
+                  <div> */}
                     {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                    0.000000 {pair.split("-")[0]}
+                    {/* 0.000000 {pair.split("-")[0]}
                   </div>
-                )}
+                )} */}
             </div>
             {/* <div><label>Availabe</label> -- USDT</div>
           <div><label>Max buy</label> -- {pair ? pair.split('-')[0] : "USD"}</div> */}
@@ -620,7 +675,9 @@ const BuyForminnerStop = ({ selected, pair, index, market, reload }) => {
         )
         }
         <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-          Buy ({selected ? selected?.pair.split('-')[0] : ""})
+          {/* Buy ({selected ? selected?.pair.split('-')[0] : ""}) */}
+          Buy {selected.pair ? selected.pair.slice(0, -4) : ""}
+
         </Button>
       </div>
     </div>

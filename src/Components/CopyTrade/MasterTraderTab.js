@@ -29,6 +29,7 @@ import Checkbox from '@mui/material/Checkbox';
 import CircularProgress from "@mui/material/CircularProgress";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import BeatLoader from "react-spinners/BeatLoader";
 
 import "react-toastify/dist/ReactToastify.css";
 import Box from "@mui/material/Box";
@@ -216,7 +217,10 @@ export default function MasterTraderTab() {
   const [imperailbox, setimperailbox] = React.useState(false);
   const [binancebox, setbinancebox] = React.useState(false);
   const [okxbox, setokxbox] = React.useState(false);
-  const [subadscribeShow,setSubscribeShow] = React.useState(false);
+  const [subadscribeShow, setSubscribeShow] = React.useState(false);
+  const [load, setLoad] = useState(false)
+  const [loader, setLoader] = useState(false)
+  const [disable, setDisable] = useState(false);
 
   console.log(imperailbox,
     binancebox,
@@ -259,22 +263,24 @@ export default function MasterTraderTab() {
     setAge(event.target.value);
   };
   const navigate = useNavigate();
+
   React.useEffect(() => {
-    Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
-      headers: {
-        Authorization: localStorage.getItem("Mellifluous"),
-      },
-    })
-      .then((res) => {
-        setWallet(true);
-      })
-      .catch((err) => {
-        setWallet(false);
-      });
+    getWalletById()
+    // Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
+    //   headers: {
+    //     Authorization: localStorage.getItem("Mellifluous"),
+    //   },
+    // })
+    //   .then((res) => {
+    //     setWallet(true);
+    //   })
+    //   .catch((err) => {
+    //     setWallet(false);
+    //   });
   }, []);
+
   const [hide, sethide] = React.useState(false);
   let User = JSON.parse(localStorage.getItem("users"));
-
   const requestexist = () => {
     if (User.trader_type == "master") {
       sethide(true);
@@ -326,7 +332,6 @@ export default function MasterTraderTab() {
       if (res?.data?.success) {
         console.log("data", res.data.result)
         setMasters(res.data.result);
-
         res?.data?.result.map((item, index) => {
           rows.push(
             createData(
@@ -388,6 +393,47 @@ export default function MasterTraderTab() {
     }
   }
 
+  const getmyWallet = async (id) => {
+    try {
+      setLoad(true)
+      setDisable(true)
+      setLoader(true)
+      const response = await Axios.get(`/bybit/getwallets`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      });
+
+      if (response?.data?.success) {
+        let hasBalance = false;
+        for (let i = 0; i < response.data.result.length; i++) {
+          const balance = response.data.result[i].balance;
+          console.log(balance, 'balancess');
+          if (balance > 0) {
+            hasBalance = true;
+            break;
+          }
+        }
+
+        if (hasBalance) {
+          setLoad(false)
+          setLoader(false)
+          setDisable(false)
+          checkCopytrade(id);
+        } else {
+          setLoad(false)
+          setDisable(false)
+          setLoader(false)
+          toast.error("Please Deposit to continue");
+          setTimeout(() => {
+            navigate('/wallet');
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [open, setOpen] = useState(false);
   const [opens, setOpens] = useState(false);
@@ -418,17 +464,17 @@ export default function MasterTraderTab() {
     //validation
 
     if (!exchange) {
-      setexchangeerr("* Exchange Required");
+      setexchangeerr("Exchange Required");
     } else if (!apikey) {
-      setapikeyerr("* Apikey Required");
+      setapikeyerr("Apikey Required");
     } else if (!secretkey) {
-      setsecretkeyerr("* SecretKey Required");
+      setsecretkeyerr("SecretKey Required");
     } else if (!passphrase) {
-      setpassphraseerr("* Passphrase Required");
+      setpassphraseerr("Passphrase Required");
     } else if (!api_name) {
-      setapi_nameerr("* Api_name Required");
+      setapi_nameerr("Api name Required");
     } else if (!permission) {
-      setpermissionerr("* Permission Required");
+      setpermissionerr("Permission Required");
     } else {
       setOpens(true);
       setOpen(false);
@@ -475,7 +521,7 @@ export default function MasterTraderTab() {
         // navigate("/kyc-verification");
       }, 1600);
 
-    }else if(!subadscribeShow && kycsubmit){
+    } else if (!subadscribeShow && kycsubmit) {
       toast.error(`Your KYC submission is under verification`, {
         duration: 4000,
         position: "top-center",
@@ -528,12 +574,31 @@ export default function MasterTraderTab() {
   };
 
   const handleClosess = () => setOpenss(false);
+
+  const getWalletById = async () => {
+    try {
+      const res = Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+      if (res?.data?.success) {
+        console.log('success');
+      }
+      else {
+        console.log('failed');
+      }
+    } catch (error) {
+      console.log(error, 'getwalletbyid error');
+    }
+
+  }
   const onPay = () => {
 
     if (!amount) {
-      setamounterr("* Amount Required");
+      setamounterr("Amount Required");
     } else if (amount <= 0) {
-      setamounterr("* Amount must be valid");
+      setamounterr("Amount must be valid");
     } else {
       const data = {
         follower_id: follower_user_id,
@@ -548,6 +613,7 @@ export default function MasterTraderTab() {
         .then((res) => {
           if (res.data.success) {
             setWallet(true);
+            getWalletById()
             toast.success(`${res.data.message}`, {
 
               duration: 3000,
@@ -953,37 +1019,65 @@ export default function MasterTraderTab() {
                           <div className="twobuttons">
                             {/* {!Wallet && */}
                             {/* {row._id.item.user._id !== User._id?  !mysublist.includes(row._id.item.user._id) } */}
+                            {console.log(rows, 'rows')}
                             {
                               User.trader_type !== 'master' ?
                                 (row._id.item.master._id != User._id ? (
                                   mysublist.length > 0 ? (
                                     !mysublist.includes(row._id.item.master._id) ? (
+                                      <>
+                                        {load == true ?
+                                          <Button
+                                            className="LocalFireDepartmentIcon-full"
+                                            id="innerButton"
+                                            variant="outlined"
+                                          >
+                                            Loading
+                                            <BeatLoader size={8} color={disable ? "grey" : "white"} />
+                                          </Button>
+                                          :
+                                          <Button
+                                            className="LocalFireDepartmentIcon-full"
+                                            id="innerButton"
+                                            variant="outlined"
+                                            onClick={() => {
+                                              // checkCopytrade(row._id.item.master._id);
+                                              getmyWallet(row._id.item.master._id)
+                                            }}
+                                            startIcon={<LocalFireDepartmentIcon />}
+                                          >
+                                            {" "}
+                                            Subscribe
+                                          </Button>
+                                        }
+                                      </>
+                                    ) : null
+                                  ) : (
+
+                                    load == true ?
+                                      <Button
+                                        className="LocalFireDepartmentIcon-full"
+                                        id="innerButton"
+                                        variant="outlined"
+                                      >
+                                        Loading
+                                        <BeatLoader size={8} color={disable ? "grey" : "white"} />
+                                      </Button>
+                                      :
                                       <Button
                                         className="LocalFireDepartmentIcon-full"
                                         id="innerButton"
                                         variant="outlined"
                                         onClick={() => {
-                                          checkCopytrade(row._id.item.master._id);
+                                          // checkCopytrade(row._id.item.master._id);
+                                          getmyWallet(row._id.item.master._id)
                                         }}
                                         startIcon={<LocalFireDepartmentIcon />}
                                       >
                                         {" "}
                                         Subscribe
                                       </Button>
-                                    ) : null
-                                  ) : (
-                                    <Button
-                                      className="LocalFireDepartmentIcon-full"
-                                      id="innerButton"
-                                      variant="outlined"
-                                      onClick={() => {
-                                        checkCopytrade(row._id.item.master._id);
-                                      }}
-                                      startIcon={<LocalFireDepartmentIcon />}
-                                    >
-                                      {" "}
-                                      Subscribe
-                                    </Button>
+
                                   )
                                 ) : null) : null}
 
@@ -1135,6 +1229,7 @@ export default function MasterTraderTab() {
                                               style={{
                                                 padding: ".5rem",
                                                 color: "#f85656",
+                                                // color: "red",
                                                 textAlign: "center",
                                               }}
                                             >
@@ -1167,14 +1262,15 @@ export default function MasterTraderTab() {
                 </Grid>
                 {!loading && rows.length <= 0 && (
                   <div style={{ padding: "1rem", color: "#25DEB0" }}>
-                    <h4 style={{ width: "70%", marginLeft: "29%" }}>
-                      Data not found
+                    <h4 style={{ width: "70%", center: "50%" }}>
+                      {/* Data not found */}
+                      No Master Trader Available
                     </h4>
                   </div>
                 )}
                 {loading && (
                   <div style={{ padding: "2rem" }}>
-                    <div style={{ width: "70%", marginLeft: "29%" }}>
+                    <div style={{ width: "70%", center: "50%" }}>
                       <CircularProgress size={60} />
                     </div>
                   </div>
@@ -1258,32 +1354,55 @@ export default function MasterTraderTab() {
                             {row._id.item.master._id != User._id ? (
                               mysublist.length > 0 ? (
                                 !mysublist.includes(row._id.item.master._id) ? (
+                                  <>
+                                    {loader == true ?
+                                      <Button
+                                        className="LocalFireDepartmentIcon-full"
+                                        id="innerButton"
+                                        variant="outlined"
+                                      >
+                                        Loading <BeatLoader size={8} color={disable ? "grey" : "white"} />
+                                      </Button>
+                                      :
+                                      <Button
+                                        className="LocalFireDepartmentIcon-full"
+                                        id="innerButton"
+                                        variant="outlined"
+                                        onClick={() => {
+                                          // checkCopytrade(row._id.item.master._id);
+                                          getmyWallet(row._id.item.master._id)
+                                        }}
+                                        startIcon={<LocalFireDepartmentIcon />}
+                                      >
+                                        {" "}
+                                        Subscribe
+                                      </Button>
+                                    }
+                                  </>
+                                ) : null
+                              ) : (
+                                loader == true ?
+                                  <Button
+                                    className="LocalFireDepartmentIcon-full"
+                                    id="innerButton"
+                                    variant="outlined"
+                                  >
+                                    Loading <BeatLoader size={8} color={disable ? "grey" : "white"} />
+                                  </Button>
+                                  :
                                   <Button
                                     className="LocalFireDepartmentIcon-full"
                                     id="innerButton"
                                     variant="outlined"
                                     onClick={() => {
-                                      checkCopytrade(row._id.item.master._id);
+                                      // checkCopytrade(row._id.item.master._id);
+                                      getmyWallet(row._id.item.master._id)
                                     }}
                                     startIcon={<LocalFireDepartmentIcon />}
                                   >
                                     {" "}
                                     Subscribe
                                   </Button>
-                                ) : null
-                              ) : (
-                                <Button
-                                  className="LocalFireDepartmentIcon-full"
-                                  id="innerButton"
-                                  variant="outlined"
-                                  onClick={() => {
-                                    checkCopytrade(row._id.item.master._id);
-                                  }}
-                                  startIcon={<LocalFireDepartmentIcon />}
-                                >
-                                  {" "}
-                                  Subscribe
-                                </Button>
                               )
                             ) : null}
 
@@ -1308,14 +1427,15 @@ export default function MasterTraderTab() {
                 </Grid>
                 {!loading && rows.length <= 0 && (
                   <div style={{ padding: "1rem", color: "#25DEB0" }}>
-                    <h4 style={{ width: "70%", marginLeft: "29%" }}>
-                      Data not found
+                    <h4 style={{ width: "70%", center: "50%" }}>
+                      {/* Data not found */}
+                      No Master Trader Available
                     </h4>
                   </div>
                 )}
                 {loading && (
                   <div style={{ padding: "2rem" }}>
-                    <div style={{ width: "70%", marginLeft: "29%" }}>
+                    <div style={{ width: "70%", center: "50%" }}>
                       <CircularProgress size={60} />
                     </div>
                   </div>
@@ -1332,7 +1452,7 @@ export default function MasterTraderTab() {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Box >
     </>
   );
 }

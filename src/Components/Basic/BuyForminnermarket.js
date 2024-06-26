@@ -102,6 +102,7 @@ const BuyForminnermarket = ({
   lever,
   reload
 }) => {
+  // console.log( selected.price,' selected')
   const user = JSON.parse(window.localStorage.getItem("users"));
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
@@ -117,6 +118,10 @@ const BuyForminnermarket = ({
   const navigate = useNavigate();
   const [kycsubmit, setkycsubmit] = React.useState(false);
   const [buyShow,setBuyShow]= React.useState(false);
+  const [maxbuy, setMaxbuy] = useState();
+  const [quantity, setQuantity] = React.useState(0.01);
+  const [maxquantity, setMaxQuantity] = React.useState(0.01);
+
 
 
   const handleChangeReduceOnly = () => {
@@ -319,10 +324,29 @@ const BuyForminnermarket = ({
           "aria-live": "polite",
         },
       });
+    } 
+      else if (Number(Math.round( Amount * balance / 100)) < Number(quantity)) {
+        toast.error(`Minimum Order Quantity Should Be ${quantity}`,{
+              // Change colors of success/error/loading icon
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "red",
+                fontWeight: "bold",
+              },
+              className: "",  
+  
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            })
     }
       else {
-        const pa = pair.split("-")[2];
-        if (pa !== undefined) {
+        // const pa = pair.split("-")[2];
+        const pa = pair.slice(-4);
+        if (pa != undefined) {
           if (labe === "open-long") {
   
             if (Amount == "" || Amount == "0") {
@@ -356,7 +380,8 @@ const BuyForminnermarket = ({
                 },
               });
             } else {
-              const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance);
+              // const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance);
+              const usdtBalance = balance
   
               const initial =  ( 1000 * 0.000001 * price ) / lever
               // console.log(initial,
@@ -383,11 +408,11 @@ const BuyForminnermarket = ({
                   instId: pair,
                   tdMode: index,
                   ccy: pair12,
-                  tag: "mk1",
-                  side: "buy",
+                  side: "Buy",
                   orderType: ordertype,
-                  sz: Math.round( Amount * usdtBalance / 100),
-                  px: market,
+                  sz: Number(Math.round( Amount * usdtBalance / 100)) > 0 ? `${Math.round( Amount * usdtBalance / 100)}` : '1',
+                  // sz: `${price}`,
+                  px: market || price,
                   trade_at: b,
                   lever: lever,
                   // market: { market },
@@ -402,12 +427,13 @@ const BuyForminnermarket = ({
                   // trade_at: b,
                   // lever: value,
                 };
-                const { data } = await Axios.post(`/trade/userTrade`, da, {
+                // const { data } = await Axios.post(`/trade/userTrade`, da, {
+                const { data } = await Axios.post(`/bybit/trade`, da, {
                   headers: {
                     Authorization: localStorage.getItem("Mellifluous"),
                   },
                 });
-                if (data) {
+                if (data?.success) {
                   setTimeout(() => { setload(!false); }, 500)
                   toast.success(data.message, {
                     setPairduration: 2500,
@@ -441,7 +467,37 @@ const BuyForminnermarket = ({
                   reload(1)
                 } else {
                   setTimeout(() => { setload(!false); }, 500)
-                  toast.success("Something Went Wrong", {
+                  if(data?.message == 'ab not enough for new leverage'){
+                    toast.error('Available Balance Not Enough For The New Leverage', {
+                      setPairduration: 2500,
+                      position: "top-center",
+    
+                      // Styling
+                      style: {
+                        padding: "1rem",
+                        fontSize: "15px",
+                        color: "red",
+                        fontWeight: "bold",
+                      },
+                      className: "",
+    
+                      // Custom Icon
+                      // icon: "👏",
+    
+                      // Change colors of success/error/loading icon
+                      iconTheme: {
+                        primary: "red",
+                        secondary: "#fff",
+                      },
+    
+                      // Aria
+                      ariaProps: {
+                        role: "status",
+                        "aria-live": "polite",
+                      },
+                    });
+                  } else {
+                  toast.error(data?.message, {
                     setPairduration: 2500,
                     position: "top-center",
   
@@ -449,17 +505,17 @@ const BuyForminnermarket = ({
                     style: {
                       padding: "1rem",
                       fontSize: "15px",
-                      color: "green",
+                      color: "red",
                       fontWeight: "bold",
                     },
                     className: "",
   
                     // Custom Icon
-                    icon: "👏",
+                    // icon: "👏",
   
                     // Change colors of success/error/loading icon
                     iconTheme: {
-                      primary: "#000",
+                      primary: "red",
                       secondary: "#fff",
                     },
   
@@ -470,29 +526,48 @@ const BuyForminnermarket = ({
                     },
                   });
                 }
+                }
               } else {
-                const pair12 = pair.split("-")[1];
+                // const pair12 = pair.split("-")[1];
+                const pair12 = pair.slice(-4)
                 var a = ["future-", labe];
                 var b = a.join("");
+                // const da = {
+                //   instId: pair,
+                //   tdMode: index,
+                //   ccy: pair12,
+                //   tag: "mk1",
+                //   side: "buy",
+                //   orderType: ordertype,
+                //   sz: Math.round( Amount * usdtBalance / 100),
+                //   px: market,
+                //   trade_at: b,
+                //   lever: value,
+                //   market: { market },
+                // };
                 const da = {
                   instId: pair,
                   tdMode: index,
                   ccy: pair12,
                   tag: "mk1",
-                  side: "buy",
+                  side: "Buy",
                   orderType: ordertype,
                   sz: Math.round( Amount * usdtBalance / 100),
-                  px: market,
+                  // sz: `${20}`,
+                  // px: market,
+                  px: `${321}`,
                   trade_at: b,
-                  lever: value,
-                  market: { market },
+                  // lever: value,
+                  lever: lever,
+                  market:  market ,
                 };
-                const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+                // const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+                const { data } = await Axios.post(`/bybit/mastertrade`, da, {
                   headers: {
                     Authorization: localStorage.getItem("Mellifluous"),
                   },
                 });
-                if (data) {
+                if (data?.succeess) {
                   setTimeout(() => { setload(!false); }, 500)
                   toast.success(data.message, {
                     setPairduration: 2500,
@@ -526,7 +601,7 @@ const BuyForminnermarket = ({
                   reload(1)
                 } else {
                   setTimeout(() => { setload(!false); }, 500)
-                  toast.success("Something Went Wrong", {
+                  toast.success(data?.message, {
                     setPairduration: 2500,
                     position: "top-center",
   
@@ -591,60 +666,79 @@ const BuyForminnermarket = ({
                   "aria-live": "polite",
                 },
               });
-            }  else if (parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0)) {
-              toast.error("Insufficient USDT balance. Please deposit funds.",{
-                // Change colors of success/error/loading icon
-                style: {
-                  padding: "1rem",
-                  fontSize: "15px",
-                  color: "red",
-                  fontWeight: "bold",
-                },
-                className: "",  
+            // }  else if (parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0)) {
+            } 
+            //  else if (parseFloat(balance)) {
+            //   toast.error("Insufficient USDT balance. Please deposit funds.",{
+            //     // Change colors of success/error/loading icon
+            //     style: {
+            //       padding: "1rem",
+            //       fontSize: "15px",
+            //       color: "red",
+            //       fontWeight: "bold",
+            //     },
+            //     className: "",  
 
-                // Aria
-                ariaProps: {
-                  role: "status",
-                  "aria-live": "polite",
-                },
-              })
+            //     // Aria
+            //     ariaProps: {
+            //       role: "status",
+            //       "aria-live": "polite",
+            //     },
+            //   })
                
-            } else{
+            // } 
+            else{
 
-              const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance);
+              // const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance);
+              const usdtBalance = balance
 
-            const { data } = await Axios.post(
-              `/trade/positionHistory`,
-              { id: pair },
-              {
-                headers: {
-                  Authorization: localStorage.getItem("Mellifluous"),
-                },
-              }
-            );
-            let his = data.result[0];
+            // const { data } = await Axios.post(
+            //   `/trade/positionHistory`,
+            //   { id: pair },
+            //   {
+            //     headers: {
+            //       Authorization: localStorage.getItem("Mellifluous"),
+            //     },
+            //   }
+            // );
+            // let his = data.result[0];
             if (user.trader_type === "user") {
               var a = ["future-", labe];
               var b = a.join("");
+              // const da = {
+              //   instId: his?.instId,
+              //   tdMode: his?.mgnMode,
+              //   ccy: his?.ccy,
+              //   tag: "mk1",
+              //   side: "sell",
+              //   orderType: ordertype,
+              //   sz: Math.round( Amount * usdtBalance / 100) ,//parseFloat(his?.notionalUsd).toFixed(2),
+              //   px: market,
+              //   trade_at: b,
+              //   lever: lever,
+              // };
               const da = {
-                instId: his?.instId,
-                tdMode: his?.mgnMode,
-                ccy: his?.ccy,
-                tag: "mk1",
-                side: "sell",
+                instId: pair,
+                tdMode: index,
+                ccy: pair,
+                side: "Sell",
                 orderType: ordertype,
-                sz: Math.round( Amount * usdtBalance / 100) ,//parseFloat(his?.notionalUsd).toFixed(2),
-                px: market,
+                sz: Math.round( Amount * balance / 100),//parseFloat(his?.notionalUsd).toFixed(2),
+                // sz: `${20}` ,//parseFloat(his?.notionalUsd).toFixed(2),
+                // px: market,
+                px: price,//`${234}`,
                 trade_at: b,
                 lever: lever,
               };
-              const { data } = await Axios.post(`/trade/userTrade`, da, {
+           
+              // const { data } = await Axios.post(`/trade/userTrade`, da, {
+              const { data } = await Axios.post(`/bybit/trade`, da, {
                 headers: {
                   Authorization: localStorage.getItem("Mellifluous"),
                 },
               });
               
-              if (data) {
+              if (data?.success) {
                 setTimeout(() => { setload(!false); }, 500)
                 toast.success(data.message, {
                   setPairduration: 2500,
@@ -678,7 +772,37 @@ const BuyForminnermarket = ({
                 reload(1)
               } else {
                 setTimeout(() => { setload(!false); }, 500)
-                toast.success("Something Went Wrong", {
+                if(data?.message == 'ab not enough for new leverage'){
+                  toast.error('Available Balance Not Enough For The New Leverage', {
+                    setPairduration: 2500,
+                    position: "top-center",
+  
+                    // Styling
+                    style: {
+                      padding: "1rem",
+                      fontSize: "15px",
+                      color: "red",
+                      fontWeight: "bold",
+                    },
+                    className: "",
+  
+                    // Custom Icon
+                    // icon: "👏",
+  
+                    // Change colors of success/error/loading icon
+                    iconTheme: {
+                      primary: "red",
+                      secondary: "#fff",
+                    },
+  
+                    // Aria
+                    ariaProps: {
+                      role: "status",
+                      "aria-live": "polite",
+                    },
+                  });
+                } else {
+                toast.success(data?.message, {
                   setPairduration: 2500,
                   position: "top-center",
   
@@ -707,28 +831,43 @@ const BuyForminnermarket = ({
                   },
                 });
               }
+              }
             } else {
               const pair12 = pair.split("-")[1];
               var a = ["future-", labe];
               var b = a.join("");
+              // const da = {
+              //   instId: his?.instId,
+              //   tdMode: his?.mgnMode,
+              //   ccy: his?.ccy,
+              //   tag: "mk1",
+              //   side: "sell",
+              //   orderType: ordertype,
+              //   sz: Math.round( Amount * usdtBalance / 100) ,//parseFloat(his?.notionalUsd).toFixed(2),
+              //   px: market,
+              //   trade_at: b,
+              //   lever: lever,
+              // };
               const da = {
-                instId: his?.instId,
-                tdMode: his?.mgnMode,
-                ccy: his?.ccy,
-                tag: "mk1",
-                side: "sell",
+                instId: pair,
+                tdMode: index,
+                ccy: pair,
+                side: "Sell",
                 orderType: ordertype,
                 sz: Math.round( Amount * usdtBalance / 100) ,//parseFloat(his?.notionalUsd).toFixed(2),
-                px: market,
+                // sz: `${20}` ,//parseFloat(his?.notionalUsd).toFixed(2),
+                px: price,
+                // px: `${price}`,
                 trade_at: b,
                 lever: lever,
               };
-              const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+              // const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+              const { data } = await Axios.post(`/bybit/mastertrade`, da, {
                 headers: {
                   Authorization: localStorage.getItem("Mellifluous"),
                 },
               });
-              if (data) {
+              if (data?.success) {
                 setTimeout(() => { setload(!false); }, 500)
                 toast.success(data.message, {
                   setPairduration: 2500,
@@ -762,7 +901,7 @@ const BuyForminnermarket = ({
                 reload(1)
               } else {
                 setTimeout(() => { setload(!false); }, 500)
-                toast.error("Something Went Wrong", {
+                toast.error(data?.message, {
                   setPairduration: 1500,
                   position: "top-center",
   
@@ -827,7 +966,7 @@ const BuyForminnermarket = ({
       }
      
     } catch (error) {
-       if (error.response.data.message == 'Parameter sz error'){
+       if (error?.message == 'Parameter sz error'){
         toast.error("Please Fill the Amount & check your balance", {
           // Change colors of success/error/loading icon
           style: {
@@ -847,7 +986,7 @@ const BuyForminnermarket = ({
         setTimeout(() => { setload(!false); }, 500)
       } else {
       setTimeout(() => { setload(!false); }, 500)
-      toast.error(error.response.data.message, {
+      toast.error(error?.message, {
 
         setPairduration: 2500,
         position: "top-center",
@@ -910,32 +1049,97 @@ const BuyForminnermarket = ({
 
   }, []);
 
-  const getmyWallet = () => {
+  const getmyWallet = async() => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+
+      await Axios.get(`/bybit/getwallets`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+      // Axios.get(`/wallet/getWalletById`, {
+      //   headers: {
+      //     Authorization: localStorage.getItem("Mellifluous"),
+      //   },
+      // })
+      .then((res) => {
+        if (res?.data?.success) {
+          // alert(pair)
+          console.log(res,'WALLET BALANCE',pair.substring(0,pair.length - 4) );
+          for (let i = 0; i < res?.data?.result.length; i++) {
+            // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+            //   setBalance(res?.data?.result[i].balance);
+            // }
+            // if (res?.data?.result[i].symbol == pair?.slice(0,- 4)) {
+            //   setBalance(res?.data?.result[i].balance);
+            //   console.log(res?.data?.result[i].balance,"baln")
+            // }
+
+            if ( res?.data?.result[i].coinname == pair?.slice(0,- 4) ) {
+              setBalance(res?.data?.result[i].balance);
+              console.log(res?.data?.result[i].balance,"baln")
+            }
+          }
+          // setBalance(res?.data?.result)
+
+          setMaxbuy(parseFloat(balance / selected.price).toFixed(4));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+
+  }
+
+  const getTradebalance = async () => {
+    const coinee = pair.slice(-4)
+    try {
+      await Axios.post(`/bybit/gettradebalance`,{ pair : coinee }, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
-            console.log(res?.data?.success, "dates")
-            setBalance(res?.data?.result)
-            console.log(res?.data?.result, "respon")
+            const tradebalance = res?.data?.result?.result?.list[0]?.coin[0]?.availableToWithdraw
+              
+                setBalance(tradebalance);
+          
+            setMaxbuy(parseFloat(Number(tradebalance ? tradebalance : 0) / Number(selected?.price)).toFixed(7));
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
 
-  }
   useEffect(() => {
-    getmyWallet()
+    // getmyWallet();
+    getTradebalance();
+  }, [selected, pair])
 
-  }, [])
+  const getOrderQty = async () => {
+
+    const { data } = await Axios.post(`${Consts.BackendUrl}/bybit/getpairdetailes`, { type : 'linear' , pair: pair })
+       if(data?.success){
+         setQuantity(Number(data?.result[0]?.lotSizeFilter?.minOrderQty))
+         setMaxQuantity(data?.result[0]?.lotSizeFilter?.maxOrderQty)
+       } else {
+         setQuantity(0)
+         setMaxQuantity(0)
+       }
+   }
+
+   useEffect(()=> {
+    getOrderQty()
+  }, [pair])
+
   return (
     <>
 
@@ -957,7 +1161,8 @@ const BuyForminnermarket = ({
         </div> */}
 
 <div className="price-limit-spot">
-          <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+          {/* <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label> */}
+          <label className="form-label-style">Price ({pair ? pair.slice(-4) : "USD"})</label>
           <div className="">
             <TextField
               type={"number"}
@@ -971,7 +1176,8 @@ const BuyForminnermarket = ({
 
         <div className="amount-limit-spot">
           <label className="form-label-style">
-            Amount ({pair ? pair.split("-")[0] : "USD"})
+            {/* Amount ({pair ? pair.split("-")[0] : "USD"}) */}
+            Amount ({pair ? pair.slice(0,-4) : "USD"})
           </label>
           <div className="">
             {labe === "open-long" ? (
@@ -982,7 +1188,8 @@ const BuyForminnermarket = ({
                   value={value}
                   inputRef={Amountref}
                   onChange={Amountupdate}
-                  placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  // placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  placeholder={`Min ${pair ? pair.slice(0,-4) : "USD"}`}
                   // endAdornment={
                   //   <InputAdornment position="end">
                   //     Min (<span>{pair ? pair.split("-")[0] : "USD"}</span>)
@@ -1018,7 +1225,7 @@ const BuyForminnermarket = ({
             )}
 
             {labe === "open-long" ? (
-              <div className="thumslider-design-class" style={{ width: "98%" }}>
+              <div className="thumslider-design-class" style={{ width: "89%" }}>
                 <ThumbSlider
                   aria-label="Temperature"
                   defaultValue={0}
@@ -1033,7 +1240,7 @@ const BuyForminnermarket = ({
                 />
               </div>
             ) : (
-              <div className="thumslider-design-class" style={{ width: "98%" }}>
+              <div className="thumslider-design-class" style={{ width: "89%" }}>
                 <ThumbSlider
                   aria-label="Temperature"
                   defaultValue={0}
@@ -1062,8 +1269,16 @@ const BuyForminnermarket = ({
           <div className="available-max-block available-max-buy available-max-block-available-max-buy">
             <div className="available-max-block-left">
               <div>
-                <label>Availabe</label>
-                {balance &&
+                <label>Available</label>
+
+                {balance ? 
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    USDT
+                  </div> : 
+                  <>{(0).toFixed(3)}{" "}USDT</>
+                }
+                {/* {balance &&
                   balance.find((item) => item.symbol === "USDT") &&
                   balance.find((item) => item.symbol === "USDT").balance !==
                   undefined && (
@@ -1071,47 +1286,65 @@ const BuyForminnermarket = ({
                       {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
                       USDT
                     </div>
-                  )}
+                  )} */}
               </div>
               <div>
                 <label>Maxbuy</label>
-                {pair &&
+
+                {balance ?
+                  <div>
+                    {parseFloat(balance / selected?.price).toFixed(4)} {pair.slice(0,-4)}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair.slice(0,-4)}</div>
+                }
+                {/* {pair &&
                   balance &&
-                  balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                    <div>
-                      0.000000 {pair.split("-")[0]}
+                  balance.find((item) => item.symbol === pair.split("-")[0]) && ( */}
+                    {/* <div>
+                      0.000000 {pair.split("-")[0]} */}
                       {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
 
-                    </div>
-                  )}
+                    {/* </div> */}
+                  {/* )} */}
               </div>
             </div>
             <div className="available-max-block-right">
             <div className="available-max-block-right-svg"><SwapHorizIcon /></div>
               <div>
                 <label>Maxsell</label>
-                {pair &&
+
+                {balance ?
+                  <div>
+                    {parseFloat(balance / selected?.price).toFixed(4)} {pair?.slice(0,-4)}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair?.slice(0,-4)}</div>
+                }
+                {/* {pair &&
                   balance &&
-                  balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                    <div>
+                  balance.find((item) => item.symbol === pair.split("-")[0]) && ( */}
+                    {/* <div> */}
                       {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                      0.000000 {pair.split("-")[0]}
+                      {/* 0.000000 {pair.split("-")[0]}
                     </div>
-                  )}
+                  )} */}
               </div>
             </div>
           </div>
           <div className="reduce-only-available-max-block-available-max-buy">
           {/* checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} */}
           <div className="take-profit-stop-loss-block">
-          <div><FormControlLabel control={<Checkbox checked={isCheckedReduceOnly} onChange={handleChangeReduceOnly}/>} label="Reduce-only" /></div>
+          {/* <div><FormControlLabel control={<Checkbox checked={isCheckedReduceOnly} onChange={handleChangeReduceOnly}/>} label="Reduce-only" /></div> */}
           </div>
           </div>
 
           <div className="take-profit-stop-loss-block">
-            <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="TP/SL" /></div>
+            {/* <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="TP/SL" /></div> */}
             {/* <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div> */}
           </div>
 
@@ -1184,10 +1417,12 @@ const BuyForminnermarket = ({
 
 <Stack direction="row" spacing={4} className="sell-buy-btns-stack">
           <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Buy (Long){selected ? selected?.pair.split('-')[1] : ""}
+            {/* Buy (Long){selected ? selected?.pair.split('-')[1] : ""} */}
+            Buy (Long){selected?.pair ? selected?.pair.substring(pair.length - 4) : ""}
           </Button>
           <Button className="Sell-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Sell (Short){selected ? selected?.pair.split('-')[1] : ""}
+            {/* Sell (Short){selected ? selected?.pair.split('-')[1] : ""} */}
+            Sell (Short){selected?.pair ? selected?.pair.substring(pair.length - 4) : ""}
           </Button>
           </Stack>
 
@@ -1195,7 +1430,15 @@ const BuyForminnermarket = ({
             <div className="available-max-block-left">
               <div>
                 <label>Cost</label>
-                {balance &&
+
+                {balance ? 
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    USDT
+                  </div> : 
+                  <>{(0).toFixed(3)}{" "}USDT</>
+                }
+                {/* {balance &&
                   balance.find((item) => item.symbol === "USDT") &&
                   balance.find((item) => item.symbol === "USDT").balance !==
                   undefined && (
@@ -1203,19 +1446,31 @@ const BuyForminnermarket = ({
                       {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
                       USDT
                     </div>
-                  )}
+                  )} */}
               </div>
               <div>
                 <label>Max Price</label>
-                {pair &&
+                {balance ?
+                  <div>
+                    {parseFloat(balance / selected?.price).toFixed(4)} {pair?.split("-")[0]}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair?.slice(0,-4)}</div>
+                }
+                {/* {pair &&
                   balance &&
                   balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                    <div>
+                    <div> */}
                       {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                      0.000000 {pair.split("-")[0]}
+                      {/* 0.000000 {pair.split("-")[0]}
                     </div>
-                  )}
+                  )} */}
+              </div>
+              <div>
+              <label>MinOrderQty :</label>
+              <div> { Number(quantity) } </div>
               </div>
               {/* <div><label>Availabe</label> -- USDT66</div>
           <div><label>Max buy</label> -- {`${pair ? pair.split('-')[0] : "USD"}`}</div> */}
@@ -1223,27 +1478,42 @@ const BuyForminnermarket = ({
             <div className="available-max-block-right">
             <div>
                 <label>Cost</label>
-                {pair &&
+                {balance ? 
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    USDT
+                  </div> : 
+                  <>{(0).toFixed(3)}{" "}USDT</>
+                }
+                {/* {pair &&
                   balance &&
                   balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                    <div>
+                    <div> */}
                       {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                      0.000000 {pair.split("-")[0]}
+                      {/* 0.000000 {pair.split("-")[0]}
                     </div>
-                  )}
+                  )} */}
               </div>
               <div>
                 <label>Min Price</label>
-                {pair &&
+                {balance ?
+                  <div>
+                    {parseFloat(balance / selected?.price).toFixed(4)} {pair?.split("-")[0]}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair?.slice(0,-4)}</div>
+                }
+                {/* {pair &&
                   balance &&
                   balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                    <div>
+                    <div> */}
                       {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                      0.000000 {pair.split("-")[0]}
+                      {/* 0.000000 {pair.split("-")[0]}
                     </div>
-                  )}
+                  )} */}
               </div>
             </div>
           </div>

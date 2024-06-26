@@ -153,7 +153,7 @@ const WalletWithdrawBody = () => {
   const history = useLocation()
   const navigate = useNavigate()
   const ccy = history.state
-  console.log(ccy,"cccc")
+  console.log(ccy, "cccc")
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleBack = () => {
@@ -217,18 +217,25 @@ const WalletWithdrawBody = () => {
   };
 
   const withdraw = async () => {
+    console.log('withdraw');
     try {
 
       if (depositTo === "") {
+        // console.log('if');
         setDepositNetworkerr("Please Select Network")
       } else if (address === "") {
+        // console.log('elseif1');
         setAddresserr("Please Enter Address")
       } else if (amountWithdraw === "") {
+        // console.log('elseif2');
         setamountWithdrawerr("Please Enter Amount")
-      } else if (depositNetwork === 4 && feeWithdraw === "") {
-        setfeeWithdrawerr("Please Enter Fee")
       }
+      // else if (depositNetwork === 4 && feeWithdraw === "") {
+      //   console.log('elseif3');
+      //   setfeeWithdrawerr("Please Enter Fee")
+      // }
       else {
+        console.log('else');
         var payload = {}
 
         if (depositNetwork === 4) {
@@ -254,6 +261,7 @@ const WalletWithdrawBody = () => {
             Authorization: window.localStorage.getItem("Mellifluous")
           }
         })
+        console.log(data, 'withdrawdata');
         if (data?.success === true) {
           toast.success(data?.message)
           navigate('/wallet')
@@ -310,6 +318,8 @@ const WalletWithdrawBody = () => {
     }
   }
 
+  // console.log(otpCheck, 'otpCheck');
+
   useEffect(() => {
     if (otpValue?.length > 0) {
       if (otpValue[5] != "") {
@@ -324,7 +334,7 @@ const WalletWithdrawBody = () => {
         Authorization: localStorage.getItem("Mellifluous"),
       },
     })
-    console.log(data,"adddddadadadaa")
+    console.log(data, "adddddadadadaa")
     if (data?.data?.result?.length > 0) {
       setAddata(data?.data?.result)
     } else {
@@ -345,8 +355,8 @@ const WalletWithdrawBody = () => {
   return (
     <div className='Wallet-Body-Page Wallet-deposit-Body-Page'>
       <Box sx={{ flexGrow: 1 }}>
-      
-      <Button onClick={() => navigate(-1)} className='back-button-style' variant="text"><ArrowBackIcon/>Back</Button>
+
+        <Button onClick={() => navigate(-1)} className='back-button-style' variant="text"><ArrowBackIcon />Back</Button>
 
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -364,7 +374,7 @@ const WalletWithdrawBody = () => {
                   {/* {steps.map((step, index) => ( */}
                   <Step>
                     <StepLabel>
-                      Select cryto to withdraw
+                      Select crypto to withdraw
                     </StepLabel>
                     <StepContent>
                       <Box sx={{ minWidth: 120 }}>
@@ -383,7 +393,10 @@ const WalletWithdrawBody = () => {
                             <MenuItem value={50}>OKB</MenuItem>
                           </Select>
                         </FormControl> */}
-                        <TextField fullWidth id="outlined-basic" label="Crypto" variant="outlined" value={ccy?.symbol} />
+                        <TextField fullWidth id="outlined-basic" label="Crypto" variant="outlined"
+                          // value={ccy?.symbol} 
+                          value={ccy}
+                        />
                       </Box>
 
                       <Box sx={{ minWidth: 120 }}>
@@ -423,7 +436,7 @@ const WalletWithdrawBody = () => {
                       <p>Ensure the {ccy?.symbol} network you have selected is supported by the depositing platform, otherwise you will lose your assets</p>
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Select the {ccy?.symbol} withdrawal network</InputLabel>
+                          <InputLabel id="demo-simple-select-label">Select the {ccy} withdrawal network</InputLabel>
                           <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -431,18 +444,23 @@ const WalletWithdrawBody = () => {
                             onChange={handleChangeDepositTo}
                           >
                             {addata?.map((row, index) => {
+                              { console.log(row, 'row'); }
                               return (
-                                <MenuItem value={row?.chain} >{row?.chain}</MenuItem>
+                                row?.symbol ?
+                                  <MenuItem value={row?.symbol} >{row?.symbol}</MenuItem>
+                                  :
+                                  <MenuItem>No Data Found</MenuItem>
                               );
                             })}
-                            {console.log(addata,"ddddddd")}
+                            {console.log(addata, "ddddddd")}
                           </Select>
                           {depositNetworkerr !== "" ? <div style={{ color: 'red' }} >{depositNetworkerr}</div> : <></>}
                         </FormControl>
                         <div className='amount-withdrawal-part address-domain-part'>
                           <label className='amount-withdrawal-part-label'>{ccy?.symbol} address/domain</label>
                           <span className='amount-withdrawal-part-enable'><label>Enable allowlist to protect your assets</label> <Button>Enable</Button></span>
-                          <div className='amount-withdrawal-part-field'><TextField id="outlined-basic" label="Enter an address or choose from address book" variant="outlined" onChange={(e) => { setAddress(e.target.value); setAddresserr("") }} /></div>
+                          <div className='amount-withdrawal-part-field'>
+                            <TextField id="outlined-basic" label="Enter an address or choose from address book" variant="outlined" onChange={(e) => { setAddress(e.target.value); setAddresserr("") }} /></div>
                           {addresserr !== "" ? <div style={{ color: 'red' }} >{addresserr}</div> : <></>}
                         </div>
                         <div className='amount-withdrawal-part'>
@@ -458,8 +476,11 @@ const WalletWithdrawBody = () => {
                               onChange={(e) => { setamountWithdraw(e.target.value); setamountWithdrawerr("") }}
                             />
                           </FormControl>
-
-                          <span><label>Available:</label> 10.987654231 {ccy?.symbol}</span>
+                          {addata?.map((row, index) => {
+                            return (
+                              <span><label>Available:</label> {row.balance} {ccy}</span>
+                            )
+                          })}
                           {amountWithdrawerr !== "" ? <div style={{ color: 'red' }} >{amountWithdrawerr}</div> : <></>}
                         </div>
 
@@ -479,7 +500,7 @@ const WalletWithdrawBody = () => {
                           {otpCheck === true &&
                             <Button
                               variant="contained"
-                              onClick={withdraw}
+                              onClick={() => { withdraw() }}
                               sx={{ mt: 1, mr: 1 }}
                             >
                               Submit

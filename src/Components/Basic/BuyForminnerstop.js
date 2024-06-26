@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -101,35 +101,35 @@ const BuyForminnerstop = ({ selected, pair, index }) => {
   const [total, settotal] = React.useState();
   const [value, setValue] = React.useState()
   const [takeProfit, setTakeProfit] = React.useState('');
-const [isCheckedTakeProfit, setCheckedTakeProfit] = useState(false);
-const [isCheckedStopLoss, setCheckedStopLoss] = useState(false);
-const [balance, setBalance] = useState()
-const [activeClass, setActiveClass] = useState("1");
+  const [isCheckedTakeProfit, setCheckedTakeProfit] = useState(false);
+  const [isCheckedStopLoss, setCheckedStopLoss] = useState(false);
+  const [balance, setBalance] = useState()
+  const [activeClass, setActiveClass] = useState("1");
 
- const percentageValue = async(e) => {
+  const percentageValue = async (e) => {
     setActiveClass(e.target.id);
-    console.log(e.target.value,"value");
+    console.log(e.target.value, "value");
   }
 
 
-const handleChangeTakeProfit = () => {
-  setCheckedTakeProfit(!isCheckedTakeProfit);
-};
-const handleChangeStopLoss = () => {
-  setCheckedStopLoss(!isCheckedStopLoss);
-};
-const handleTakeProfit = (event) => {
-  setTakeProfit(event.target.value);
-};
+  const handleChangeTakeProfit = () => {
+    setCheckedTakeProfit(!isCheckedTakeProfit);
+  };
+  const handleChangeStopLoss = () => {
+    setCheckedStopLoss(!isCheckedStopLoss);
+  };
+  const handleTakeProfit = (event) => {
+    setTakeProfit(event.target.value);
+  };
 
 
   const Amountref = useRef()
 
   React.useEffect(() => {
-    console.log("sell",selected, pair)   
-      
-    if (selected) {     
-      setPrice(selected.price);     
+    console.log("sell", selected, pair)
+
+    if (selected) {
+      setPrice(selected.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
@@ -139,14 +139,14 @@ const handleTakeProfit = (event) => {
     } else {
       settotal("")
     }
-  }, []); 
- 
+  }, []);
+
   React.useEffect(() => {
-    console.log("sell",selected, pair)
-    
-      
-    if (selected) {     
-      setPrice(selected.price);     
+    console.log("sell", selected, pair)
+
+
+    if (selected) {
+      setPrice(selected.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
@@ -192,7 +192,7 @@ const handleTakeProfit = (event) => {
     }
   }, [pair])
 
-  const [load,setload] = useState(true)
+  const [load, setload] = useState(true)
 
   const buytrade = async () => {
     // try {
@@ -320,75 +320,105 @@ const handleTakeProfit = (event) => {
     // }
   }
 
-  const getmyWallet = () => {
+  // const getmyWallet = () => {
+  //   try {
+  //     Axios.get(`/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res?.data?.success) {
+  //           console.log(res?.data?.success, "dates")
+  //           setBalance(res?.data?.result)
+  //           console.log(res?.data?.result, "respon")
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
+  const getmyWallet = async () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      await Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
-            console.log(res?.data?.success, "dates")
-            setBalance(res?.data?.result)
-            console.log(res?.data?.result, "respon")
+            console.log(res, 'WALLET BALANCE', pair.substring(0, pair.length - 4));
+            for (let i = 0; i < res?.data?.result.length; i++) {
+              // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+              //   setBalance(res?.data?.result[i].balance);
+              // }
+              if (res?.data?.result[i].coinname == pair?.slice(0, - 4)) {
+                setBalance(res?.data?.result[i].balance);
+                console.log(res?.data?.result[i].balance, "baln")
+              }
+            }
+            // setBalance(res?.data?.result)
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
 
-  }
   useEffect(() => {
     getmyWallet()
 
-  }, [])  
+  }, [])
   return (
     <>
       <div className="Form-Inner-box form-Inner-box-style future-form-block-right-part">
 
         {/* <label className="form-label-style">Price ({selected ? selected?.pair.split('-')[1] : "USD"})</label> */}
         <div className="price-limit-spot">
-        <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
-        <div className="">
-          <TextField
-            type={"number"}
-            id="outlined-basic"
-            variant="outlined"
-            value={selected.price}
-            onChange={priceupdate}
-          />
-        </div>
+          <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+          <div className="">
+            <TextField
+              type={"number"}
+              id="outlined-basic"
+              variant="outlined"
+              value={selected.price}
+              onChange={priceupdate}
+            />
+          </div>
         </div>
 
         <div className="amount-limit-spot">
-        <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
-        <div className="">
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-weight"
-              type={"number"}
-              value={Amount}
-              inputRef={Amountref}
-            onChange={Amountupdate}
-            placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
-              // endAdornment={
-              //   <InputAdornment position="end">
-              //     Min  (<span>{pair ? pair.split('-')[0] : "USD"}</span>)
-              //   </InputAdornment>
-              // }
-              aria-describedby="outlined-weight-helper-text"
-              inputProps={{
-                "aria-label": "weight",
-              }}
+          <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
+          <div className="">
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <OutlinedInput
+                id="outlined-adornment-weight"
+                type={"number"}
+                value={Amount}
+                inputRef={Amountref}
+                onChange={Amountupdate}
+                placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                // endAdornment={
+                //   <InputAdornment position="end">
+                //     Min  (<span>{pair ? pair.split('-')[0] : "USD"}</span>)
+                //   </InputAdornment>
+                // }
+                aria-describedby="outlined-weight-helper-text"
+                inputProps={{
+                  "aria-label": "weight",
+                }}
 
-            />
-          </FormControl>
+              />
+            </FormControl>
 
-          <div style={{ "width": "98%" }}>
+          <div style={{ "width": "89%" }}>
             <ThumbSlider
               aria-label="Temperature"
               defaultValue={0}
@@ -406,13 +436,13 @@ const handleTakeProfit = (event) => {
         <Button key={1} className={activeClass === "1" ? "active-select" : "non-active"} id={"1"} value="10" onClick={(value) => percentageValue(value)}>10%</Button>
         <Button key={2} className={activeClass === "2" ? "active-select" : "non-active"} id={"2"} value="15" onClick={(value) => percentageValue(value)}>15%</Button>
         <Button key={3} className={activeClass === "3" ? "active-select" : "non-active"} id={"3"} value="20" onClick={(value) => percentageValue(value)}>20%</Button>
-</Stack>
+       </Stack>
         </div>
         </div>
 
 
         <div className="total-limit-spot">
-        <label className="form-label-style">Total ({pair ? pair.split('-')[1] : "USD"})</label>
+          <label className="form-label-style">Total ({pair ? pair.split('-')[1] : "USD"})</label>
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <OutlinedInput
               value={total}
@@ -442,146 +472,146 @@ const handleTakeProfit = (event) => {
           <FormControlLabel required control={<Checkbox />} label="Stop loss" />
         </FormGroup> */}
         </div>
-<div>
-<div className="available-max-block available-max-buy">
-          <div className="available-max-block-left">
-          <div>
-            <label>Availabe</label>
-            {balance &&
-                    balance.find((item) => item.symbol === "USDT") &&
-                    balance.find((item) => item.symbol === "USDT").balance !==
-                    undefined && (
-                      <div>
-                        {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
-                       USDT
-                      </div>
-                    )}
-          </div>
-          <div>
-            <label>Maxbuy</label>
-            {pair &&
-                    balance &&
-                    balance.find((item) => item.symbol === pair.split("-")[0]) && (
-                      <div>
-                        {/* {balance.find((item) => item.symbol === pair.split("-")[0])
+        <div>
+          <div className="available-max-block available-max-buy">
+            <div className="available-max-block-left">
+              <div>
+                <label>Availabe</label>
+                {balance &&
+                  balance.find((item) => item.symbol === "USDT") &&
+                  balance.find((item) => item.symbol === "USDT").balance !==
+                  undefined && (
+                    <div>
+                      {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
+                      USDT
+                    </div>
+                  )}
+              </div>
+              <div>
+                <label>Maxbuy</label>
+                {pair &&
+                  balance &&
+                  balance.find((item) => item.symbol === pair.split("-")[0]) && (
+                    <div>
+                      {/* {balance.find((item) => item.symbol === pair.split("-")[0])
                           .balance}{" "} */}
-                        0.000000 {pair.split("-")[0]}
-                      </div>
-                    )}
-          </div>
-          {/* <div><label>Availabe</label> -- USDT</div>
+                      0.000000 {pair.split("-")[0]}
+                    </div>
+                  )}
+              </div>
+              {/* <div><label>Availabe</label> -- USDT</div>
           <div><label>Max buy</label> -- {`${pair ? pair.split('-')[0] : "USD"}`}</div> */}
+            </div>
+            <div className="available-max-block-right"><SwapHorizIcon /></div>
           </div>
-          <div className="available-max-block-right"><SwapHorizIcon/></div>
-        </div>
-        
-        <div className="take-profit-stop-loss-block">
-          <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="TP/SL" /></div>
-          {/* <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div> */}
-        </div>
 
-        {isCheckedTakeProfit && (
-        <div className="take-profit-stop-loss-forms take-profit-form">
-        
+          <div className="take-profit-stop-loss-block">
+            <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="TP/SL" /></div>
+            {/* <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div> */}
+          </div>
 
-            <div className="form-design-tp-sl form-design-tp-trigger-price">       
-            <label>TP trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
-            <div>
-             <TextField
-                id="outlined-basic"
-                  InputProps={{ inputProps: { min: "0" } }}
-              />
-              <FormControl className="select-hours-outer">
-              <InputLabel id="demo-simple-select-label">Last</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={takeProfit}
-          onChange={handleTakeProfit}
-          label="Last"
-          className="select-hours-inner"
-        >
-          <MenuItem value={10}>1h</MenuItem>
-          <MenuItem value={20}>24h</MenuItem>
-          <MenuItem value={30}>7h</MenuItem>
-        </Select>
-      </FormControl>
+          {isCheckedTakeProfit && (
+            <div className="take-profit-stop-loss-forms take-profit-form">
+
+
+              <div className="form-design-tp-sl form-design-tp-trigger-price">
+                <label>TP trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
+                <div>
+                  <TextField
+                    id="outlined-basic"
+                    InputProps={{ inputProps: { min: "0" } }}
+                  />
+                  <FormControl className="select-hours-outer">
+                    <InputLabel id="demo-simple-select-label">Last</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={takeProfit}
+                      onChange={handleTakeProfit}
+                      label="Last"
+                      className="select-hours-inner"
+                    >
+                      <MenuItem value={10}>1h</MenuItem>
+                      <MenuItem value={20}>24h</MenuItem>
+                      <MenuItem value={30}>7h</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
+              <div className="form-design-tp-sl form-design-tp-trigger-price">
+                <label>SL trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
+                <div>
+                  <TextField
+                    id="outlined-basic"
+                    InputProps={{ inputProps: { min: "0" } }}
+                  />
+                  <FormControl className="select-hours-outer">
+                    <InputLabel id="demo-simple-select-label">Last</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={takeProfit}
+                      onChange={handleTakeProfit}
+                      label="Last"
+                      className="select-hours-inner"
+                    >
+                      <MenuItem value={10}>1h</MenuItem>
+                      <MenuItem value={20}>24h</MenuItem>
+                      <MenuItem value={30}>7h</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
             </div>
-            </div>  
+          )
+          }
 
-            <div className="form-design-tp-sl form-design-tp-trigger-price">       
-            <label>SL trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
-            <div>
-             <TextField
-                id="outlined-basic"
-                  InputProps={{ inputProps: { min: "0" } }}
-              />
-              <FormControl className="select-hours-outer">
-              <InputLabel id="demo-simple-select-label">Last</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={takeProfit}
-          onChange={handleTakeProfit}
-          label="Last"
-          className="select-hours-inner"
-        >
-          <MenuItem value={10}>1h</MenuItem>
-          <MenuItem value={20}>24h</MenuItem>
-          <MenuItem value={30}>7h</MenuItem>
-        </Select>
-      </FormControl>
+          {isCheckedStopLoss && (
+            <div className="take-profit-stop-loss-forms stop-loss-form">
+
+
+              <div className="form-design-tp-sl form-design-tp-trigger-price">
+                <label>SL trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
+                <div>
+                  <TextField
+                    id="outlined-basic"
+                    InputProps={{ inputProps: { min: "0" } }}
+                  />
+                  <FormControl className="select-hours-outer">
+                    <InputLabel id="demo-simple-select-label">Last</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={takeProfit}
+                      onChange={handleTakeProfit}
+                      label="Last"
+                      className="select-hours-inner"
+                    >
+                      <MenuItem value={10}>1h</MenuItem>
+                      <MenuItem value={20}>24h</MenuItem>
+                      <MenuItem value={30}>7h</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
+              <div className="form-design-tp-sl form-design-tp-order-price">
+                <label>SL order price (USDT)</label>
+                <div>
+                  <TextField
+                    id="outlined-basic"
+                    InputProps={{ inputProps: { min: "0" } }}
+                    value="Market"
+                  />
+                  <Button>Market</Button>
+                </div>
+              </div>
+
             </div>
-            </div> 
-
-        </div>
-        )
-        }
-        
-        {isCheckedStopLoss && (
-        <div className="take-profit-stop-loss-forms stop-loss-form">
-        
-
-            <div className="form-design-tp-sl form-design-tp-trigger-price">       
-            <label>SL trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
-            <div>
-             <TextField
-                id="outlined-basic"
-                  InputProps={{ inputProps: { min: "0" } }}
-              />
-              <FormControl className="select-hours-outer">
-              <InputLabel id="demo-simple-select-label">Last</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={takeProfit}
-          onChange={handleTakeProfit}
-          label="Last"
-          className="select-hours-inner"
-        >
-          <MenuItem value={10}>1h</MenuItem>
-          <MenuItem value={20}>24h</MenuItem>
-          <MenuItem value={30}>7h</MenuItem>
-        </Select>
-      </FormControl>
-            </div>
-            </div>  
-
-            <div className="form-design-tp-sl form-design-tp-order-price">
-            <label>SL order price (USDT)</label>
-            <div>
-            <TextField
-                id="outlined-basic"
-                  InputProps={{ inputProps: { min: "0" } }}
-                  value="Market"
-              />
-              <Button>Market</Button>
-            </div>
-            </div>
-
-        </div>
-        )
-        }
+          )
+          }
 
           <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
             Long {selected ? selected?.pair.split('-')[1] : ""}

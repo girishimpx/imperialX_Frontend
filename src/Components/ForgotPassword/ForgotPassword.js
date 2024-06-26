@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import "./ForgotPassword.css";
 import { makeStyles } from "@mui/styles";
 import { styled } from "@mui/material/styles";
@@ -20,8 +21,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Constant from "../../Constansts";
 import Axios from "../../Axios";
 import { toast, Toaster, ToastBar } from "react-hot-toast";
-
+import BeatLoader from "react-spinners/BeatLoader";
 import Button from "@mui/material/Button";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -72,6 +75,9 @@ const useStyles = makeStyles({
     borderRadius: "0px !important",
     boxShadow: "none !important",
     width: "50%",
+    '@media(max-width:575.98px)': {
+      width: '90%'
+    },
     paddingTop: "40px !important",
   },
   loginright: {
@@ -88,6 +94,10 @@ const useStyles = makeStyles({
     flexDirection: "column",
     marginLeft: "0px",
     marginRight: "0px",
+    '@media(max-width:991.98px)': {
+      alignItems: 'center',
+    },
+
     "&input": {
       color: "#fff !important",
     },
@@ -106,6 +116,17 @@ const ForgotPassword = () => {
   const [setCpwderr, setcpwderr] = React.useState();
   const [otpPage, setOtpPage] = React.useState(false);
   const navigate = useNavigate();
+  const [loader, setLoader] = useState(false)
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const [showPassword2, setShowPassword2] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const SubmitEmail = () => {
     const emailRegex = new RegExp(
@@ -118,15 +139,15 @@ const ForgotPassword = () => {
     } else if (!emailRegex.test(email)) {
       setEmailerr("Invalid Email");
     } else {
+      setLoader(true)
       Axios.post(`${Constant.BackendUrl}/auth/forgot`, { email })
         .then((res) => {
+          setLoader(false)
           setOtpPage(true);
         })
-        .catch((err) =>
-        
-          {
-            
-            toast.error(`${err?.response?.data?.message}`, {
+        .catch((err) => {
+          setLoader(false)
+          toast.error(`${err?.response?.data?.message}`, {
             duration: 4000,
             position: "top-center",
 
@@ -170,7 +191,7 @@ const ForgotPassword = () => {
       setpassworderr("*Password required");
     } else if (!passwordregex.test(new_password)) {
       setpassworderr(
-        "Password must be a minimum 8 characters & Maximum 16 characters.Eg: Abc@123"
+        "Password must be a minimum 8 characters & Maximum 16 characters.Eg: Abc@1234"
       );
     } else if (!confirmPAssword) {
       setcpwderr("Confirm password required");
@@ -253,6 +274,9 @@ const ForgotPassword = () => {
     }
   };
 
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
   return (
     <div className="login-page">
       <Toaster />
@@ -284,7 +308,7 @@ const ForgotPassword = () => {
                 <Box
                   component="form"
                   sx={{
-                    "& > :not(style)": { m: 1, width: "25ch" },
+                    "& > :not(style)": { m: 1, width: "25ch" }
                   }}
                   noValidate
                   autoComplete="off"
@@ -306,13 +330,24 @@ const ForgotPassword = () => {
                       {emailerr}
                     </p>
                   )}
-                  <Button
-                    className="login-button"
-                    variant="contained"
-                    onClick={SubmitEmail}
-                  >
-                    Continue
-                  </Button>
+                  {
+                    loader ?
+                      <Button
+                        className="login-button"
+                        variant="contained"
+                      >
+                        Loading <BeatLoader size={10} />
+                      </Button>
+                      :
+                      <Button
+                        className="login-button"
+                        variant="contained"
+                        onClick={() => { SubmitEmail() }}
+                      >
+                        Continue
+                      </Button>
+                  }
+
                 </Box>
               )}
 
@@ -327,7 +362,7 @@ const ForgotPassword = () => {
                   autoComplete="off"
                   className={classes.loginform}
                 >
-                  <div
+                  {/* <div
                     style={{
                       width: "100%",
                       textAlign: "end",
@@ -346,33 +381,63 @@ const ForgotPassword = () => {
                     >
                       Back
                     </Button>
-                  </div>
+                  </div> */}
 
                   <TextField
                     className={classes.emailfield}
                     id="outlined-basic"
                     label="OTP"
-                    type="number"
+                    // type="number"
                     variant="outlined"
                     onChange={(e) => {
                       setotperr("");
                       setotp(e.target.value);
                     }}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                        setotperr("Enter Valid Number")
+                      }
+                    }}
                   />
                   {otperr && (
                     <p style={{ color: "red", marginTop: "-5px" }}> {otperr}</p>
                   )}
-
-                  <TextField
-                    className={classes.emailfield}
-                    id="outlined-basic"
-                    label="Newpassword"
+                  <FormControl
+                    className={classes.passwordfield}
+                    sx={{ m: 1, width: "25ch" }}
                     variant="outlined"
-                    onChange={(e) => {
-                      setpassworderr("");
-                      setpassword(e.target.value);
-                    }}
-                  />
+                  >
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      New Password
+                    </InputLabel>
+                    <OutlinedInput
+                      // className={classes.emailfield}
+                      id="outlined-basic"
+                      label="Newpassword"
+
+                      variant="outlined"
+                      onChange={(e) => {
+                        setpassworderr("");
+                        setpassword(e.target.value);
+                      }}
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            style={{ color: "white" }}
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
                   {passworderr && (
                     <p
                       style={{ color: "red", marginTop: "-5px", width: "100%" }}
@@ -381,17 +446,39 @@ const ForgotPassword = () => {
                       {passworderr}
                     </p>
                   )}
-
-                  <TextField
-                    className={classes.emailfield}
-                    id="outlined-basic"
-                    label="Confirm password"
+                  <FormControl
+                    className={classes.passwordfield}
+                    sx={{ m: 1, width: "25ch" }}
                     variant="outlined"
-                    onChange={(e) => {
-                      setcpwderr("");
-                      setconfirmPAssword(e.target.value);
-                    }}
-                  />
+                  >
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Confirm Password
+                    </InputLabel>
+                    <OutlinedInput
+                      className={classes.emailfield}
+                      id="outlined-basic"
+                      label="Confirm password"
+                      variant="outlined"
+                      onChange={(e) => {
+                        setcpwderr("");
+                        setconfirmPAssword(e.target.value);
+                      }}
+                      type={showPassword2 ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            style={{ color: "white" }}
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword2}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword2 ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
                   {setCpwderr && (
                     <p
                       style={{ color: "red", marginTop: "-5px", width: "100%" }}
@@ -411,26 +498,26 @@ const ForgotPassword = () => {
               )}
             </Item>
           </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            lg={6}
-            xl={6}
-            className={classes.loginrightouter}
-          >
-            <Item className={classes.loginright}>
-              <div className="loginright">
-                <img src={loginright} alt="loginright" />
-              </div>
-              <div className="text-big-login">ImperialX for Investors</div>
-              <div className="text-small-login">
-                Replicate successful trading strategies on autopilot
-              </div>
-            </Item>
-          </Grid>
+          {matches ?
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              lg={6}
+              xl={6}
+              className={classes.loginrightouter}
+            >
+              <Item className={classes.loginright}>
+                <div className="loginright">
+                  <img src={loginright} alt="loginright" />
+                </div>
+                <div className="text-big-login">ImperialX for Investors</div>
+                <div className="text-small-login">
+                  Replicate successful trading strategies on autopilot
+                </div>
+              </Item>
+            </Grid> : null}
         </Grid>
       </Box>
     </div>

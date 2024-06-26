@@ -46,28 +46,32 @@ function a11yProps(index) {
   };
 }
 
-export default function OpenOrderTab({ selectedPairs, selected, reload }) {
+export default function OpenOrderTab({ selectedPairs, selected, reload, data }) {
   const [value, setValue] = React.useState(0);
   const [order, setOrder] = React.useState("limit");
-  const [count,setcount] = React.useState();
+  const [count, setcount] = React.useState(0);
 
 
-  const positionnumber = (data)=>{
-setcount(data)
+  const positionnumber = (data) => {
+    setcount(data)
+  }
+
+  const updatePositionLengthFromChild = () => {
+    alert('calling Position function');
   }
 
 
   const getdatas = async () => {
     try {
-      
+
       const { data } = await Axios.post(`/trade/positionHistory`, { id: selectedPairs }, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         }
       })
-      
+
       setcount(data?.result?.length)
-      
+
     } catch (error) {
       console.log(error)
     }
@@ -89,7 +93,7 @@ setcount(data)
           <Tab label="Open orders" {...a11yProps(0)} />
           <Tab label="Order history" {...a11yProps(1)} />
           <Tab label={`Positions ${count ? count : 0}`} {...a11yProps(2)} />
-          <Tab label="Position History" {...a11yProps(3)} />
+          {/* <Tab label="Position History" {...a11yProps(3)} /> */}
           <Tab label="Bots" {...a11yProps(4)} />
         </Tabs>
       </Box>
@@ -103,7 +107,7 @@ setcount(data)
             setOrder("market")
           }}>Market</Button>
         </Stack>
-        <OpenOrderTable selectedPairs={selectedPairs} reload={reload} />
+        <OpenOrderTable selectedPairs={selectedPairs} reload={reload} ordreType={order} />
       </TabPanel>
 
       <TabPanel value={value} index={1}>
@@ -115,13 +119,15 @@ setcount(data)
             setOrder("market")
           }}>Market</Button>
         </Stack>
-        <CompleteAndCancelList selectedPairs={selectedPairs} orders={order} />
+        <CompleteAndCancelList selectedPairs={selectedPairs} orderType={order} coinName={data} />
       </TabPanel>
+
       <TabPanel value={value} index={2}>
         {/* <OpenOrderTable selectedPairs={selectedPairs} /> */}
-        <FutureHistory selected={selectedPairs} positionnumber={positionnumber}/>
+        <FutureHistory selected={selectedPairs} positionnumber={positionnumber} />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+
+      {/* <TabPanel value={value} index={3}>
         <Stack spacing={2} direction="row" className='filter-buttons-open-order'>
           <Button variant={order == "limit" ? "contained" : "outlined"} onClick={() => {
             setOrder("limit")
@@ -129,10 +135,11 @@ setcount(data)
           <Button variant={order != "limit" ? "contained" : "outlined"} onClick={() => {
             setOrder("market")
           }}>Market</Button>
-        </Stack>
+        </Stack> */}
         {/* <OpenOrderTable selectedPairs={selectedPairs} /> */}
-        <PositionOrder selectedPairs={selectedPairs} orders={order}/>
-      </TabPanel>
+        {/* <PositionOrder selectedPairs={selectedPairs} orders={order}/>
+      </TabPanel> */}
+      
       <TabPanel value={value} index={4}>
         <Stack spacing={2} direction="row" className='filter-buttons-open-order'>
           <Button variant={order == "limit" ? "contained" : "outlined"} onClick={() => {
@@ -142,7 +149,7 @@ setcount(data)
             setOrder("market")
           }}>Market</Button>
         </Stack>
-        <OpenOrderTable selectedPairs={selectedPairs} />
+        <OpenOrderTable selectedPairs={selectedPairs} ordreType={order} />
       </TabPanel>
       <TabPanel value={value} index={5}>
         <Stack spacing={2} direction="row" className='filter-buttons-open-order'>
@@ -153,7 +160,7 @@ setcount(data)
             setOrder("market")
           }}>Market</Button>
         </Stack>
-        <OpenOrderTable selectedPairs={selectedPairs} />
+        <OpenOrderTable selectedPairs={selectedPairs} ordreType={order} />
       </TabPanel>
     </Box>
   );

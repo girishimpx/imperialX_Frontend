@@ -46,7 +46,7 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
     })
       .then((res) => {
         if (res?.data?.result.length > 0) {
-          
+
 
           const newArray = res?.data?.result.map((obj) => ({
             ...obj,
@@ -70,7 +70,7 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
       <Table aria-label="simple table">
         <TableBody>
           {/* {console.log(futurevalue,'futurevalue market tab')} */}
-          
+
           {futurevalue?.map((row, index) => {
             if (searchpair) {
               if (row?.instId.includes(searchpair)) {
@@ -78,9 +78,9 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                   <TableRow
                     key={index}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    // onClick={() => {
-                    //   navigateToFuturePage(row);
-                    // }}
+                  // onClick={() => {
+                  //   navigateToFuturePage(row);
+                  // }}
                   >
                     <TableCell>
                       <div className="table-advace-left">
@@ -88,9 +88,8 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                           <div>{/* <img src={"row?.image"} /> */}</div>
                           <div>
                             <span className="rowcoin">
-                              {`${row?.instId.split("-")[0]}/${
-                                row?.instId.split("-")[1]
-                              } `}
+                              {`${row?.instId.split("-")[0]}/${row?.instId.split("-")[1]
+                                } `}
                               {/* <span
                                 style={{
                                   paddingLeft: "5px",
@@ -113,13 +112,13 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                                   : ""
                               }`}</span> */}
                             </span>
-                            <span className="rowcoinname">{row?.instId ? row?.instId:""}</span>
+                            <span className="rowcoinname">{row?.instId ? row?.instId : ""}</span>
                           </div>
                         </div>
                         <div className="tble-inner-right"></div>
                       </div>
                     </TableCell>
-                    
+
                     <TableCell>
                       <div className="table-advace-rght">
                         <div className="tble-inner-right">
@@ -132,26 +131,25 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                           >
 
 
-                                
-                         <span
-                            style={{
-                              color:
-                                findPercentage(
-                                  Number(row?.last),
-                                  Number(row?.open24h)
-                                ) > 0
-                                  ? "#10D876 !important"
-                                  : "#CA3F64 !important"
-,
-                            }}
-                          >{`${
-                            row?.last
-                              ? findPercentage(
+
+                            <span
+                              style={{
+                                color:
+                                  findPercentage(
+                                    Number(row?.last),
+                                    Number(row?.open24h)
+                                  ) > 0
+                                    ? "#10D876 !important"
+                                    : "#CA3F64 !important"
+                                ,
+                              }}
+                            >{`${row?.last
+                                ? findPercentage(
                                   Number(row?.last),
                                   Number(row?.open24h)
                                 )
-                              : 0
-                          }%`}</span>
+                                : 0
+                              }%`}</span>
                           </span>
                         </div>
                       </div>
@@ -164,9 +162,9 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                 <TableRow
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  // onClick={() => {
-                  //   navigateToFuturePage(row);
-                  // }}
+                // onClick={() => {
+                //   navigateToFuturePage(row);
+                // }}
                 >
                   <TableCell>
                     <div className="table-advace-left">
@@ -175,9 +173,8 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                         <div>
                           <span className="rowcoin">
                             {/* {console.log(row,'rowdaata')} */}
-                            {row?.instId ? `${row?.instId?.split("-")[0]}/${
-                              row?.instId?.split("-")[1]
-                            } ` : '. . .'}
+                            {row?.instId ? `${row?.instId?.split("-")[0]}/${row?.instId?.split("-")[1]
+                              } ` : '. . .'}
                             {/* <span
                               style={{
                                 paddingLeft: "5px",
@@ -201,9 +198,9 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                             }`}</span> */}
                           </span>
 
-                            
-                          
-                          <span className="rowcoinname">{row?.instId ? row?.instId:""}</span>
+
+
+                          <span className="rowcoinname">{row?.instId ? row?.instId : ""}</span>
                         </div>
                       </div>
                       <div className="tble-inner-right"></div>
@@ -219,10 +216,10 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                           id={true < 0 ? "red-low" : "green-high"}
                           className="percentage-part"
                         >
-                          
+
                           <span
                             style={{
-                              color: 
+                              color:
                                 findPercentage(
                                   Number(row?.last),
                                   Number(row?.open24h)
@@ -231,14 +228,13 @@ export default function AdvanceMarketTable({ futurevalue, searchpair }) {
                                   : "#CA3F64"
                               ,
                             }}
-                          >{`${
-                            row?.last
+                          >{`${row?.last
                               ? findPercentage(
-                                  Number(row?.last),
-                                  Number(row?.open24h)
-                                )
+                                Number(row?.last),
+                                Number(row?.open24h)
+                              )
                               : 0
-                          }%`}</span>
+                            }%`}</span>
                         </span>
                       </div>
                     </div>

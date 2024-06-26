@@ -28,7 +28,7 @@ p.welcome-msg1 span.balance-span {
     color: white !important;
     /* border: 1px solid white; */
     padding: 15px 0px;
-        text-align: left;
+    text-align: left;
     /* border-radius: 8px; */
 }
 
@@ -547,7 +547,10 @@ div#account-qr-code-pop-up-modal-id .sub-head p {
     margin-bottom: 0px;
 }
 
-div#account-qr-code-pop-up-modal-id .sub-head, div#account-qr-code-pop-up-modal-id .inner-popup .text-binance{text-align: center !important;}
+div#account-qr-code-pop-up-modal-id .sub-head,
+div#account-qr-code-pop-up-modal-id .inner-popup .text-binance {
+    text-align: center !important;
+}
 
 div#account-qr-code-pop-up-modal-id {
     padding: 20px !important;
@@ -556,7 +559,8 @@ div#account-qr-code-pop-up-modal-id {
     width: 50% !important;
 }
 
-div#account-qr-code-pop-up-modal-id .leftside-binace, div#account-qr-code-pop-up-modal-id .inner-popup {
+div#account-qr-code-pop-up-modal-id .leftside-binace,
+div#account-qr-code-pop-up-modal-id .inner-popup {
     border: none;
 }
 
@@ -628,15 +632,15 @@ div#account-qr-code-pop-up-modal-id .inner-popup {
     align-items: center;
 }
 
-.text-binance.flex-edit-enable-como > div > div {
+.text-binance.flex-edit-enable-como>div>div {
     padding: 0px;
 }
 
-.text-binance.flex-edit-enable-como > div > div > div > div {
+.text-binance.flex-edit-enable-como>div>div>div>div {
     display: block;
 }
 
-.text-binance.flex-edit-enable-como > div {
+.text-binance.flex-edit-enable-como>div {
     width: auto !important;
     margin: 0px;
 }
@@ -659,10 +663,11 @@ div#account-qr-code-pop-up-modal-id .inner-popup {
     .css-1wnsr1i {
         left: 50% !important
     }
+
     .formtxt.formtxt-textfield .MuiFormControl-root {
         width: 100%;
     }
-    
+
     div#account-qr-code-pop-up-modal-id {
         width: 90% !important;
     }
@@ -737,12 +742,12 @@ div#account-qr-code-pop-up-modal-id .inner-popup {
     }
 
     p {
-        font-size: 11px !important;
+        font-size: 16px !important;
         line-height: 20px !important;
     }
 
     span {
-        font-size: 11px !important;
+        font-size: 14px !important;
         line-height: 20px !important;
     }
 
@@ -778,12 +783,12 @@ div#account-qr-code-pop-up-modal-id .inner-popup {
     }
 
     p {
-        font-size: 11px !important;
+        font-size: 16px !important;
         line-height: 20px !important;
     }
 
     span {
-        font-size: 11px !important;
+        font-size: 14px !important;
         line-height: 20px !important;
     }
 

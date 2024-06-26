@@ -34,7 +34,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Constant from "../../Constansts";
 import clipboardCopy from "clipboard-copy";
-
 import Badge from "@mui/material/Badge";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import AddIcon from "@mui/icons-material/Add";
@@ -42,6 +41,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import MailIcon from "@mui/icons-material/Mail";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Avatar from '@mui/material/Avatar';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -106,7 +112,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) => {
+const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar, profileRender }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const history = useLocation();
@@ -127,12 +133,15 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   const [notificationListerr, setNotificationLIsterr] = useState();
   const tokenCheck = window.localStorage.getItem("Mellifluous");
   const [invisible, setInvisible] = React.useState(true);
+  const [img, setImg] = useState()
+  const [urlname, setUrlName] = useState('');
 
   useEffect(() => {
     if (notification) {
       setInvisible(false);
     }
-  }, []);
+    getMydetail()
+  }, [profileRender]);
 
 
   const MobileMenuOpen = () => {
@@ -191,6 +200,7 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   }, [tokenCheck]);
 
   useEffect(() => {
+    setUrlName(history?.pathname);
     try {
       setNotificationLIst("");
 
@@ -217,11 +227,6 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   }, [history.pathname]);
 
   const ClearNOtification = async (id) => {
-
-
-
-
-
     Axios.post(
       "/users/notification_checked",
       { id },
@@ -246,7 +251,12 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   };
 
   const handleDisable = async () => {
-    const { data } = await Axios.post(`/auth/disable2fa`);
+    const { data } = await Axios.post(`/auth/disable2fa`, {},
+      {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        }
+      });
     if (data?.success === true) {
       setEna(false);
       setTwoFactorEnable("disable");
@@ -339,20 +349,8 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
 
   const verify2FA = async () => {
     try {
-      const { data } = await Axios.post(
-        `/auth/verify2fa`,
-        {
-          secret: verifyS.current.value,
-        },
-        {
-          headers: {
-            Authorization: window.localStorage.getItem("Mellifluous"),
-          },
-        }
-      );
-      if (data?.message === "2FA Verified Successfully") {
-        setEna(false);
-        toast.success(data?.message, {
+      if (verifyS.current.value == '') {
+        toast.error("Please Enter OTP", {
 
           duration: 4000,
           position: "top-center",
@@ -361,13 +359,13 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
           style: {
             padding: "1rem",
             fontSize: "15px",
-            color: "green",
+            color: "red",
             fontWeight: "bold",
           },
           className: "",
 
           // Custom Icon
-          icon: "👏",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -382,11 +380,56 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
           },
         });
       }
-      setTwoFactorEnable("enable");
-      verifyS.current.value = "";
+      else {
+        const { data } = await Axios.post(
+          `/auth/verify2fa`,
+          {
+            secret: verifyS.current.value,
+          },
+          {
+            headers: {
+              Authorization: window.localStorage.getItem("Mellifluous"),
+            },
+          }
+        );
+        if (data?.message === "2FA Verified Successfully") {
+          setEna(false);
+          toast.success(data?.message, {
+
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "green",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "👏",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+        }
+        setTwoFactorEnable("enable");
+        verifyS.current.value = "";
+      }
     } catch ({ response }) {
       if (response?.data?.success === false) {
-        setemailerr("Invalid-Otp");
+        // setemailerr("Invalid-Otp");
         toast.error("Invalid-Otp", {
 
           duration: 4000,
@@ -427,7 +470,7 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
 
   const handleCopy = (status) => {
     clipboardCopy(status);
-    toast.sussess("code copied", {
+    toast.success("code copied", {
 
       duration: 800,
       position: "top-center",
@@ -479,10 +522,11 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
     // }).catch(err => console.log(err.response.data.message))
   }
 
-  
+  // window.localStorage.setItem('widthAlignment','OriginalWidth')
 
-  const setwidth = ()=>{
-    const isFullWidth =  window.localStorage.getItem('widthAlignment');
+
+  const setwidth = () => {
+    const isFullWidth = window.localStorage.getItem('widthAlignment');
     if (isFullWidth !== undefined) {
       const body = document.querySelector("body");
       body.className = isFullWidth == 'FullWidth' ? 'full-width' : 'original-width';
@@ -492,7 +536,7 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   const handleDrawerOpen = () => {
     setOpenSideBar(true);
     if (window.localStorage.getItem('widthAlignment')) {
-      window.localStorage.setItem('widthAlignment','OriginalWidth')
+      window.localStorage.setItem('widthAlignment', 'OriginalWidth')
       setwidth()
     }
   };
@@ -500,24 +544,46 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
   const handleDrawerClose = () => {
     setOpenSideBar(false);
     if (window.localStorage.getItem('widthAlignment')) {
-      window.localStorage.setItem('widthAlignment','FullWidth')
+      window.localStorage.setItem('widthAlignment', 'FullWidth')
       setwidth()
     }
   };
 
-  useEffect(()=>{
-    if(window.localStorage.getItem('widthAlignment')=='OriginalWidth'){
+  useEffect(() => {
+    if (window.localStorage.getItem('widthAlignment') == 'OriginalWidth') {
       handleDrawerOpen()
     }
-    },[])
-  
-    useEffect(()=>{
-      if(window.localStorage.getItem('widthAlignment')=='FullWidth'){
-        handleDrawerClose()
-      }
-    },[])
-  
+  }, [])
 
+  useEffect(() => {
+    if (window.localStorage.getItem('widthAlignment') == 'FullWidth') {
+      handleDrawerClose()
+    }
+  }, [])
+
+  const getMydetail = async () => {
+    try {
+      await Axios.get(`${Constant.BackendUrl}/users/get_profile`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      }).then((res) => {
+        // console.log(res, 'profile');
+        if (res?.status === 200) {
+          setImg(res?.data?.result?.image)
+        }
+        // console.log(res?.data?.total_price_in_usd)
+      })
+    } catch (error) {
+      console.log(error, 'img err in headers');
+    }
+
+  }
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
+  // console.log(matches, 'mateches');
   return (
     <>
       <Toaster />
@@ -525,15 +591,18 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={0} id="header-flex-container">
             <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-            {!openSideBar ?
-              <div className="icon-for-change-width">
-              <FontAwesomeIcon onClick={handleDrawerOpen} icon={faBars} />
-              </div>
-              : 
-              <div className="icon-for-change-width">
-              <ArrowCircleLeftIcon  onClick={handleDrawerClose}/>
-              </div>
-            }
+
+              {!openSideBar ?
+                <div className="icon-for-change-width">
+                  <FontAwesomeIcon onClick={handleDrawerOpen} icon={faBars} />
+                </div> :
+
+                <div className="icon-for-change-width">
+                  <ArrowCircleLeftIcon onClick={handleDrawerClose} icon={faBars} />
+                </div>
+
+              }
+
               {/* <Paper
                 component="form"
                 sx={{
@@ -560,14 +629,37 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
 
             <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
               <div className={classes.flexcls}>
+                { urlname.includes('dashboard') == true ? 
+                (matches ? <FormControl variant="outlined" className="search-form">
+
+                  <Input
+                    id="input-with-icon-adornment"
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ fill: '#25DEB0' }} />
+                      </InputAdornment>
+                    }
+                    className="search-dash" type="text" placeholder="Search"
+                    variant="outlined"
+                  />
+                </FormControl> : null) : 
+                null
+                }
+                
                 <Button className="user-block-outer">
                   {tokenCheck ? (
                     <div className="user-login-part">
                       <div
-                        className="user-after-login"
+                        // className="user-after-login"
                         onClick={() => handleProfileOpen()}
                       >
-                        <FontAwesomeIcon icon={faUser} />
+                        {/* <FontAwesomeIcon icon={faUser} /> */}
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={img ? img : faUser}
+                          // sx={{ width: 40, height: 40 }}
+                          className='user-after-login'
+                        ></Avatar>
                       </div>
                       {profileOpen && (
                         <div className="user-profile-dropdwn">
@@ -700,7 +792,7 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
                                     <div className="Security-Code qr-code">
                                       <span>QR Code:</span>
                                       <div className="qr-code-code" style={{ padding: "1rem 0", backgroundColor: "white" }}>
-                                        {console.log(qrCode, "code")}
+                                        {/* {console.log(qrCode, "code")} */}
                                         <QRCodeSVG value={qrCode} />
                                       </div>
                                     </div>
@@ -852,7 +944,7 @@ const Header = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
                 )}
 
                 <Button className="customer-service">
-                  <img src={customerservice} alt="user" />
+                  <Link to='/supportmain'><img src={customerservice} alt="user" /></Link>
                 </Button>
                 <div
                   className="open-sidemenu-block"

@@ -14,7 +14,11 @@ import backarrow from "../../images/back-arrow.svg";
 import nextarrow from "../../images/Next-arrow.svg";
 import symbol from "../../images/symbol.svg";
 import droparrow from "../../images/Droparrow.svg";
-
+import SearchIcon from '@mui/icons-material/Search';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
 
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -53,7 +57,7 @@ const useStyles = makeStyles({
   },
   blockwidthcmn: {
     maxWidth: "23% !important",
-    margin: "40px 0 !important",
+    margin: "20px 0 !important",
     "@media (max-width: 767.98px)": {
       maxWidth: "100% !important",
       margin: "15px 0 !important",
@@ -99,8 +103,7 @@ const style = {
   p: 4,
 };
 
-const DasboardBody = ({ btc, eth, dash, xrp, btc1, eth1, xrp1, ltc, totalBalance }) => {
-  console.log(btc, eth, dash, xrp, 'dbdy')
+const DasboardBody = ({ btc, eth, dash, xrp, btc1, eth1, xrp1, ltc, btcUsd, ethUsd, xprUsd, ltcUsd, totalBalance }) => {
 
   const findPercentage = (lp, op) => {
     let increase = lp - op;
@@ -149,164 +152,161 @@ const DasboardBody = ({ btc, eth, dash, xrp, btc1, eth1, xrp1, ltc, totalBalance
     <div className="dashboard-body dashboard-main-body">
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={0}>
-          <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Item className={classes.dashboarbodycls}>
-              <p className="welcome-msg">
-                Welcome Back,{" "}
-                <span>
-                  {localStorage.getItem("users")
-                    ? JSON.parse(localStorage.getItem("users"))?.name
-                    : ""}
-                </span>
-              </p>
+              <div className="name-search-main">
+                <p className="welcome-msg">
+                  Welcome Back,{" "}
+                  <span>
+                    {localStorage.getItem("users")
+                      ? JSON.parse(localStorage.getItem("users"))?.name
+                      : ""}
+                  </span>
+                </p>
+
+                {/* <FormControl variant="outlined" className="search-form">
+
+                  <Input
+                    id="input-with-icon-adornment"
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ fill: '#25DEB0' }} />
+                      </InputAdornment>
+                    }
+                    className="search-dash" type="text" placeholder="Search"
+                    variant="outlined"
+                  />
+                </FormControl> */}
+              </div>
+
             </Item>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-            <Item className={classes.addaccount}>
 
-              <Modal
-                open={open}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={style}>
-                  <Grid container spacing={0}>
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                      <Item className={classes.dashboarbodycls}>
-                        {user && (
-                          <p className="welcome-msg">
-                            Welcome Back, <span>{`${user?.name}`}</span>
-                          </p>
-                        )}
 
-                        <div className="heading-account">
-                          <h6 className="xchange">Form</h6>
-                          <CloseIcon onClick={handleClose} />
-                        </div>
+          <Modal
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Grid container spacing={0}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <Item className={classes.dashboarbodycls}>
+                    {user && (
+                      <p className="welcome-msg">
+                        Welcome Back, <span>{`${user?.name}`}</span>
+                      </p>
+                    )}
 
-                        <Grid container spacing={0} className="inner-popup">
-                          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                            <Item className={classes.dashboarbodycls}>
-                              {/* <div className='user-icon binance'><img src={binancecoin} alt='user'/></div> */}
-                              <div className="formtxt">
-                                <TextField
-                                  id="outlined-multiline-flexible"
-                                  label="Exchange Name"
-                                  multiline="multiline"
-                                  className="text-field"
-                                />
-                              </div>
+                    <div className="heading-account">
+                      <h6 className="xchange">Form</h6>
+                      <CloseIcon onClick={handleClose} />
+                    </div>
 
-                              <div className="formtxt">
-                                <TextField
-                                  id="outlined-multiline-flexible"
-                                  label="API Key"
-                                  multiline="multiline"
-                                  className="text-field"
-                                />
-                              </div>
-
-                              <div className="formtxt">
-                                <TextField
-                                  id="outlined-multiline-flexible"
-                                  label="API Name"
-                                  multiline="multiline"
-                                  className="text-field"
-                                />
-                              </div>
-
-                              <div className="formtxt">
-                                <TextField
-                                  id="outlined-multiline-flexible"
-                                  label="Premission"
-                                  multiline="multiline"
-                                  className="text-field"
-                                />
-                              </div>
-
-                              <div className="text-binance">
-                                <Button
-                                  className="binance-btn"
-                                  onClick={handleOpens}
-                                >
-                                  Sumbit
-                                </Button>
-                              </div>
-                            </Item>
-                          </Grid>
-
-                          <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
-                            <Item className={classes.dashboarbodycls}></Item>
-                          </Grid>
-                        </Grid>
-                      </Item>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Modal>
-
-              {opens && (
-                <Modal
-                  open={opens}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box sx={style} className="binance-popup">
-                    <Grid container spacing={0}>
+                    <Grid container spacing={0} className="inner-popup">
                       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                         <Item className={classes.dashboarbodycls}>
-                          <div className="heading-account acc">
-                            <CloseIcon onClick={handleCloses} />
+                          {/* <div className='user-icon binance'><img src={binancecoin} alt='user'/></div> */}
+                          <div className="formtxt">
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              label="Exchange Name"
+                              multiline="multiline"
+                              className="text-field"
+                            />
                           </div>
 
-                          <Grid container spacing={0} className="inner-popup">
-                            <Grid item xs={12} sm={12} md={12} lg={5} xl={5}>
-                              <Grid
-                                container="container"
-                                spacing={0}
-                                className="inner-popup leftside-binace"
-                              >
-                                <div className="sub-head">
-                                  <h4>Account</h4>
-                                  <p>9.99000999</p>
-                                </div>
-                              </Grid>
-                            </Grid>
+                          <div className="formtxt">
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              label="API Key"
+                              multiline="multiline"
+                              className="text-field"
+                            />
+                          </div>
 
-                            <Grid
-                              item="item"
-                              xs={12}
-                              sm={12}
-                              md={12}
-                              lg={7}
-                              xl={7}
-                              className="rightside-binace"
+                          <div className="formtxt">
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              label="API Name"
+                              multiline="multiline"
+                              className="text-field"
+                            />
+                          </div>
+
+                          <div className="formtxt">
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              label="Premission"
+                              multiline="multiline"
+                              className="text-field"
+                            />
+                          </div>
+
+                          <div className="text-binance">
+                            <Button
+                              className="binance-btn"
+                              onClick={handleOpens}
                             >
-                              <Grid
-                                container="container"
-                                spacing={0}
-                                className="inner-popup "
-                              >
-                                <Grid
-                                  item="item"
-                                  xs={12}
-                                  sm={12}
-                                  md={12}
-                                  lg={12}
-                                  xl={12}
-                                >
-                                  <Item className={classes.dashboarbodycls}>
-                                    <div className="text-binance">
-                                      <p>QR Code</p>
-                                    </div>
-                                  </Item>
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
+                              Sumbit
+                            </Button>
+                          </div>
+                        </Item>
+                      </Grid>
 
-                          <Grid container spacing={0} className="inner-popup">
+                      <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
+                        <Item className={classes.dashboarbodycls}></Item>
+                      </Grid>
+                    </Grid>
+                  </Item>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
+
+          {opens && (
+            <Modal
+              open={opens}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style} className="binance-popup">
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="heading-account acc">
+                        <CloseIcon onClick={handleCloses} />
+                      </div>
+
+                      <Grid container spacing={0} className="inner-popup">
+                        <Grid item xs={12} sm={12} md={12} lg={5} xl={5}>
+                          <Grid
+                            container="container"
+                            spacing={0}
+                            className="inner-popup leftside-binace"
+                          >
+                            <div className="sub-head">
+                              <h4>Account</h4>
+                              <p>9.99000999</p>
+                            </div>
+                          </Grid>
+                        </Grid>
+
+                        <Grid
+                          item="item"
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={7}
+                          xl={7}
+                          className="rightside-binace"
+                        >
+                          <Grid
+                            container="container"
+                            spacing={0}
+                            className="inner-popup "
+                          >
                             <Grid
                               item="item"
                               xs={12}
@@ -315,31 +315,49 @@ const DasboardBody = ({ btc, eth, dash, xrp, btc1, eth1, xrp1, ltc, totalBalance
                               lg={12}
                               xl={12}
                             >
-                              <div className="formtxt">
-                                <TextField
-                                  id="outlined-multiline-static"
-                                  label=""
-                                  className="text-field"
-                                />
-                              </div>
-
-                              <div className="bck-btn">
-                                {/* <Button className='chosse-btn chose'><img src={backarrow} alt='user'/>Back</Button> */}
-                                <Button className="welcome-btn open">
-                                  Pay
-                                  <img src={nextarrow} alt="user" />
-                                </Button>
-                              </div>
+                              <Item className={classes.dashboarbodycls}>
+                                <div className="text-binance">
+                                  <p>QR Code</p>
+                                </div>
+                              </Item>
                             </Grid>
                           </Grid>
-                        </Item>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Box>
-                </Modal>
-              )}
-            </Item>
-          </Grid>
+
+                      <Grid container spacing={0} className="inner-popup">
+                        <Grid
+                          item="item"
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          xl={12}
+                        >
+                          <div className="formtxt">
+                            <TextField
+                              id="outlined-multiline-static"
+                              label=""
+                              className="text-field"
+                            />
+                          </div>
+
+                          <div className="bck-btn">
+                            {/* <Button className='chosse-btn chose'><img src={backarrow} alt='user'/>Back</Button> */}
+                            <Button className="welcome-btn open">
+                              Pay
+                              <img src={nextarrow} alt="user" />
+                            </Button>
+                          </div>
+                        </Grid>
+                      </Grid>
+                    </Item>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Modal>
+          )}
+
         </Grid>
 
         <Grid container spacing={0} id="balance-blocks">
@@ -550,7 +568,7 @@ const DasboardBody = ({ btc, eth, dash, xrp, btc1, eth1, xrp1, ltc, totalBalance
             className={classes.tradeview}
           >
             <Item className={classes.tradeviewinner}>
-              <AreaChart hoverData={hoverdata} tradelistdata={[btc, eth, xrp, dash]} balance={[btc1, eth1, xrp1, ltc]} />
+              <AreaChart hoverData={hoverdata} tradelistdata={[btc, eth, xrp, dash]} balance={[btc1, eth1, xrp1, ltc]} USD={[btcUsd, ethUsd, xprUsd, ltcUsd]} />
             </Item>
           </Grid>
 

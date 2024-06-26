@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     "& th": {
       color: "#909090 !important",
-      fontSize: "11px !important",
+      fontSize: "10px !important",
       padding: "2px 0 !important",
       border: "none !important",
     },
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 export default function SellingTable({ ticker, setSelected, pair, market }) {
   const classes = useStyles();
 
-
+  // console.log(pair,'TICKERsetSelected');
   (() => {
     if (ticker) {
       if (rows.length == 21) {
@@ -80,13 +80,28 @@ export default function SellingTable({ ticker, setSelected, pair, market }) {
         className={classes.sellingtable}
       >
         <TableHead>
+{
+          // <TableRow>
+          //   <TableCell align="left">
+          //     Price( {pair ? pair.split('-')[1] : "USDT"} )
+          //   </TableCell>
+          //   <TableCell align="right">
+          //     {/* Amount({ticker ? ticker[4].split("-")[0] : "USD"}) */}
+          //     Amount({pair ? pair.split('-')[0] : "BTC"} )
+
+          //   </TableCell>
+          //   {/* <TableCell align="right">Total({ticker ? ticker[4].split("-")[0] : "USD"})</TableCell> */}
+          //   <TableCell align="right">Total</TableCell>
+
+          // </TableRow>
+}          
           <TableRow>
             <TableCell align="left">
-              Price( {pair ? pair.split('-')[1] : "USDT"} )
+              Price({pair.substring(pair.length - 4) || "USDT"})
             </TableCell>
             <TableCell align="right">
               {/* Amount({ticker ? ticker[4].split("-")[0] : "USD"}) */}
-              Amount({pair ? pair.split('-')[0] : "BTC"} )
+              Amount({pair.substring(0, pair.length - 4) || "BTC"})
 
             </TableCell>
             {/* <TableCell align="right">Total({ticker ? ticker[4].split("-")[0] : "USD"})</TableCell> */}
@@ -94,13 +109,14 @@ export default function SellingTable({ ticker, setSelected, pair, market }) {
 
           </TableRow>
         </TableHead>
+        {/* {console.log(rows,'rowsORDER')} */}
         {rows?.length > 5 && <TableBody>
-
           {rows.map((row, index) => (
             <TableRow
 
               key={index}
               onClick={() => {
+                // console.log(row,'CLICKERROR')
                 let vals = row;
                 vals.from = "sell";
                 setSelected(vals);
@@ -108,10 +124,11 @@ export default function SellingTable({ ticker, setSelected, pair, market }) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 }, cursor: "pointer" }}
             >
               <TableCell align="left">
-                {Number(row.price).toLocaleString()}
+                {/* {Number(row.price).toLocaleString()} */}
+                {row.price ? Number(row.price) : 0}
               </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">{row.total}</TableCell>
+              <TableCell align="right">{row.amount ? Number(row.amount) : 0}</TableCell>
+              <TableCell align="right">{row.total != "NaN" ? row.total : 0}</TableCell>
             </TableRow>
           ))}
         </TableBody>}

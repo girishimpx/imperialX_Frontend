@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TablePagination from '@mui/material/TablePagination';
 import Paper from "@mui/material/Paper";
 import { makeStyles } from "@mui/styles";
 import { BorderBottom } from "@mui/icons-material";
@@ -61,7 +62,7 @@ const useStyles = makeStyles({
     background: "transparent !important",
     borderRadius: "0px !important",
     boxShadow: "none !important",
-    color: "#fff !important",
+    color: "#000 !important",
   },
   tablebody: {
     color: "#fff !important",
@@ -69,30 +70,97 @@ const useStyles = makeStyles({
 });
 
 // sx={{ minWidth: 650 }}
-export default function WalletTable() {
+export default function WalletTable({ searchValue }) {
+  // console.log(searchValue, 'searchvalue');
   const classes = useStyles();
   const [coinsList, setCoinsList] = useState();
   const [load, setLoad] = useState(true);
   const [time, setTime] = useState(true);
   const history = useLocation();
-  const [depositShow,setDepositShow] =useState(false)
+  const [depositShow, setDepositShow] = useState(false)
   const [kycsubmit, setkycsubmit] = useState(false);
   const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 50));
+    setPage(0);
+  };
 
 
 
+  // const coinfinding = async () => {
+  //   if (localStorage.getItem("Mellifluous")) {
+  //     await Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         console.log(res,"resonanxe")
+  //         setCoinsList(res?.data?.result);
+  //         setLoad(false);
+  //       })
+  //       .catch((err) => {
+  //         setLoad(false);
+  //       });
+  //   }
+  // };
 
-  const coinfinding = async () => {
-    if (localStorage.getItem("Mellifluous")) {
-      await Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
+  const getmyWallet = () => {
+    try {
+      Axios.get(`/wallet/getWalletById`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
-          console.log(res,"resonanxe")
-          setCoinsList(res?.data?.result);
-          setLoad(false);
+          if (res?.data?.success) {
+            console.log('success');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+
+  useEffect(() => {
+    getmyWallet()
+  }, [])
+
+  const listCoin = async () => {
+    if (localStorage.getItem("Mellifluous")) {
+      await Axios.get(`${Consts.BackendUrl}/bybit/getwallets`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          // console.log(res, "resonanxe")
+          if (searchValue) {
+            // setLoad(true)
+            const result = res?.data?.result?.filter(data => data.coinname.includes(searchValue));
+            // console.log(result, 'result');
+            if (result) {
+              setCoinsList(result)
+              setLoad(false);
+            }
+          }
+          else {
+            setCoinsList(res?.data?.result);
+            setLoad(false);
+          }
+
         })
         .catch((err) => {
           setLoad(false);
@@ -100,9 +168,12 @@ export default function WalletTable() {
     }
   };
 
+  // console.log(coinsList, 'coinlist');
+
   useEffect(() => {
-    coinfinding();
-  }, [time]);
+    // coinfinding();
+    listCoin();
+  }, [time, searchValue]);
 
   setInterval(() => {
     setTime(!time)
@@ -110,7 +181,7 @@ export default function WalletTable() {
 
   const handleDepositClick = (row) => {
     if (!depositShow && !kycsubmit) {
-      toast.error(`Please submit kyc to trade`, { 
+      toast.error(`Please submit kyc to trade`, {
         duration: 1900,
         position: "top-center",
 
@@ -143,7 +214,7 @@ export default function WalletTable() {
       setTimeout(() => {
         navigate("/kycj-verification");
       }, 1600);
-    }else if(!depositShow && kycsubmit){
+    } else if (!depositShow && kycsubmit) {
       toast.error(`Your KYC submission is under verification`, {
         duration: 4000,
         position: "top-center",
@@ -173,299 +244,398 @@ export default function WalletTable() {
           "aria-live": "polite",
         },
       });
-  }else {
-    navigate(`${Consts.route}/wallet-deposit`,{state: row})
+    } else {
+      navigate(`${Consts.route}/wallet-deposit`, { state: row })
     }
 
 
-    
-}
-const handleWithdrawClick = (row) => {
-  if (!depositShow && !kycsubmit) {
-    toast.error(`Please submit kyc to trade`, {
-      duration: 1900,
-      position: "top-center",
 
-      // Styling
-      style: {
-        backgroundColor: "#fc1922",
-        padding: "1rem",
-        fontSize: "15px",
-        color: "white",
-        fontWeight: "bold",
-      },
-      className: "",
-
-      // Custom Icon
-      icon: "",
-
-      // Change colors of success/error/loading icon
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-
-      // Aria
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-    });
-
-    setTimeout(() => {
-      navigate("/kycj-verification");
-    }, 1600);
-  }else if(!depositShow && kycsubmit){
-    toast.error(`Your KYC submission is under verification`, {
-      duration: 4000,
-      position: "top-center",
-
-      // Styling
-      style: {
-        backgroundColor: "#fc1922",
-        padding: "1rem",
-        fontSize: "15px",
-        color: "white",
-        fontWeight: "bold",
-      },
-      className: "",
-
-      // Custom Icon
-      icon: "",
-
-      // Change colors of success/error/loading icon
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-
-      // Aria
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-    });
-}else {
-  navigate(`${Consts.route}/wallet-withdraw`,{state:row})
   }
+  const handleWithdrawClick = (row) => {
+    if (!depositShow && !kycsubmit) {
+      toast.error(`Please submit kyc to trade`, {
+        duration: 1900,
+        position: "top-center",
 
+        // Styling
+        style: {
+          backgroundColor: "#fc1922",
+          padding: "1rem",
+          fontSize: "15px",
+          color: "white",
+          fontWeight: "bold",
+        },
+        className: "",
 
-  
-}
-const handleTransferClick = () => {
-  if (!depositShow && !kycsubmit) {
-    toast.error(`Please submit kyc to trade`, {
-      duration: 1900,
-      position: "top-center",
+        // Custom Icon
+        icon: "",
 
-      // Styling
-      style: {
-        backgroundColor: "#fc1922",
-        padding: "1rem",
-        fontSize: "15px",
-        color: "white",
-        fontWeight: "bold",
-      },
-      className: "",
+        // Change colors of success/error/loading icon
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
 
-      // Custom Icon
-      icon: "",
-
-      // Change colors of success/error/loading icon
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-
-      // Aria
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-    });
-
-    setTimeout(() => {
-      navigate("/kycj-verification");
-    }, 1600);
-  }else if(!depositShow && kycsubmit){
-    toast.error(`Your KYC submission is under verification`, {
-      duration: 4000,
-      position: "top-center",
-
-      // Styling
-      style: {
-        backgroundColor: "#fc1922",
-        padding: "1rem",
-        fontSize: "15px",
-        color: "white",
-        fontWeight: "bold",
-      },
-      className: "",
-
-      // Custom Icon
-      icon: "",
-
-      // Change colors of success/error/loading icon
-      iconTheme: {
-        primary: "#000",
-        secondary: "#fff",
-      },
-
-      // Aria
-      ariaProps: {
-        role: "status",
-        "aria-live": "polite",
-      },
-    });
-}else {
-  navigate(`${Consts.route}/transfer`)
-  }
-
-
-  
-}
-
-useEffect(() => {
-  try {
-    Axios.get(`${Consts.BackendUrl}/users/kycsybmit`, {
-      headers: {
-        Authorization: localStorage.getItem("Mellifluous"),
-      },
-    })
-      .then((res) => {
-        console.log(res?.data?.message,"resessss")
-        setkycsubmit(res?.data?.success);
-      })
-      .catch((err) => {
-        setkycsubmit(err?.data?.success);
+        // Aria
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
       });
 
-    Axios.get(`${Consts.BackendUrl}/users/kycVerify`, {
-      headers: {
-        Authorization: localStorage.getItem("Mellifluous"),
-      },
-    })
-      .then((res) => {
-        console.log(res,"resgfgfgf")
-        setDepositShow(res?.data?.success);
-      })
-      .catch((err) => console.log(err.response));
-  } catch (error) {
-    console.log("🚀 ~ file: MasterTraderTab.js:248 ~ useEffect ~ error:", error)
+      setTimeout(() => {
+        navigate("/kycj-verification");
+      }, 1600);
+    } else if (!depositShow && kycsubmit) {
+      toast.error(`Your KYC submission is under verification`, {
+        duration: 4000,
+        position: "top-center",
+
+        // Styling
+        style: {
+          backgroundColor: "#fc1922",
+          padding: "1rem",
+          fontSize: "15px",
+          color: "white",
+          fontWeight: "bold",
+        },
+        className: "",
+
+        // Custom Icon
+        icon: "",
+
+        // Change colors of success/error/loading icon
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+
+        // Aria
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
+    } else {
+      navigate(`${Consts.route}/wallet-withdraw`, { state: row })
+    }
+
+
+
+  }
+  const handleTransferClick = (row) => {
+    // console.log('clickrow', row);
+    if (!depositShow && !kycsubmit) {
+      toast.error(`Please submit kyc to trade`, {
+        duration: 1900,
+        position: "top-center",
+
+        // Styling
+        style: {
+          backgroundColor: "#fc1922",
+          padding: "1rem",
+          fontSize: "15px",
+          color: "white",
+          fontWeight: "bold",
+        },
+        className: "",
+
+        // Custom Icon
+        icon: "",
+
+        // Change colors of success/error/loading icon
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+
+        // Aria
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
+
+      setTimeout(() => {
+        navigate("/kycj-verification");
+      }, 1600);
+    } else if (!depositShow && kycsubmit) {
+      toast.error(`Your KYC submission is under verification`, {
+        duration: 4000,
+        position: "top-center",
+
+        // Styling
+        style: {
+          backgroundColor: "#fc1922",
+          padding: "1rem",
+          fontSize: "15px",
+          color: "white",
+          fontWeight: "bold",
+        },
+        className: "",
+
+        // Custom Icon
+        icon: "",
+
+        // Change colors of success/error/loading icon
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+
+        // Aria
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
+    } else {
+      navigate(`${Consts.route}/transfer`, { state: row })
+    }
+
+
 
   }
 
-}, []);
+  useEffect(() => {
+    try {
+      Axios.get(`${Consts.BackendUrl}/users/kycsybmit`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          // console.log(res?.data?.message, "resessss")
+          setkycsubmit(res?.data?.success);
+        })
+        .catch((err) => {
+          setkycsubmit(err?.data?.success);
+        });
+
+      Axios.get(`${Consts.BackendUrl}/users/kycVerify`, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          // console.log(res, "resgfgfgf")
+          setDepositShow(res?.data?.success);
+        })
+        .catch((err) => console.log(err.response));
+    } catch (error) {
+      console.log("🚀 ~ file: MasterTraderTab.js:248 ~ useEffect ~ error:", error)
+
+    }
+
+  }, []);
 
 
   return (
-    <TableContainer component={Paper} id="wallet-table-id" className={classes.table}>
-      <Table aria-label="simple table" id="common-color-white">
-        <TableHead className={classes.tableheader}>
-          <TableRow>
-            <TableCell style={{textAlign: "left"}}>Coin</TableCell>
-            <TableCell style={{textAlign: "center"}} align="start">Balance</TableCell>
-            <TableCell style={{textAlign: "center"}} align="start">Frozen Balance</TableCell>
-            {/* <TableCell align="start">Margin Sell</TableCell> */}
-            <TableCell style={{textAlign: "center"}} align="start">Margin Balance</TableCell>
-            <TableCell style={{textAlign: "center"}} align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
+    <>
+      <TableContainer component={Paper} id="wallet-table-id" className={classes.table}>
+        <Table aria-label="simple table" id="common-color-white">
+          <TableHead className={classes.tableheader}>
+            <TableRow>
+              {/* <TableCell style={{textAlign: "left"}}>S.No</TableCell> */}
+              <TableCell style={{ textAlign: "left" }}>Coin</TableCell>
+              <TableCell style={{ textAlign: "center" }} align="start">Wallet Balance</TableCell>
+              <TableCell style={{ textAlign: "center" }} align="start"> Funding Balance</TableCell>
+              <TableCell style={{ textAlign: "center" }} align="start">Frozen Balance</TableCell>
+              {/* <TableCell align="start">Margin Sell</TableCell> */}
+              <TableCell style={{ textAlign: "center" }} align="start">Margin Balance</TableCell>
+              <TableCell style={{ textAlign: "center" }} align="right">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          {/* {console.log(coinsList, 'coinsList***')} */}
+          {coinsList?.length > 0 && (
 
-        {coinsList?.length > 0 && (
+            <TableBody className={classes.tablebody}>
 
-          <TableBody className={classes.tablebody}>
-            
-            {coinsList?.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  color: "red !important",
-                }}
-                
-              >
-                              {console.log(row.symbol,"roesssss")}
+              {
+                // coinsList?.map((row, index) => (
+                //   <TableRow
+                //     key={index}
+                //     sx={{
+                //       "&:last-child td, &:last-child th": { border: 0 },
+                //       color: "red !important",
+                //     }}
 
-                <TableCell align="center" scope="row" className="pair-coin">
+                //   >
+                //                   {console.log(row.symbol,"roesssss")}
+
+                //     <TableCell align="center" scope="row" className="pair-coin">
+                //       <div className="pair-coin-coins" style={{ color: "white" }}>
+                //         <div className="coinimg">
+                //           <img src={row?.asset_id?.image} alt="coin-img" />
+                //         </div>
+                //         {row?.asset_id?.symbol}{" "} 
+                //       </div>
+                //     </TableCell>
+                //     <TableCell align="center" style={{ color: "white" }}>
+                //       {Number(row?.balance).toFixed(6).toLocaleString()}
+                //     </TableCell>
+                //     <TableCell align="center">
+                //       <span
+                //         style={
+                //           row?.escrow_balance < 0
+                //             ? { color: "#F44D4D !important" }
+                //             : { color: "#00B881 !important" }
+                //         }
+                //       >
+                //         {Number(row?.escrow_balance).toFixed(6).toLocaleString()}
+                //       </span>
+                //     </TableCell>
+                //     {/* <TableCell align="left" style={{ color: "red !important" }}>
+
+                //       {row?.max_loan.length > 0 ? <span> {Number(row?.max_loan[0].maxLoan).toFixed(6).toLocaleString()} </span>  :"0"}
+                //       </TableCell> */}
+
+                //     <TableCell align="center" style={{ color: "red !important" }}>
+
+                //       {row?.margin_loan ? <span> {Number(row?.margin_loan).toFixed(6).toLocaleString()} </span> : "0"}
+                //     </TableCell>
+
+                //     <TableCell>
+                //       <Stack spacing={2} direction="row" justifyContent='center'>
+                //         {console.log(row,"gsfdgf")}
+                //         <div state={row}>
+                //           {" "}
+                //           <Button className="Deposit" variant="contained" onClick={()=>{handleDepositClick(row.symbol)}} >
+                //             Deposit
+                //           </Button>
+                //         </div>
+                //         <div state={row}>
+                //           {" "}
+                //           <Button className="Withdraw" variant="contained" onClick={()=>{handleWithdrawClick(row.symbol)}} >
+                //             Withdraw
+                //           </Button>
+                //         </div>
+                //         <div state={row}>
+                //           {" "}
+                //           <Button className="Trade" variant="contained" onClick={()=>{handleTransferClick()}} >
+                //             Transfer
+                //           </Button>
+                //         </div>
+                //         <Link to="/spot">
+                //           <Button className="Trade" variant="contained">
+                //             Trade
+                //           </Button>
+                //         </Link>
+                //       </Stack>
+                //     </TableCell>
+                //   </TableRow>
+                // ))
+              }
+              {/* {console.log(coinsList, 'COIN LIST')} */}
+              {coinsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)?.map((row, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    color: "red !important",
+                  }}
+
+                >
+                  {/* {console.log(row.symbol,"roesssss")} */}
+                  {/* <TableCell align="center" scope="row" className="pair-coin">
                   <div className="pair-coin-coins" style={{ color: "white" }}>
-                    <div className="coinimg">
-                      <img src={row?.asset_id?.image} alt="coin-img" />
-                    </div>
-                    {row?.asset_id?.symbol}{" "} 
+                    {index + 1} 
                   </div>
-                </TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
-                  {Number(row?.balance).toFixed(6).toLocaleString()}
-                </TableCell>
-                <TableCell align="center">
-                  <span
-                    style={
-                      row?.escrow_balance < 0
-                        ? { color: "#F44D4D !important" }
-                        : { color: "#00B881 !important" }
-                    }
-                  >
-                    {Number(row?.escrow_balance).toFixed(6).toLocaleString()}
-                  </span>
-                </TableCell>
-                {/* <TableCell align="left" style={{ color: "red !important" }}>
+                </TableCell> */}
+
+                  <TableCell align="center" scope="row" className="pair-coin">
+                    <div className="pair-coin-coins" style={{ color: "white" }}>
+                      <div className="coinimg">
+                        {/* <img src={row?.asset_id?.image} alt="coin-img" /> */}
+                      </div>
+                      {row?.coinname}{" "}
+                    </div>
+                  </TableCell>
+                  <TableCell align="center" style={{ color: "white" }}>
+                    {row?.balance ? Number(row?.balance).toFixed(6).toLocaleString() : '0'}
+                  </TableCell>
+                  <TableCell align="center" style={{ color: "white" }}>
+                    {row?.Entry_bal ? Number(row?.Entry_bal).toFixed(6).toLocaleString() : '0'}
+                  </TableCell>
+                  <TableCell align="center">
+                    <span
+                      style={
+                        row?.escrow_balance < 0
+                          ? { color: "#F44D4D !important" }
+                          : { color: "#00B881 !important" }
+                      }
+                    >
+                      {row?.escrow_balance ? Number(row?.escrow_balance).toFixed(6).toLocaleString() : '0'}
+                    </span>
+                  </TableCell>
+                  {/* <TableCell align="left" style={{ color: "red !important" }}>
                   
                   {row?.max_loan.length > 0 ? <span> {Number(row?.max_loan[0].maxLoan).toFixed(6).toLocaleString()} </span>  :"0"}
                   </TableCell> */}
 
-                <TableCell align="center" style={{ color: "red !important" }}>
+                  <TableCell align="center" style={{ color: "red !important" }}>
 
-                  {row?.margin_loan ? <span> {Number(row?.margin_loan).toFixed(6).toLocaleString()} </span> : "0"}
-                </TableCell>
+                    {row?.margin_loan ? <span> {Number(row?.margin_loan).toFixed(6).toLocaleString()} </span> : "0"}
+                  </TableCell>
 
-                <TableCell>
-                  <Stack spacing={2} direction="row" justifyContent='center'>
-                    {console.log(row,"gsfdgf")}
-                    <div state={row}>
-                      {" "}
-                      <Button className="Deposit" variant="contained" onClick={()=>{handleDepositClick(row.symbol)}} >
-                        Deposit
-                      </Button>
-                    </div>
-                    <div state={row}>
-                      {" "}
-                      <Button className="Withdraw" variant="contained" onClick={()=>{handleWithdrawClick(row.symbol)}} >
-                        Withdraw
-                      </Button>
-                    </div>
-                    <div state={row}>
-                      {" "}
-                      <Button className="Trade" variant="contained" onClick={()=>{handleTransferClick()}} >
-                        Transfer
-                      </Button>
-                    </div>
-                    <Link to="/spot">
-                      <Button className="Trade" variant="contained">
-                        Trade
-                      </Button>
-                    </Link>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+                  <TableCell>
+                    <Stack spacing={2} direction="row" justifyContent='center'>
+                      {/* {console.log(row,"gsfdgf")} */}
+                      <div state={row}>
+                        {" "}
+                        <Button className="Deposit" variant="contained" onClick={() => { handleDepositClick(row) }} >
+                          Deposit
+                        </Button>
+                      </div>
+                      <div state={row}>
+                        {" "}
+                        <Button className="Withdraw" variant="contained" onClick={() => { handleWithdrawClick(row.coinname) }} >
+                          Withdraw
+                        </Button>
+                      </div>
+                      <div state={row}>
+                        {" "}
+                        {/* {console.log(row.coinname, 'coinname')} */}
+                        <Button className="Trade" variant="contained" onClick={() => { handleTransferClick(row.coinname) }} >
+                          Transfer
+                        </Button>
+                      </div>
+                      <Link to="/spot">
+                        <Button className="Trade" variant="contained">
+                          Trade
+                        </Button>
+                      </Link>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
+        </Table>
+        {load && (
+          <div
+            style={{ textAlign: "center", padding: "2rem", marginTop: "3rem" }}
+          >
+            {" "}
+            <CircularProgress size={50} />
+            <h5 style={{ color: "white" }}>Loading..</h5>
+          </div>
         )}
-      </Table>
-      {load && (
-        <div
-          style={{ textAlign: "center", padding: "2rem", marginTop: "3rem" }}
-        >
-          {" "}
-          <CircularProgress size={50} />
-          <h5 style={{ color: "white" }}>Loading..</h5>
-        </div>
-      )}
-      {!coinsList && !load && (
-        <div style={{ backgroundColor: "lightgrey", borderRadius: "10px" }}>
-          <h5 style={{ color: "black", padding: "1rem" }}>Data Not Found</h5>
-        </div>
-      )}
-    </TableContainer>
+        {!coinsList && !load && (
+          <div style={{ backgroundColor: "lightgrey", borderRadius: "10px" }}>
+            <h5 style={{ color: "black", padding: "1rem" }}>Data Not Found</h5>
+          </div>
+        )}
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[50]}
+        component="div"
+        count={coinsList?.length || 0}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </>
   );
 }

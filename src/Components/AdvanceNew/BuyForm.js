@@ -45,7 +45,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BuyForm({ selected, pair,market, reload }) {
+export default function BuyForm({ selected, pair,market, reload, cat }) {
   const [value, setValue] = React.useState(0);
   const [listvalue, setListvalue] = React.useState(0);
   const [narmalvalues, setnormalValues] = React.useState(0);
@@ -93,19 +93,19 @@ const [list,setList]= React.useState(['Limit','Market','Stop'])
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='lms'>        
           <Tab label="Limit" {...a11yProps(0)} />
           <Tab label="Market" {...a11yProps(1)} />
-          <Tab label="Stop" {...a11yProps(2)} />
+          {/* <Tab label="Stop" {...a11yProps(2)} /> */}
         </Tabs>
         </div>
       </Box>
       <TabPanel value={value} index={0}> 
-      <Buyformtab selected={selected} pair={pair} index={"limit"} market={market} reload={reload} />
+      <Buyformtab selected={selected} pair={pair} index={"limit"} market={market} reload={reload} cat={cat}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <Buyformtabmarket selected={selected} pair={pair} index={"market"} market={market} reload={reload} />
+      <Buyformtabmarket selected={selected} pair={pair} index={"market"} market={market} reload={reload} cat={cat}/>
       </TabPanel>
-      <TabPanel value={value} index={2}> 
-      <Buyformtabstop selected={selected} pair={pair} index={"stop"} market={market} reload={reload} />
-      </TabPanel>
+      {/* <TabPanel value={value} index={2}> 
+      <Buyformtabstop selected={selected} pair={pair} index={"stop"} market={market} reload={reload} cat={cat}/>
+      </TabPanel> */}
     </Box>
   );
 }

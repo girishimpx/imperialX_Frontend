@@ -91,7 +91,7 @@ const newValue = Math.max(0, Number(event.target.value));
   const buytrade = async () => {
     try {
       if(price === ""){
-        toast.error("Pelese Fill the Price", {
+        toast.error("Please Fill the Price", {
            
           duration: 4000,
           position: "top-center",

@@ -63,17 +63,17 @@ const Subscribebody = () => {
 
   const onSubscribe = () => {
     if (!exchange) {
-      setexchangeerr("* Exchange Required");
+      setexchangeerr("Exchange Required");
     } else if (!apikey) {
-      setapikeyerr("* Apikey Required");
+      setapikeyerr("Apikey Required");
     } else if (!secretkey) {
-      setsecretkeyerr("* SecretKey Required");
+      setsecretkeyerr("SecretKey Required");
     } else if (!passphrase) {
-      setpassphraseerr("* Passphrase Required");
+      setpassphraseerr("Passphrase Required");
     } else if (!api_name) {
-      setapi_nameerr("* Api_name Required");
+      setapi_nameerr("Api name Required");
     } else if (!permission) {
-      setpermissionerr("* Permission Required");
+      setpermissionerr("Permission Required");
     } else {
       const data = {
         exchange: exchange,
@@ -227,7 +227,7 @@ const Subscribebody = () => {
                     </FormControl>
 
                     {exchangeerr && (
-                      <p className={classes.paragraph}>{exchangeerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{exchangeerr}</p>
                     )}
                   </div>
 
@@ -245,7 +245,7 @@ const Subscribebody = () => {
                       }}
                     />
                     {apikeyerr && (
-                      <p className={classes.paragraph}>{apikeyerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{apikeyerr}</p>
                     )}
                   </div>
                 </div>
@@ -263,7 +263,7 @@ const Subscribebody = () => {
                       }}
                     />
                     {secretkeyerr && (
-                      <p className={classes.paragraph}>{secretkeyerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{secretkeyerr}</p>
                     )}
                   </div>
                   <div className="formtxt">
@@ -279,7 +279,7 @@ const Subscribebody = () => {
                       }}
                     />
                     {passphraseerr && (
-                      <p className={classes.paragraph}>{passphraseerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{passphraseerr}</p>
                     )}
                   </div>
                 </div>
@@ -297,7 +297,7 @@ const Subscribebody = () => {
                       }}
                     />
                     {api_nameerr && (
-                      <p className={classes.paragraph}>{api_nameerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{api_nameerr}</p>
                     )}
                   </div>
 
@@ -321,7 +321,7 @@ const Subscribebody = () => {
                     </FormControl>
 
                     {permissionerr && (
-                      <p className={classes.paragraph}>{permissionerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{permissionerr}</p>
                     )}
                   </div>
                 </div>

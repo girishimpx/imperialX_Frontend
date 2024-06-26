@@ -60,17 +60,19 @@ export default function OpenOrderTable({ selectedPairs,orders }) {
       passphrase: "Pass@123",
     };
 
-    Axios.post("/trade/openorderhistoryfuture", data, {
+    // Axios.post("/trade/openorderhistoryfuture", data, {
+    Axios.post("/bybit/getclosedposition", {
       headers: {
         Authorization: localStorage.getItem("Mellifluous"),
       },
     })
       .then((res) => {
         let data = []
-        console.log(res.data.result[0].ordType, "open 123");
+        // console.log(res.data.result[0].ordType, "open 123");
+        // console.log(res?.data?.result, "open 123",orders);
 
         for(let i=0; i<res.data.result.length; i++){
-if(res.data.result[i].ordType == orders){
+if(res.data.result[i].order_type.toLowerCase() == orders.toLowerCase()){
 data.push(res.data.result[i])
 }
         }
@@ -91,10 +93,11 @@ data.push(res.data.result[i])
     let token = localStorage.getItem("Mellifluous");
     if (token) {
       Axios.post(
-        `${Consts.BackendUrl}/trade/tradeHistory`,
-        {
-          pair: `${selectedPairs.split("-")[0]}-${selectedPairs.split("-")[1]}`,
-        },
+        // `${Consts.BackendUrl}/trade/tradeHistory`,
+        `${Consts.BackendUrl}/bybit/getclosedposition`,
+        // {
+        //   pair: `${selectedPairs.split("-")[0]}-${selectedPairs.split("-")[1]}`,
+        // },
         {
           headers: {
             Authorization: token,
@@ -148,33 +151,31 @@ data.push(res.data.result[i])
         </TableHead>
 
         <TableBody >
-          
+          {/* {console.log(tradelist1,'tradelist1tradelist1')} */}
           {tradelist1?.map((item, index) => {
             return (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell sx={{display:"flex",flexDirection:"column"}}>
-                  {`${item.instId.split("-")[0]}/${
-                    item.instId.split("-")[1]
-                  }${item.instId
-                    .split("-")[2]
-                    .substring(item.instId.split("-")[2].length - 4)}`}
+                  {`${item?.pair}`
+                  // ${item.instId
+                  //   .split("-")[2]
+                  //   .substring(item.instId.split("-")[2].length - 4)}`
+                    }
                     <span style={{fontSize:"9.6px"}}>{item.tdMode}</span>
                 </TableCell>
 
 
-                <TableCell> <span style={{display:"block"}}>{`${new Date(Number(item.cTime)).getDate()}/${new Date(Number(item.cTime)).getMonth()}/${new Date(Number(item.cTime)).getFullYear()}`}</span>
-                <span style={{textAlign:"end",paddingLeft:"12%"}}>{`${new Date(Number(item.cTime)).getHours()}:${new Date(Number(item.cTime)).getMinutes()}:${new Date(Number(item.cTime)).getSeconds()}`}</span> </TableCell>
+                <TableCell> <span style={{display:"block"}}>{`${new Date(item?.createdAt).getDate()}/${new Date(item?.createdAt).getMonth()}/${new Date(item?.createdAt).getFullYear()}`}</span>
+                <span style={{textAlign:"end",paddingLeft:"12%"}}>{`${new Date(item?.createdAt).getHours()}:${new Date(item?.createdAt).getMinutes()}:${new Date(item?.createdAt).getSeconds()}`}</span> </TableCell>
 
-
-
-                <TableCell ><span style={{color:item.side == "sell" ? "#25a750":"#ca3f64"}}> {`${item.side == "sell" ? "Open":"Close" } ${item.posSide}`}</span> </TableCell>
+       <TableCell ><span style={{color:item?.trade_type.toLowerCase() == "sell" ? "#25a750":"#ca3f64"}}> {`${item?.trade_type.toLowerCase() == "sell" ? "Open":"Close" }`}</span> </TableCell>
 
 
                 <TableCell>
-                   <span>{`${item.fillPx ? item.fillPx : "0"} ${item.feeCcy}`}</span>
-                   <span style={{display:"block"}}>{`${item.px ? item.px : ``} ${item.ordType =="market" ? item.ordType :item.rebateCcy}`}</span>
+                   <span>{`${item?.entry_price ? item?.entry_price : "0"} `}</span>
+                   <span style={{display:"block"}}>{`${item?.entry_price ? item?.entry_price : ``} ${item?.order_type =="market" ? item?.order_type :item.rebateCcy}`}</span>
                  </TableCell>
 
 
@@ -196,14 +197,14 @@ data.push(res.data.result[i])
                  </TableCell>
 
 
-                <TableCell> {item.fee} USDT </TableCell>
+                <TableCell> {item?.fees} USDT </TableCell>
 
                 <TableCell> -- </TableCell>
-                <TableCell> {item.reduceOnly == "true" ? "Yes" : "No"} </TableCell>
-                <TableCell> {item.state} </TableCell>
+                <TableCell> {item?.reduceOnly == "true" ? "No" : "Yes"} </TableCell>
+                <TableCell> {item?.status} </TableCell>
               </TableRow>
             );
-            console.log(item, "index");
+            // console.log(item, "index");
           })}
           
         

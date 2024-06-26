@@ -26,6 +26,65 @@
     flex-direction: column;
 }
 
+.button-for-modal button{background-color: #21cca3;color:#fff}
+
+.limit-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+}
+
+.limit-market-popup-modal-css {
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(12, 61, 50, 0.8) 0%, rgba(7, 30, 27, 0.8) 100%) !important;
+    border: 0.931864px solid #25DEB0 !important;
+    -webkit-backdrop-filter: blur(1.86373px);
+    backdrop-filter: blur(1.86373px);
+    border-radius: 10px !important;
+}
+
+.limit-market-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 15px 0;
+}
+
+.limit-market-flex .MuiFormControl-root.MuiTextField-root.limit-textfield {
+    margin: 0px !important;
+}
+
+.limit-market-flex .MuiFormControl-root.MuiTextField-root.limit-textfield fieldset {
+    border-color: #ccc;
+}
+
+.limit-market-flex label {
+    color: #ccc;
+}
+
+.MuiStack-root.range-percentage-limit-market button {
+    background: #00cc9b !important;
+    color: #fff;
+}
+
+.MuiStack-root.range-percentage-limit-market-cc {
+    margin-top: 40px;
+}
+
+.MuiStack-root.range-percentage-limit-market-cc button {
+    width: 49%;
+    padding: 10px;
+    background: #29f0d0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.MuiStack-root.range-percentage-limit-market-cc button:nth-child(2) {
+    background: transparent;
+    border: 1px solid #29f0d0;
+    color: #29f0d0;
+}
+
 .fu-input div#demo-select-small {
     padding: 0px;
 }

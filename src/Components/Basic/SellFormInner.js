@@ -104,9 +104,9 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
   const [balance, setBalance] = useState()
   const [activeClass, setActiveClass] = useState("1");
 
- const percentageValue = async(e) => {
+  const percentageValue = async (e) => {
     setActiveClass(e.target.id);
-    console.log(e.target.value,"value");
+    console.log(e.target.value, "value");
   }
 
 
@@ -472,8 +472,8 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
                 "aria-live": "polite",
               },
             });
-          } else if(Amount === "" || Amount == '0') {
-           toast.error("Please Fill the Amount", {
+          } else if (Amount === "" || Amount == '0') {
+            toast.error("Please Fill the Amount", {
 
               duration: 1500,
               position: "top-center",
@@ -504,7 +504,8 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
             });
           }
           else {
-            const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0);
+            // const usdtBalance = parseFloat(balance?.find(item => item.symbol === "USDT")?.balance || 0);
+            const usdtBalance = balance
 
             if (usdtBalance < parseFloat(total)) {
               toast.error("Insufficient USDT balance. Please deposit funds.", {
@@ -762,28 +763,58 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
     }
   }
 
-  const getmyWallet = () => {
+  // const getmyWallet = () => {
+  //   try {
+  //     Axios.get(`/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res?.data?.success) {
+  //           console.log(res?.data?.success, "dates")
+  //           setBalance(res?.data?.result)
+  //           console.log(res?.data?.result, "respon")
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
+
+  const getmyWallet = async () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      await Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
-            console.log(res?.data?.success, "dates")
-            setBalance(res?.data?.result)
-            console.log(res?.data?.result, "respon")
+            console.log(res, 'WALLET BALANCE', pair.substring(0, pair.length - 4));
+            for (let i = 0; i < res?.data?.result.length; i++) {
+              // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+              //   setBalance(res?.data?.result[i].balance);
+              // }
+              if (res?.data?.result[i].coinname == pair?.slice(0, - 4)) {
+                setBalance(res?.data?.result[i].balance);
+                console.log(res?.data?.result[i].balance, "baln")
+              }
+            }
+            // setBalance(res?.data?.result)
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
+  };
   useEffect(() => {
     getmyWallet()
 
@@ -885,10 +916,10 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
 
           </div>
           <Stack className="percentage-button-row">
-        <Button key={1} className={activeClass === "1" ? "active-select" : "non-active"} id={"1"} value="10" onClick={(value) => percentageValue(value)}>10%</Button>
-        <Button key={2} className={activeClass === "2" ? "active-select" : "non-active"} id={"2"} value="15" onClick={(value) => percentageValue(value)}>15%</Button>
-        <Button key={3} className={activeClass === "3" ? "active-select" : "non-active"} id={"3"} value="20" onClick={(value) => percentageValue(value)}>20%</Button>
-</Stack>
+            <Button key={1} className={activeClass === "1" ? "active-select" : "non-active"} id={"1"} value="10" onClick={(value) => percentageValue(value)}>10%</Button>
+            <Button key={2} className={activeClass === "2" ? "active-select" : "non-active"} id={"2"} value="15" onClick={(value) => percentageValue(value)}>15%</Button>
+            <Button key={3} className={activeClass === "3" ? "active-select" : "non-active"} id={"3"} value="20" onClick={(value) => percentageValue(value)}>20%</Button>
+          </Stack>
         </div>
 
         <div className="total-limit-spot">
@@ -920,9 +951,10 @@ const SellFormInner = ({ selected, pair, index, ordertype, labe }) => {
               <div>
                 <label>Availabe</label>
                 {balance &&
-                  balance.find((item) => item.symbol === "USDT") &&
-                  balance.find((item) => item.symbol === "USDT").balance !==
-                  undefined && (
+                  // balance.find((item) => item.symbol === "USDT") &&
+                  // balance.find((item) => item.symbol === "USDT").balance !==
+                  // undefined  &&
+                  (
                     <div>
                       {balance.find((item) => item.symbol === "USDT").balance.toFixed(3)}{" "}
                       USDT

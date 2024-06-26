@@ -41,8 +41,8 @@ const useStyles = makeStyles({
       color: "#FFF",
       borderBottom: "1px solid rgb(58 57 57) !important",
       whiteSpace: "nowrap",
-      "& button":{
-        margin:'0px 10px !important'
+      "& button": {
+        margin: '0px 10px !important'
       }
     },
   },
@@ -246,7 +246,7 @@ export default function AllMasterTradeTable(searchName) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [name,setName] = React.useState(searchName.searchName.searchName)
+  const [name, setName] = React.useState(searchName.searchName.searchName)
   const rows = [];
 
   // console.log(searchName.searchName.searchName, "props");
@@ -257,68 +257,68 @@ export default function AllMasterTradeTable(searchName) {
     setOrderBy(property);
   };
   React.useEffect(() => {
-  //  console.log(master, "useeffect");
+    //  console.log(master, "useeffect");
     //setMasters(master.master);
     getMasters()
   }, []);
   React.useEffect(() => {
-    if(searchName.searchName.searchName){
+    if (searchName.searchName.searchName) {
       getMaster(searchName.searchName.searchName)
     }
-    else{
+    else {
       getMasters()
     }
-     
-    }, [searchName.searchName.searchName]);
+
+  }, [searchName.searchName.searchName]);
 
   const getMasters = async () => {
     try {
-      await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`,{
-        name:name
+      await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`, {
+        name: name
       }, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       }).then((res) => {
         if (res?.data?.success) {
-         
-           // console.log(res?.data?.result,"data1");
-            setMasters(res?.data?.result)
-            setLoading(false);
-        
+
+          // console.log(res?.data?.result,"data1");
+          setMasters(res?.data?.result)
+          setLoading(false);
+
         }
         setLoading(false);
       })
     } catch (error) {
       setLoading(false);
     }
-    
+
   }
 
   const getMaster = async (name) => {
     try {
-      await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`, 
-      {
-        name:name
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem("Mellifluous"),
+      await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`,
+        {
+          name: name
         },
-      }).then((res) => {
-        if (res?.data?.success) {
-         
-           // console.log(res?.data?.result,"data1");
+        {
+          headers: {
+            Authorization: localStorage.getItem("Mellifluous"),
+          },
+        }).then((res) => {
+          if (res?.data?.success) {
+
+            // console.log(res?.data?.result,"data1");
             setMasters(res?.data?.result)
             setLoading(false);
-        
-        }
-        setLoading(false);
-      })
+
+          }
+          setLoading(false);
+        })
     } catch (error) {
       setLoading(false);
     }
-    
+
   }
 
   const handleSelectAllClick = (event) => {
@@ -378,7 +378,7 @@ export default function AllMasterTradeTable(searchName) {
     [order, orderBy, page, rowsPerPage]
   );
 
-  
+
 
   const classes = useStyles();
 
@@ -463,23 +463,16 @@ export default function AllMasterTradeTable(searchName) {
                           ) : (
                             <Button> Copy </Button>
                           )}
-                         
-                           <Link to={`${Constant.route}/trader-details/${row.master._id}`} ><Button variant="contained">Details</Button></Link>
-                          
+
+                          <Link to={`${Constant.route}/trader-details/${row.master._id}`} ><Button variant="contained">Details</Button></Link>
+
                         </div>
                       </TableCell>
                     </TableRow>
                   );
                 })}
 
-              
-              {masters?.length <= 0 && (
-                <div style={{ padding: "1rem", color: "#25DEB0" }}>
-                  <h4 style={{ width: "70%", marginLeft: "29%" }}>
-                    Data not found
-                  </h4>
-                </div>
-              )}
+
               {emptyRows > 0 && (
                 <TableRow
                   style={{
@@ -492,6 +485,13 @@ export default function AllMasterTradeTable(searchName) {
             </TableBody>
           </Table>
         </TableContainer>
+        {masters?.length <= 0 && (
+          <div style={{ padding: "1rem", color: "#25DEB0", textAlign: 'center' }}>
+            <h4 style={{ width: "70%" }}>
+              Data not found
+            </h4>
+          </div>
+        )}
         {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"

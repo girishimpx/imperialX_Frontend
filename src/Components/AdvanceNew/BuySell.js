@@ -43,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BuySell({ selected, pair,market, reload }) {
+export default function BuySell({ selected, pair,market, reload, cat }) {
   const [value, setValue] = React.useState(0);
 
 
@@ -73,10 +73,10 @@ export default function BuySell({ selected, pair,market, reload }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-          <BuyForm selected={selected?.from === "sell" ? selected : ""} pair={pair} market={market} reload={reload}/>
+          <BuyForm selected={selected?.from === "sell" ? selected : ""} pair={pair} market={market} reload={reload} cat={cat}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <SellForm selected={selected?.from === "buy" ? selected : ""} pair={pair} market={market} reload={reload}/>
+          <SellForm selected={selected?.from === "buy" ? selected : ""} pair={pair} market={market} reload={reload} cat={cat}/>
         </TabPanel>
     </Box>
   );

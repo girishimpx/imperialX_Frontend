@@ -33,9 +33,14 @@ import TradeViewMain from "../TradeView/TradeViewMain";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from '@mui/icons-material/Close';
+import Button from "@mui/material/Button";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from "@mui/material/CircularProgress";
+import { Stack } from "rsuite";
+
+
 
 const $ = window.$;
 
@@ -100,22 +105,36 @@ var ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 let wsfuture = new WebSocket(
   "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
 );
-// var wss = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
+const endpoint = Consts.spotsocketurl;  // ENDPOINT FOR WEBSOCKET (order book)
+const endpoint1 = Consts.spotsocketurl;
 
-const SpotBody = () => {
+const SpotBody = ({ coinName }) => {
+  // console.log(coinName, 'namess');
+
+  useEffect(() => {
+    if (coinName != undefined && coinName != '') {
+      setPair(coinName + 'USDT')
+    }
+  }, [coinName])
+
   const [btc, setBtc] = useState();
+  const [sideData, setSideData] = useState([]);
   const [eth, setEth] = useState();
   const [xpr, setxrp] = useState();
   const [dash, setdash] = useState();
   const [buyspot, setbuyspot] = useState();
-  const [sellspot, setSellspot] = useState();
+  const [cat, setCat] = useState('USDT');
+  const [sellspot, setSellspot] = useState([]);
   const [selected, setSelected] = useState();
   const [searchedpair, setsearchpair] = useState("");
   const classes = useStyles();
-  const [assetList, setAssetList] = useState(["BTC-USDT", "ETH-USDT"]);
+  const [assetList, setAssetList] = useState([]);
+  // const [assetList, setAssetList] = useState(["BTCUSDT", "ETHUSDT"]);
   const [value, setValue] = React.useState(0);
   const [valuess, setValues] = React.useState(0);
-  const [pair, setPair] = useState("BTC-USDT");
+
+  const [pair, setPair] = useState("BTCUSDT");
+  // const [pair, setPair] = useState("BTC-USDT");
   const [pair1, setPair1] = useState("BTC-USDT");
   const [oldpair, setoldpair] = useState("");
   const [selPair, setSelPair] = useState("");
@@ -134,7 +153,9 @@ const SpotBody = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [logos, setlogos] = useState([]);
   const [rows, setRows] = useState([]);
-  const [reload,setReload] = useState(0);
+  const [reload, setReload] = useState(0);
+  const [loadpairs, setLoadPAirs] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const handleReload = (value) => {
     setReload(value)
@@ -239,14 +260,14 @@ const SpotBody = () => {
     };
   };
 
-  useEffect(() => {
-    AllTicker();
+  // useEffect(() => {
+  //   AllTicker();
 
-    return () => {
-      ws1.close();
-      ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
-    };
-  }, [allpairs]);
+  //   return () => {
+  //     ws1.close();
+  //     ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+  //   };
+  // }, [allpairs]);
 
   const Ticker = () => {
     ws.onopen = (event) => {
@@ -260,7 +281,7 @@ const SpotBody = () => {
         if (response?.arg?.channel != "books") {
           //  console.log(response?.data[0],'Spot BOdy1');
           if (response?.data?.length > 0) {
-            setBtc(response?.data[0]);
+            // setBtc(response?.data[0]);
           }
         } else {
           if (response?.data[0]?.asks.length > 0) {
@@ -272,7 +293,7 @@ const SpotBody = () => {
             ) {
               let values = response?.data[0]?.asks.slice(0, 1)[0];
               values.push(response?.arg?.instId);
-              setSellspot(values);
+              // setSellspot(values);
             }
           }
           if (response?.data[0]?.bids.length > 0) {
@@ -284,7 +305,7 @@ const SpotBody = () => {
             ) {
               let values = response?.data[0]?.bids.slice(0, 1)[0];
               values.push(response?.arg?.instId);
-              setbuyspot(values);
+              // setbuyspot(values);
             }
           }
         }
@@ -351,10 +372,12 @@ const SpotBody = () => {
   // }
   var arr = [];
   const getAllTradePairs = async (searchedpair) => {
+    setLoadPAirs(true)
+    searchedpair != '' ? setInputValue(searchedpair) : setInputValue('')
     try {
       const { data } = await Axios.post(
-        `/assets/marketPairsAuth`,
-        { type: "spot" },
+        `/bybit/getnewpairsbytype`,
+        { category: cat, type: 'spot' },
         {
           headers: {
             Authorization: localStorage.getItem("Mellifluous"),
@@ -365,53 +388,99 @@ const SpotBody = () => {
       if (data?.result?.length > 0) {
         setAssetList([]);
         setAllPairs([]);
-        // console.log(data?.result,'DATA RESULT');
-        data?.result?.forEach((element) => {
-          // setAssetList((pre) => [...pre, element?.data?.instId]);
-          setAllPairs((pre) => [
-            ...pre,
-            {
-              channel: "index-tickers",
-              instId: "" + element?.data?.instId,
-            },
-          ]);
-        });
+
+        // data?.result?.forEach((element) => {
+        // setAllPairs((pre) => [
+        //   ...pre,
+        //   {
+        //     channel: "index-tickers",
+        //     instId: "" + element?.data?.instId,
+        //   },
+        // ]);
+        // });
+
         if (searchedpair) {
           const filtered = [];
-          const use = localStorage.getItem('use')
-          for (let j = 0; j < data.result.length; j++) {
-            if (data.result[j].data.instId.includes(searchedpair)) {
-              // console.log("if");
+          const use = localStorage.getItem('use');
 
-              filtered.push({ pairs: data.result[j].data.instId, check: data.result[j].data?.users_id?.includes(use) == true ? data.result[j].data?.users_id?.includes(use) : false });
+          // for (let j = 0; j < data.result.length; j++) {
+          //   const item = data.result[j];
+          //   if (item.data.instId.includes(searchedpair)) {
+          //     const foundPair = sideData.find((sdItem) => sdItem.symbol == item.data.instId);
+          //     filtered.push({
+          //       pairs: item.data.instId,
+          //       check: item.data?.users_id?.includes(use) == true ? item.data?.users_id.includes(use) : false,
+          //       lastPrice: foundPair?.lastPrice || 0,
+          //       highPrice24h: foundPair?.highPrice24h || 0,
+          //     });
+          //   }
+          // }
+          for (let j = 0; j < data.result.length; j++) {
+            const item = data.result[j];
+            if (item?.symbol?.includes(searchedpair)) {
+              filtered.push({
+                pairs: item?.symbol,
+                check: item?.data?.users_id?.includes(use) === true ? true : false,
+              });
             }
           }
+
           setAssetList(filtered);
         } else {
-          var arr = [];
-          const use = localStorage.getItem('use')
-          for (let i = 0; i < data?.result.length; i++) {
-            const element = data?.result[i];
-            // console.log(element?.data?.users_id,use,element?.data?.users_id.includes(use),"arraysfd")  x 
-            if (element?.data?.instId?.split("-")[1] == "USDT") {
-              arr.push({ pairs: element?.data?.instId, check: element?.data?.users_id?.includes(use) == true ? element?.data?.users_id.includes(use) : false })
-            }
+          const arr = [];
+          const use = localStorage.getItem('use');
+
+          for (var i = 0; i < data?.result?.length; i++) {
+            const element = data.result[i];
+
+            arr.push({
+              pairs: element?.symbol,
+              check: element?.users_id?.includes(use) === true ? true : false
+            })
+
           }
 
-          for (let i = 0; i < data?.result.length; i++) {
-            const element = data?.result[i];
-            if (element?.data?.instId?.split("-")[1] != "USDT") {
-              arr.push({ pairs: element?.data?.instId, check: element?.data?.users_id?.includes(use) == true ? element?.data?.users_id?.includes(use) : false })
-            }
-          }
+          setAssetList(arr);
+
+          // for (let i = 0; i < data.result.length; i++) {
+          //   const element = data.result[i];
+          //   console.log(element,'*****ele');
+
+          // if (element?.data?.instId?.split("-")[1] == "USDT") {
+          // const foundPair = sideData.find((sdItem) => sdItem?.symbol == element?.data?.instId);
+          // console.log(foundPair,'FPAIR')
+          // alert(foundPair?.lowPrice24h)
+          //     arr.push({
+          //       pairs: element?.symbol,
+          //       check: element?.users_id?.includes(use) == true ? element.data?.users_id.includes(use) : false,
+          //     });
+          // }
+          // }
+
+          // for (let i = 0; i < data.result.length; i++) {
+          //   const element = data.result[i];
+          //   if (element?.data?.instId?.split("-")[1] != "USDT") {
+          //     const foundPair = sideData.find((sdItem) => sdItem?.symbol == element?.data?.instId);
+          // console.log(foundPair,"ramesh")
+          //     arr.push({
+          //       pairs: `${element?.baseCoin}/${element?.quoteCoin}`,
+          //       check: element?.users_id?.includes(use) == true ? element?.data?.users_id.includes(use) : false,
+          // lastPrice: foundPair?.lastPrice || 0,
+          // highPrice24h: foundPair?.highPrice24h || 0,
+          //     });
+          //   }
+          // }
+
           setAssetList(arr);
         }
-        // console.log(allpairs, "allpairs");
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadPAirs(false)
     }
   };
+
 
   const futurepairs = async () => {
     try {
@@ -427,7 +496,7 @@ const SpotBody = () => {
       );
 
       data?.result?.map((item, index) => {
-        if (item.data.instFamily.split("-")[1] == "USDT") {
+        if (item?.data?.instFamily?.split("-")[1] == "USDT") {
           datas.push(item);
         }
       });
@@ -739,9 +808,14 @@ const SpotBody = () => {
   //   }
   // }, [datas]);
 
+  const handleClearClick = () => {
+    getAllTradePairs();
+    setInputValue('');
+  }
+
   useEffect(() => {
     getAllTradePairs();
-  }, []);
+  }, [cat]);
 
   useEffect(() => {
     futurepairs();
@@ -812,6 +886,244 @@ const SpotBody = () => {
     }
   }
 
+  useEffect(() => {
+    handleOrderBookData()
+    var symbol = pair
+    symbol = symbol.replace('-', '');
+    const client = new WebSocket(endpoint);
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      client.send(JSON.stringify({ op: 'subscribe', args: [`orderbook.${200}.${symbol}`] }));
+    };
+
+    client.onmessage = (event) => {
+      setTimeout(() => {
+        const response = JSON.parse(event.data);
+        // console.log('Message received from socket SPOT', response?.data);
+        // Handle incoming messages from WebSocket
+
+        if (response?.data?.b.length > 0) {
+
+          if (response?.data?.b[0] != 0 && response?.data?.b[1] != 0) {
+            var values = response?.data?.b[0];
+            values.push(response?.data?.s);
+            // console.log(values,'REDRESPONSESPOT');
+            setbuyspot(values);
+          }
+
+          if (response?.data?.a[0] != 0 && response?.data?.a[1] != 0) {
+            var values1 = response?.data?.a[0];
+            values.push(response?.data?.s);
+            // console.log(values1,'GREENRESPONSESPOT');
+            setSellspot(values1);
+          }
+
+        }
+      }, 2000)
+
+    };
+
+    client.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    // Cleanup function
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client.close();
+    };
+  }, [pair]);
+
+  useEffect(() => {
+    // handleOrderBookData()
+    const client1 = new WebSocket(endpoint1);
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client1.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client1.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      assetList?.forEach(pairData => {
+        const pair = pairData?.pairs
+        client1.send(JSON.stringify({ op: 'subscribe', args: [`tickers.${pair}`] }));
+      });
+    };
+
+    client1.onmessage = (event) => {
+      // setTimeout(() => {
+      const response = JSON.parse(event.data);
+      // console.log('DATATATATATATATA', response);
+
+      // Handle incoming messages from WebSocket
+
+      if (response) {
+        let increase =
+          Number(response?.data?.highPrice24h) -
+          Number(response?.data?.lowPrice24h);
+        let price_change =
+          (increase / Number(response?.data?.lowPrice24h)) * 100;
+
+        $(".item_" + response?.data?.symbol).html(
+          response?.data?.highPrice24h
+        );
+        $(".items_" + response?.data?.symbol).html(
+          `${response?.data?.price24hPcnt} %`
+        );
+      }
+
+      // }, 2000)
+
+    };
+
+    client1.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    // client1.onerror = (error) => {
+    //   console.error('WebSocket Error:', error);
+    //   // Handle WebSocket errors
+    // };
+
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client1.close();
+      // const client1 = new WebSocket(endpoint1);
+    };
+  }, [assetList]);
+
+  // useEffect(() => {
+  //   var symbol = pair
+  //   symbol = symbol.replace('-', '');
+  //   const client = new WebSocket(endpoint);
+
+  //   console.log('Attempting to connect to WebSocket', endpoint);
+
+  //   client.onopen = () => {
+  //     console.log('WebSocket Client Connected');
+  //     setInterval(() => {
+  //       client.send('ping'); // Send ping to keep connection alive
+  //     }, 30000);
+
+  //     client.send(JSON.stringify({ op: 'subscribe', args: [`tickers.${symbol}`] }));
+  //   };
+
+  //   client.onmessage = (event) => {
+
+  //     const response = JSON.parse(event.data);
+  //     console.log('Message received from socket HIGH & LOW', response?.data);
+  //     // Handle incoming messages from WebSocket
+  //     setBtc(response?.data)
+  //     // if (response?.data?.b.length > 0) {
+
+  //     //   if ( response?.data?.b[0] != 0 && response?.data?.b[1] != 0 ) {
+  //     //     var values = response?.data?.b[0];
+  //     //     values.push(response?.data?.s);
+  //     //     console.log(values,'REDRESPONSESPOT');
+  //     //     setbuyspot(values);
+  //     //   }
+
+  //     //   if ( response?.data?.a[0] != 0 && response?.data?.a[1] != 0 ) {
+  //     //     var values1 = response?.data?.a[0];
+  //     //     values.push(response?.data?.s);
+  //     //     console.log(values1,'GREENRESPONSESPOT');
+  //     //     setSellspot(values1);
+  //     //   }
+
+  //     // }
+
+  //   };
+
+  //   client.onclose = () => {
+  //     console.log('WebSocket Connection Closed');
+  //     // Handle WebSocket closed
+  //   };
+
+  //   client.onerror = (error) => {
+  //     console.error('WebSocket Error:', error);
+  //     // Handle WebSocket errors
+  //   };
+
+  //   // Cleanup function
+  //   return () => {
+  //     console.log('Cleaning up WebSocket connection');
+  //     client.close();
+  //   };
+  // }, [pair]); 
+
+
+  const handleOrderBookData = async () => {
+    try {
+
+      const { data } = await Axios.post(
+        `/bybit/orderbook`,
+        { type: 'spot', ccy: pair },
+        {
+          headers: {
+            Authorization: localStorage?.getItem("Mellifluous"),
+          },
+        }
+      );
+      if (data?.success) {
+        if (data?.result.length > 1) {
+          setBtc(data?.result)
+        } else {
+          setBtc(data?.result[0])
+        }
+
+      } else {
+        setBtc([])
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleAllOrderBookData = async () => {
+    try {
+
+      const { data } = await Axios.post(
+        `/bybit/orderbook`,
+        { type: 'spot', ccy: '' },
+        {
+          headers: {
+            Authorization: localStorage?.getItem("Mellifluous"),
+          },
+        }
+      );
+      if (data?.success && data?.result?.length > 1) {
+        // console.log(data?.result,'RESULT');
+        setSideData(data?.result);
+      } else {
+        setSideData([]);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    handleAllOrderBookData()
+  }, [pair])
+
   return (
     <div className="dashboard-body spot-body spot-body-content">
       <Toaster />
@@ -820,12 +1132,13 @@ const SpotBody = () => {
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             <div className="top-part-all-page basic-page-top-part">
               <div className="top-col-1">
-                <span></span>
-                <span></span>
+                {/* <span></span>
+                <span></span> */}
               </div>
               <div className="top-col-4 comon-flex-top-bot-style">
                 {/* <span></span>
                 <span></span> */}
+
                 <span style={{ textAlign: "left" }}>Spot</span>
                 <div
                   className="iconDiv"
@@ -859,9 +1172,19 @@ const SpotBody = () => {
                         className="spot-graph-chart-tab"
                       >
                         <Tab label="Spot" {...a11yProps(0)} />
-                        <Tab label="Perpetual" {...a11yProps(1)} />
+
+                        {/* <Tab label="Perpetual" {...a11yProps(1)} /> */}
                       </Tabs>
-                      <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                      <Grid item xs={12} sm={12} md={12} lg={4} xl={4} style={{ maxWidth: '100%' }}>
+                        <Stack className="button-stack-coin">
+                          <Button onClick={() => { setCat('USDT') }} className={cat === 'USDT' ? 'activecls' : null}>USDT</Button>
+                          <Button onClick={() => { setCat('USDC') }} className={cat === 'USDC' ? 'activecls' : null}>USDC</Button>
+                          <Button onClick={() => { setCat('EUR') }} className={cat === 'EUR' ? 'activecls' : null}>EUR</Button>
+                          <Button onClick={() => { setCat('BTC') }} className={cat === 'BTC' ? 'activecls' : null}>BTC</Button>
+                          <Button onClick={() => { setCat('ETH') }} className={cat === 'ETH' ? 'activecls' : null}>ETH</Button>
+                          <Button onClick={() => { setCat('DAI') }} className={cat === 'DAI' ? 'activecls' : null}>DAI</Button>
+                          <Button onClick={() => { setCat('BRZ') }} className={cat === 'BRZ' ? 'activecls' : null}>BRZ</Button>
+                        </Stack>
                         <Paper
                           component="form"
                           sx={{
@@ -875,6 +1198,7 @@ const SpotBody = () => {
                             sx={{ ml: 1, flex: 1 }}
                             placeholder="Search"
                             inputProps={{ "aria-label": "search google maps" }}
+                            value={inputValue}
                             onChange={(e) => {
                               getAllTradePairs(e.target.value.toUpperCase());
                             }}
@@ -883,8 +1207,10 @@ const SpotBody = () => {
                             type="button"
                             sx={{ p: "10px" }}
                             aria-label="search"
+                            onClick={handleClearClick}
                           >
-                            <SearchIcon />
+                            {/* <SearchIcon /> */}
+                            <CloseIcon />
                           </IconButton>
                         </Paper>
                       </Grid>
@@ -900,21 +1226,24 @@ const SpotBody = () => {
                           <div className="menu-pair-head-2">Last price</div>
                           <div className="menu-pair-head-3">24h change</div>
                         </div>
-                        { assetList.length <=2 ? (
-                        <div style={{padding: "1rem", textAlign:'center' }}>
-                            <CircularProgress size={60}  />
+                        {/* {console.log(assetList[0],'assertlist')} */}
+                        {assetList.length <= 0 ? (
+                          <div style={{ padding: "1rem", textAlign: 'center' }}>
+                            {/* <CircularProgress size={60}  /> */}
+                            {<p>Pairs Not Found</p>}
                           </div>
-                          ) : ( assetList.map((item, index) => {
+                        ) : (assetList.map((item, index) => {
                           return (
                             // <MenuItem key={index} value={item}>{`${item.split("-")[0]
                             //   } - ${item.split("-")[1]}`}</MenuItem>
                             <div
-
+                              key={index}
                               className="pair-menu-lists-top"
                               style={{ cursor: "pointer" }}
                             >
 
                               <div className="coin-block-first">
+                                {/* {console.log(item?.check, item?.pairs, 'logs')} */}
                                 {item?.check ?
                                   <StarIcon onClick={(e) => { handlefavpair(e, item?.check, item?.pairs); setOpen(true) }} /> :
                                   <StarBorderIcon onClick={(e) => { handlefavpair(e, item?.check, item?.pairs); setOpen(true) }} />
@@ -926,10 +1255,10 @@ const SpotBody = () => {
 
                               </div>
                               {/* <input type="checkbox" checked={item?.check} onClick={(e) => { handlefavpair(e,item?.pairs) }}></input> */}
-                              <div className={`remove item_${item?.pairs}`} onClick={() => handleList(item?.pairs)}></div>
+                              <div className={`remove item_${item?.pairs ? item?.pairs : 0}`} onClick={() => handleList(item?.pairs)}>{Number(item?.lastPrice ? item?.lastPrice : 0).toFixed(6)}</div>
                               <div
-                                className={`remove high-rate items_${item?.pairs}`} onClick={() => handleList(item?.pairs)}
-                              ></div>
+                                className={`remove high-rate items_${item?.pairs ? item?.pairs : 0}`} onClick={() => handleList(item?.pairs)}
+                              >{Number(item?.highPrice24h ? item?.highPrice24h : 0).toFixed(6) || 0}</div>
                             </div>
                           );
                         }))}
@@ -1166,6 +1495,67 @@ const SpotBody = () => {
                       : "#CA3F64 !important"
                       }`,
                   }}
+                // >{`${btc?.open24h
+                //   ? `${Number(btc?.open24h).toLocaleString()}`
+                //   : "0"
+                //   }`}</span>
+                >{`${btc?.ask1Price
+                  ? `${Number(btc?.ask1Price).toLocaleString()}`
+                  : "0"
+                  }`}</span>
+                <span
+                  style={{
+                    color: `${findPercentage(Number(btc?.ask1Price), Number(btc?.open24h)) >
+                      0
+                      ? "#10D876 !important"
+                      : "#CA3F64 !important"
+                      } `,
+                  }}
+                // >{`${btc?.idxPx
+                //   ? findPercentage(Number(btc?.ask1Price), Number(btc?.open24h))
+                //   : 0
+                //   }%`}</span>
+                >{`${btc?.price24hPcnt
+                  ? btc?.price24hPcnt
+                  : 0
+                  }%`}</span>
+              </div>
+              <div className="top-col-4 comon-flex-top-bot-style">
+                <span>{pair ? pair.split("-")[0] : "USD"}</span>
+                <span>{`${sellspot?.length > 0
+                  ? `${Number(sellspot[0]).toFixed(3).toLocaleString()}`
+                  : "0"
+                  }`}</span>
+              </div>
+              <div className="top-col-5 comon-flex-top-bot-style">
+                <span>24h low</span>
+                <span>{`${btc?.lowPrice24h ? `${Number(btc?.lowPrice24h).toLocaleString()}` : "0"
+                  }`}</span>
+              </div>
+              <div className="top-col-6 comon-flex-top-bot-style">
+                <span>24h high</span>
+                <span>{`${btc?.highPrice24h
+                  ? `${Number(btc?.highPrice24h).toLocaleString()}`
+                  : "0"
+                  }`}</span>
+              </div>
+              <div className="top-col-7 comon-flex-top-bot-style">
+                {/* <span>24h volume({pair.split("-")[0]})</span> */}
+                <span>24h volume({pair.slice(0, -4)})</span>
+                <span>{`${btc?.volume24h
+                  ? `${Number(btc?.volume24h).toLocaleString()}`
+                  : "0"
+                  }`}</span>
+              </div>
+              {/* <div className="top-col-3 comon-flex-top-bot-style">
+                <span
+                  style={{
+                    color: `${findPercentage(Number(btc?.idxPx), Number(btc?.open24h)) >
+                      0
+                      ? "#10D876 !important"
+                      : "#CA3F64 !important"
+                      }`,
+                  }}
                 >{`${btc?.open24h
                   ? `${Number(btc?.open24h).toLocaleString()}`
                   : "0"
@@ -1208,7 +1598,7 @@ const SpotBody = () => {
                   ? `${Number(btc?.open24h).toLocaleString()}`
                   : "0"
                   }`}</span>
-              </div>
+              </div> */}
               {/* <div className="top-col-8 comon-flex-top-bot-style">
                 <span>24h turnover({pair.split('-')[1]})</span>
                 <span>0.00</span>
@@ -1237,7 +1627,7 @@ const SpotBody = () => {
             item
             xs={12}
             sm={12}
-            md={12}
+            md={12} state
             lg={7}
             xl={7}
             id="chart-top-bottom"
@@ -1314,7 +1704,7 @@ const SpotBody = () => {
               className={classes.dashboarbodycls}
               id="sell-buy-form-outer-id"
             >
-              <BuySell selected={selected} pair={pair} market={btc?.idxPx} reload={handleReload}/>
+              <BuySell selected={selected} pair={pair} market={btc?.idxPx} reload={handleReload} cat={cat} />
             </Item>
           </Grid>
         </Grid>
@@ -1327,7 +1717,7 @@ const SpotBody = () => {
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
             {/* <TopMovers /> */}
             <Item className={classes.dashboarbodycls}>
-              <OpenOrderTab selectedPairs={pair} reload={reload}/>
+              <OpenOrderTab selectedPairs={pair} reload={reload} />
             </Item>
           </Grid>
         </Grid>

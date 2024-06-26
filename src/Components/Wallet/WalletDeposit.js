@@ -9,6 +9,7 @@ import { makeStyles } from '@mui/styles';
 import WalletDepositBody from './WalletDepositBody';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Consts from '../../Constansts';
+import toast from 'react-hot-toast';
 // import axios from 'axios';
 import './Wallet.css'
 import Axios from '../../Axios';
@@ -41,9 +42,9 @@ const useStyles = makeStyles({
     boxShadow: 'none !important',
     overflow: 'hidden',
     position: 'sticky !important',
-        top: '0px',
-        padding:'0px !important',
-        height: '100vh'
+    top: '0px',
+    padding: '0px !important',
+    height: '100vh'
   },
   headercls: {
     background: '#131a26 !important',
@@ -67,13 +68,44 @@ const useStyles = makeStyles({
 });
 
 
-const WalletDeposit = ({row, setSideBarShow, sideBarShow, openSideBar, setOpenSideBar}) => {
+const WalletDeposit = ({ row, setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) => {
   const classes = useStyles();
   const history = useLocation()
   const navigate = useNavigate()
+  const [status, setStatus] = useState(false)
   const ccy = history.state
 
+  const checkAddress = async (name, chainType) => {
+    try {
 
+      var payload = {
+        coinname: name,
+        chain: chainType
+      }
+      const Data = await Axios.post('/bybit/address', payload, {
+        headers: {
+          Authorization: window.localStorage.getItem("Mellifluous")
+        }
+      })
+
+      if (Data?.success == true) {
+        console.log(Data?.message, 'message');
+      } else {
+        console.log(Data?.message, 'message');
+      }
+      setStatus(!status)
+    } catch (e) {
+      // toast.error(e.message)
+      console.log(e.message);
+    }
+
+  }
+
+  useEffect(() => {
+    // console.log(history,'*******************');
+    // console.log(history?.state?.coinname,history?.state?.symbol,'STATE VAR');
+    checkAddress(history?.state?.coinname, history?.state?.symbol)
+  }, [])
 
 
   return (
@@ -82,20 +114,20 @@ const WalletDeposit = ({row, setSideBarShow, sideBarShow, openSideBar, setOpenSi
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={0}>
           {/* <Grid item xs={12} sm={12} md={12} lg={2} xl={2}> */}
-            <Item className={classes.sidebarcls}>
-              <Sidebar sideBarShow={sideBarShow}
-                setSideBarShow={setSideBarShow}
-                openSideBar={openSideBar }
-                setOpenSideBar={setOpenSideBar}/>
-            </Item>
+          <Item className={classes.sidebarcls}>
+            <Sidebar sideBarShow={sideBarShow}
+              setSideBarShow={setSideBarShow}
+              openSideBar={openSideBar}
+              setOpenSideBar={setOpenSideBar} />
+          </Item>
           {/* </Grid> */}
           <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} className='Wallet-Deposit-Body-right-class' item xs={12} sm={12} md={12} lg={10} xl={10}>
             <Item className={classes.headercls}>
               <Header sideBarShow={sideBarShow}
                 setSideBarShow={setSideBarShow}
-                openSideBar={openSideBar }
-                setOpenSideBar={setOpenSideBar}/>
-              <WalletDepositBody />
+                openSideBar={openSideBar}
+                setOpenSideBar={setOpenSideBar} />
+              <WalletDepositBody status={status} />
             </Item>
           </Grid>
         </Grid>

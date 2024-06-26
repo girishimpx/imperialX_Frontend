@@ -676,6 +676,7 @@ span.price-part {
 
 .tble-inner-right {
     text-align: right;
+    color: #fff !important;
 }
 
 .tble-inner-right {
@@ -1696,7 +1697,7 @@ span#green-high,
 }
 
 .spot-body-content div#chart-top-bottom {
-    height: 1000px;
+    height: auto;
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -1927,11 +1928,13 @@ button.non-active {
     color: #fff;
 }
 
-button.active-select, button.non-active:hover, button.active-select:hover {
+button.active-select,
+button.non-active:hover,
+button.active-select:hover {
     background: #25a750 !important;
     color: #fff;
 }
 
-.percentage-button-row{
+.percentage-button-row {
     margin-bottom: 10px;
 }

@@ -3,22 +3,28 @@
     padding-left: 25px;
     padding-right: 25px;
 }
+
 .text-color-white span {
     color: #B8B8B8;
+    font-weight: 800;
 }
+
 .text-color-green span {
-    color: #25DEB0 
-} 
+    color: #25DEB0
+}
 
 .text-color-green {
     color: #25DEB0 !important
 }
-.liststyle .MuiListItemButton-root{
+
+.liststyle .MuiListItemButton-root {
     padding: 10px 10px 10px 0 !important;
 }
+
 .liststyle .MuiListItemIcon-root {
     justify-content: center;
 }
+
 .social-list-icons {
     display: flex;
     flex-wrap: wrap;
@@ -27,6 +33,7 @@
     justify-content: flex-start;
     align-items: center;
 }
+
 .sidebar-cols {
     display: flex;
     flex-direction: column;
@@ -42,7 +49,7 @@ ul.sab-list {
 
 div#hidesidemenu::-webkit-scrollbar {
     width: 0px;
-  }
+}
 
 ul.sab-list li a {
     padding: 5px;
@@ -79,18 +86,20 @@ div#rotate-id-right img {
     flex-basis: 96% !important;
     max-width: 96%;
 } */
-#account-qr-code-pop-up-modal-ids{
+#account-qr-code-pop-up-modal-ids {
     padding: 20px !important;
-    position:relative;
-    left: 15% !important;
-    top:15%;
+    position: relative;
+    left: 17% !important;
+    top: 18%;
     height: auto !important;
     width: 400px !important;
 }
-body.full-width .App.imperial-exchange-app-platform > div > div > div > .MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-10.MuiGrid-grid-xl-10 {
+
+body.full-width .App.imperial-exchange-app-platform>div>div>div>.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-12.MuiGrid-grid-sm-12.MuiGrid-grid-md-12.MuiGrid-grid-lg-10.MuiGrid-grid-xl-10 {
     flex-basis: 96% !important;
     max-width: 96%;
 }
+
 span.smf-icons-left img {
     height: 18px;
 }
@@ -102,7 +111,7 @@ span.smf-icons-left {
 
 
 @media screen and (max-width: 500px) {
-    #account-qr-code-pop-up-modal-ids{
+    #account-qr-code-pop-up-modal-ids {
         padding: 20px !important;
         /* left: 50% !important;
         height: auto !important; */
@@ -111,13 +120,14 @@ span.smf-icons-left {
 }
 
 @media screen and (max-width: 991.98px) {
-    #account-qr-code-pop-up-modal-ids{
+    #account-qr-code-pop-up-modal-ids {
         position: relative;
         left: 2% !important;
         top: 24%;
         height: auto !important;
         width: 300px !important;
     }
+
     .menu-pair-heads {
         overflow-x: auto;
         height: 420px;
@@ -128,7 +138,7 @@ span.smf-icons-left {
 
 
 @media screen and (max-width: 767.98px) {
-    #account-qr-code-pop-up-modal-ids{
+    #account-qr-code-pop-up-modal-ids {
         position: relative;
         left: 4% !important;
         top: 30%;
@@ -136,10 +146,11 @@ span.smf-icons-left {
         width: 300px !important;
     }
 }
+
 ::-webkit-scrollbar {
     width: 0.5em !important;
-  }
-  
+}
+
 ::-webkit-scrollbar-thumb {
     background-color: transparent;
-  }
+}

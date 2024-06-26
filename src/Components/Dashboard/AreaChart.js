@@ -31,9 +31,10 @@ let dashx = [];
 let dashy = [];
 
 const AreaChartFunction = (props) => {
-  const { hoverData, tradelistdata, balance } = props;
-  console.log("🚀 ~ file: AreaChart.js:34 ~ AreaChartFunction ~ tradelistdata:", tradelistdata)
-  console.log("🚀 ~ file: AreaChart.js:34 ~ AreaChartFunction ~ hoverData:", hoverData)
+  const { hoverData, tradelistdata, balance, USD } = props;
+  // console.log(props, 'props');
+  // console.log("🚀 ~ file: AreaChart.js:34 ~ AreaChartFunction ~ tradelistdata:", tradelistdata)
+  // console.log("🚀 ~ file: AreaChart.js:34 ~ AreaChartFunction ~ hoverData:", hoverData)
 
   const [btc, setBtc] = useState();
   const [eth, setEth] = useState();
@@ -47,7 +48,7 @@ const AreaChartFunction = (props) => {
   };
 
   const updategraphcoordinate = () => {
-    console.log(tradelistdata,"tradelistdata")
+    // console.log(tradelistdata,"tradelistdata")
     if (tradelistdata[0]) {
       for (let i = 0; i < tradelistdata.length; i++) {
         let xaxis = Number(tradelistdata[i]?.idxPx);
@@ -154,7 +155,7 @@ const AreaChartFunction = (props) => {
           <Grid container spacing={0} className="flex-box-option">
             <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
               <Item className="tradingview-pricechart">
-                <h3 className="price-usd">
+                {/* <h3 className="price-usd">
                   {hoverData
                     ?
                     //  `$ ${hoverData && tradelistdata[0]?.idxPx
@@ -193,6 +194,27 @@ const AreaChartFunction = (props) => {
                       ? `$ ${tradelistdata[0]?.idxPx}`
                       : `$ 0`}{" "}
                   {hoverData ? hoverData.split("-")[1] : "USDT"}
+                </h3> */}
+
+                <h3 className="price-usd">
+                  {hoverData
+                    ? Number(
+                      hoverData == "BTC-USDT"
+                        ? USD[0] ? Number(USD[0]) : 0
+                        : hoverData == "ETH-USDT"
+                          ? USD[1] ? Number(USD[1]) : 0
+                          : hoverData == "LTC-USDT"
+                            ? USD[3] ? Number(USD[3]) : 0
+                            : hoverData == "XRP-USDT"
+                              ? USD[2] ? Number(USD[2]) : 0
+                              : 0
+                    ).toFixed(4)
+                    :
+                    tradelistdata[0]?.idxPx
+                      ? tradelistdata[0]?.idxPx
+                      : "0"
+                  }
+                  <span> USD</span>
                 </h3>
 
                 <span

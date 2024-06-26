@@ -29,9 +29,9 @@ export default function OpenOrderTable({ selectedPairs, ordreType }) {
           res?.data?.result.map((item, index) => {
             console.log(item, "item")
             if (item.trade_at === "margin" || item.trade_at === "Margin") {
-              if (item.status === "filled" || item.status === "canceled") {
+              if (item.status === "Filled" || item.status === "Cancelled") {
                 console.log(item.order_type, ordreType, "vijay2");
-                if (item.order_type == ordreType) {
+                if (item.order_type.toLowerCase() == ordreType.toLowerCase()) {
                   data.push(item);
                   console.log(item, ordreType, "opriot")
                 }
@@ -94,7 +94,7 @@ export default function OpenOrderTable({ selectedPairs, ordreType }) {
                 </TableCell>
                 <TableCell>{row.order_type ? row.order_type : "-"}</TableCell>
                 <TableCell>{row.pair ? row.pair : "-"}</TableCell>
-                <TableCell sx={{ color: `${row.trade_type === "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.price ? row.price : "0"}</TableCell>
+                <TableCell sx={{ color: `${row.trade_type === "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.price ? row.price : row.entry_price}</TableCell>
                 <TableCell >{row.remaining ? row.remaining : "0"}</TableCell>
                 <TableCell>{row.trade_at ? row.trade_at : "-"}</TableCell>
                 <TableCell sx={{ color: `${row.trade_type === "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.trade_type ? row.trade_type : "-"}</TableCell>

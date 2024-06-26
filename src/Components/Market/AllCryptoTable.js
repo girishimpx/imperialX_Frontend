@@ -30,7 +30,12 @@ import Axios from "../../Axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import AxiosToken from "../../Axiostoken";
-var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=198");
+// import WebSocket from 'websocket';
+import CircularProgress from "@mui/material/CircularProgress";
+import WebSocket from 'websocket';
+
+
+// var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=198");
 
 const useStyles = makeStyles({
   tablestructre: {
@@ -256,6 +261,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function AllCryptoTable({ values, searchedvalue }) {
+  // console.log(searchedvalue,values,"ïncomedara")
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -263,15 +269,17 @@ export default function AllCryptoTable({ values, searchedvalue }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [logos, setlogos] = useState([])
-
   const [rows, setRows] = useState([]);
-
   const [datas, setdatas] = useState();
-
   const [oldPairs, setOldPairs] = useState();
-
   const [all, setall] = useState();
   const navigate = useNavigate();
+  const [sidedata, setSideData] = useState();
+  const [load, setLoad] = React.useState(false);
+  const [client, setClient] = useState();
+
+  
+
 
   // const rows = [
   //   createData('Cupcake', 305, 3.7, 67, 4.3),
@@ -385,34 +393,40 @@ export default function AllCryptoTable({ values, searchedvalue }) {
   // }, [datas]);
 
   const getAssets = async () => {
+    setLoad(true)
     try {
       setRows([]);
       setdatas("");
       const { data } = await Axios.post(
         `/assets/marketPairs`,
-        { type: "spot" },
+        // { type: "all" },
+        { type: values },
         {
           headers: {
             Authorization: localStorage.getItem("Mellifluous"),
           },
         }
       );
-      const logos = await Axios.get(
-        `/assets/getAssetIcon`
-      )
-      setlogos(logos)
+      // const logos = await Axios.get(
+      //   `/assets/getAssetIcon`
+      // )
+      // setlogos(logos)
       if (searchedvalue) {
         const filtered = [];
         for (let j = 0; j < data.result.length; j++) {
           if (data.result[j].data.instId.includes(searchedvalue)) {
-            filtered.push(data.result[j]);
+            // if (data?.result[j].data.instId.slice(-4) === 'USDT') {
+              filtered.push(data.result[j]);
           }
         }
         setall(filtered);
       } else {
         var sparr = []
         for (let i = 0; i < data?.result.length; i++) {
-          if (data?.result[i].data.instId.split("-")[1] === "USDT") {
+          // if (data?.result[i].data.instId.split("-")[1] === "USDT") {
+          //   sparr.push(data?.result[i]);
+          // }
+          if (data?.result[i].data.instId.slice(-4) === 'USDT') {
             sparr.push(data?.result[i]);
           }
         }
@@ -420,154 +434,515 @@ export default function AllCryptoTable({ values, searchedvalue }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoad(false)
     }
 
   };
 
+
+  // useEffect(() => {
+  //   // const processedSymbols = new Set(); // Keep track of processed symbols
+
+  //   if (all?.length > 0) {
+  //     const spotEndpoint = 'wss://stream.bybit.com/v5/public/spot';
+  //     const futuresEndpoint = 'wss://stream.bybit.com/v5/public/linear';
+  
+  //     // const spotClient = new WebSocket(spotEndpoint);
+  //     // const futuresClient = new WebSocket(futuresEndpoint);
+  //     const spotClient = new WebSocket.w3cwebsocket(spotEndpoint);
+  //     const futuresClient = new WebSocket.w3cwebsocket(futuresEndpoint);
+
+  
+  //     const subscribeToPairs = (client, pairs) => {
+  //       pairs.forEach(pairData => {
+  //         const pair = pairData?.data?.instId;
+  //         client.send(JSON.stringify({ op: 'subscribe', args: [`tickers.${pair}`] }));
+  //       });
+  //     };
+
+
+  
+  //     // Spot WebSocket
+  //     if (values === 'SPOT' || values === 'all') {
+  //       spotClient.onopen = () => {
+  //         console.log('Spot WebSocket Client Connected');
+  //         const spotPairsToSubscribe = all?.slice(0, 548);
+  //         subscribeToPairs(spotClient, spotPairsToSubscribe);
+  //       };
+  
+  //       spotClient.onmessage = (event) => {
+  //         // Spot message handling logic
+  //         // console.log('Message received:', event.data);
+  //       const data = JSON.parse(event.data);
+  //       // console.log(data, 'datassd');
+  //       if (data?.topic && data?.data) {
+  //         const symbol = data?.topic?.split('.')[1];
+  //         // console.log(symbol,"symbol")
+  //         // if (!processedSymbols.has(symbol)) { // Check if symbol has already been processed
+  //         //   processedSymbols.add(symbol); // Add symbol to processed set
+  //         const response = data?.data;
+  //         // console.log(response,"responsees")
+
+
+  //         const increase = response.lastPrice - response.highPrice24h;
+  //         const price_change = (increase / response.highPrice24h) * 100;
+
+  //         $(`.price-${symbol}`).html(response?.lastPrice);
+  //         $(`.high-${symbol}`).html(response?.highPrice24h);
+  //         $(`.low-${symbol}`).html(response?.lowPrice24h);
+  //         $(`.volume-${symbol}`).html(parseFloat(response?.volume24h).toFixed(2));
+  //         $(`.change-${symbol}`).html(
+  //           parseFloat(response?.price24hPcnt).toFixed(2) > 0
+  //             ? `<span class="classgreens">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>`
+  //             : `<span class="classreds">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>`
+  //         );
+  //         $(`.ts-${symbol}`).html(parseFloat(response?.turnover24h).toFixed(2));
+  //       // }
+  //       }
+
+  //       };
+  
+  //       spotClient.onerror = (error) => {
+  //         console.error('Spot WebSocket Error:', error);
+  //       };
+  
+  //       spotClient.onclose = () => {
+  //         console.log('Spot WebSocket Connection Closed');
+  //       };
+  //     }
+  
+  //     // Futures WebSocket
+  //     if (values === 'FUTURES' || values === 'all') {
+  //       futuresClient.onopen = () => {
+  //         console.log('Futures WebSocket Client Connected');
+  //         const futuresPairsToSubscribe = all?.slice(0, 367);
+  //         subscribeToPairs(futuresClient, futuresPairsToSubscribe);
+  //       };
+  
+  //       futuresClient.onmessage = (event) => {
+  //         // Futures message handling logic
+  //         console.log('Message received:', event.data);
+  //       const data = JSON.parse(event.data);
+  //       // console.log(data, 'alldatasss');
+  //       if (data?.topic && data?.data) {
+  //         const symbol = data?.topic?.split('.')[1];
+  //         // console.log(symbol, "symbol")
+  //         // if (!processedSymbols.has(symbol)) { // Check if symbol has already been processed
+  //         //   processedSymbols.add(symbol); // Add symbol to processed set
+  //         const response = data?.data;
+  //         // console.log(response, "responsees")
+  //         if (
+  //           'volume24h' in response &&
+  //           'price24hPcnt' in response &&
+  //           'turnover24h' in response
+  //         ) {
+
+
+  //         const increase = response.lastPrice - response.highPrice24h;
+  //         const price_change = (increase / response.highPrice24h) * 100;
+  //         const changeValue = parseFloat(response?.price24hPcnt).toFixed(2);
+  //         const changeHtml = isNaN(changeValue) ? '0' : (changeValue > 0 ? `<span class="classgreens">${changeValue}%</span>` : `<span class="classreds">${changeValue}%</span>`);
+
+  //         $(`.price-${symbol}`).html(response?.ask1Price);
+  //         $(`.high-${symbol}`).html(response?.highPrice24h);
+  //         $(`.low-${symbol}`).html(response?.lowPrice24h);
+  //         $(`.volume-${symbol}`).html(response?.volume24h);
+  //         $(`.change-${symbol}`).html(changeHtml);
+  //         // $(`.change-${symbol}`).html(
+  //         //   parseFloat(response?.price24hPcnt).toFixed(2) > 0
+  //         //     ? `<span class="classgreens">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>`
+  //         //     : `<span class="classreds">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>`
+  //         // );
+  //         $(`.ts-${symbol}`).html(response?.turnover24h);
+  //       // }
+  //     }
+  //   }
+
+
+  //       };
+  
+  //       futuresClient.onerror = (error) => {
+  //         console.error('Futures WebSocket Error:', error);
+  //       };
+  
+  //       futuresClient.onclose = () => {
+  //         console.log('Futures WebSocket Connection Closed');
+  //       };
+  //     }
+  
+  //     // Cleanup function
+  //     return () => {
+  //       console.log('Cleaning up WebSocket connections');
+  //       spotClient.close();
+  //       futuresClient.close();
+  //     };
+  //   }
+  // }, [all, searchedvalue, values]);
+
+  const Ticker = () => {
+
+    let endpoint;
+    let pairsToSubscribeCount;
+    if (all?.length > 0 && values === 'all') {
+      endpoint = 'wss://stream.bybit.com/v5/public/spot';
+      pairsToSubscribeCount = 548;
+    } else if (all?.length > 0 && values === 'all') {
+      endpoint = 'wss://stream.bybit.com/v5/public/linear';
+      pairsToSubscribeCount = 367;
+    } else {
+      // No action needed if values don't match SPOT or FUTURES
+      return;
+    }
+
+    const client = new WebSocket.w3cwebsocket(endpoint);
+
+    client.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      // const pairsToSubscribe = all?.slice(page, rowsPerPage);
+      const start = page * rowsPerPage;
+      const end = start + rowsPerPage;
+      const pairsToSubscribe = all.slice(start, end);
+
+      pairsToSubscribe.forEach(pairData => {
+        const pair = pairData?.data?.instId;
+        client.send(JSON.stringify({ op: 'subscribe', args: [`tickers.${pair}`] }));
+      });
+    };
+
+    client.onmessage = (event) => {
+      // console.log('Message received:', event.data);
+      const data = JSON.parse(event.data);
+      if (data?.topic && data?.data) {
+        const symbol = data?.topic?.split('.')[1];
+        const response = data?.data;
+
+        let priceHtml;
+        if (values === 'all') {
+          const increase = response.lastPrice - response.highPrice24h;
+          const price_change = (increase / response.highPrice24h) * 100;
+          priceHtml = parseFloat(response?.price24hPcnt).toFixed(2) > 0 ?
+            `<span class="classgreens">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>` :
+            `<span class="classreds">${parseFloat(response?.price24hPcnt).toFixed(2)}%</span>`;
+        } else if (values === 'all') {
+          if (
+            'volume24h' in response &&
+            'price24hPcnt' in response &&
+            'turnover24h' in response
+            // !isNaN(response?.volume24h) &&
+            // !isNaN(response?.turnover24h)
+          ) {
+            const increase = response.lastPrice - response.prevPrice24h;
+            const price_change = (increase / response.prevPrice24h) * 100;
+            const changeValue = parseFloat(response?.price24hPcnt).toFixed(2);
+            const changeHtml = isNaN(changeValue) ? '0' :
+              (changeValue > 0 ? `<span class="classgreens">${changeValue}%</span>` :
+                `<span class="classreds">${changeValue}%</span>`);
+            priceHtml = changeHtml;
+          }
+        }
+
+        $(`.price-${symbol}`).html(response?.lastPrice);
+        $(`.high-${symbol}`).html(response?.highPrice24h);
+        $(`.low-${symbol}`).html(response?.lowPrice24h);
+        // $(`.volume-${symbol}`).html(parseFloat(response?.volume24h).toFixed(2));
+        if (response?.volume24h) {
+          $(`.volume-${symbol}`).html(isNaN(response?.volume24h) ? '0' : parseFloat(response?.volume24h).toFixed(2));
+
+        }
+        $(`.change-${symbol}`).html(priceHtml);
+        // $(`.ts-${symbol}`).html(parseFloat(response?.turnover24h).toFixed(2));
+        if (response?.turnover24h) {
+          $(`.ts-${symbol}`).html(isNaN(response?.turnover24h) ? '0' : parseFloat(response?.turnover24h).toFixed(2));
+
+        }
+
+      }
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+    };
+
+    client.onclose = () => {
+      console.log('WebSocket Connection Closed');
+    };
+
+    return () => {
+      console.log('Cleaning up WebSocket connection');
+      // client.close();
+    };
+  }
+  
+
+
+
+
+
+  // const setAssetsData = async () => {
+  //   const asstype = values == "FUTURES" ? "linear" : values != '' ? values : "spot"
+
+  //   try {
+
+  //     const { data } = await Axios.post(
+  //       `/bybit/orderbook`, 
+  //       { type: `${asstype}`, ccy: '' },
+  //       {
+  //         headers: {
+  //           Authorization: localStorage?.getItem("Mellifluous"),
+  //         },
+  //       }
+  //     );
+  //     if (data?.success && data?.result?.length > 1) {
+  //       console.log(data?.result,'RESULT');
+  //       setSideData(data?.result);
+  //     } else {
+  //       setSideData([]);
+  //     }
+    
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+    
+  // };
+
+
+  // useEffect(() => {
+  //   if (all?.length > 0) {
+  //     setdatas();
+  //     const dt = {
+  //       op: "subscribe",
+  //       args: [],
+  //     };
+
+  //     for (let i = 0; i < all?.length; i++) {
+
+  //       const dts = {
+  //         instId: all[i]?.data?.instId,
+  //         image: all[i]?.data?.image,
+  //         high: "0",
+  //         change: "0",
+  //         low: "0",
+  //         short: "0",
+  //         long: "0",
+  //         vitamin: "0",
+  //       };
+
+  //       setRows((pre) => [...pre, dts]);
+  //     }
+
+  //     for (let i = 0; i < 10; i++) {
+  //       dt?.args?.push({
+  //         channel: "tickers",
+  //         instId: all[i]?.data?.instId,
+  //       });
+  //     }
+  //     setdatas(dt);
+  //   }
+  // }, [all, searchedvalue]);
+
+
+  // useEffect(() => {
+  //   if (all?.length > 0) {
+  //     const dt = {
+  //       op: "subscribe",
+  //       args: [],
+  //     };
+
+  //     // Subscribe to WebSocket channels for all pairs in 'all'
+  //     all?.forEach(pairData => {
+  //       const pair = pairData?.data?.instId;
+  //       dt?.args.push({ channel: "tickers", instId: pair });
+  //     });
+
+  //     setRows(dt); // Set subscription data for WebSocket
+
+  //     // Initialize rows with default values
+  //     const initialRows = all?.map(pairData => {
+
+  //       return {
+  //         instId: pairData?.data?.instId,
+  //         high: "0",
+  //         low: "0",
+  //         short: "0",
+  //         long: "0",
+  //         vitamin: "0",
+  //         // Add more fields if needed
+  //       };
+  //     });
+  //     console.log(initialRows, "initialRowsss")
+  //     setRows(initialRows);
+  //   }
+  // }, [all, searchedvalue]);
+
   useEffect(() => {
     if (all?.length > 0) {
-      setdatas();
-      const dt = {
-        op: "subscribe",
-        args: [],
-      };
-
-      for (let i = 0; i < all?.length; i++) {
-
-        const dts = {
-          instId: all[i]?.data?.instId,
-          image: all[i]?.data?.image,
+      const initialRows = all?.map(pairData => {
+        return {
+          instId: pairData?.data?.instId,
           high: "0",
-          change: "0",
           low: "0",
           short: "0",
           long: "0",
           vitamin: "0",
         };
-
-        setRows((pre) => [...pre, dts]);
-      }
-
-      for (let i = 0; i < 10; i++) {
-        dt?.args?.push({
-          channel: "tickers",
-          instId: all[i]?.data?.instId,
-        });
-      }
-      setdatas(dt);
-    }
-  }, [all, searchedvalue]);
-
-  useEffect(() => {
-    if (page * rowsPerPage > 0) {
-      ws.onopen = (event) => {
-        ws.send(
-          JSON.stringify({
-            op: "unsubscribe",
-            args: datas.args,
-          })
-        );
-      };
+      });
+      setRows(initialRows);
       const dt = {
         op: "subscribe",
         args: [],
       };
-      setdatas();
-      for (let i = page + rowsPerPage; i < (page + 1) * rowsPerPage; i++) {
-        dt?.args?.push({
-          channel: "tickers",
-          instId: all[i]?.data?.instId,
-        });
+      for (let i = page * rowsPerPage; i < (page + 1) * rowsPerPage && i < all.length; i++) {
+        dt?.args?.push({ channel: "tickers", instId: all[i]?.data?.instId });
       }
       setdatas(dt);
     }
-  }, [page, rowsPerPage]);
+  }, [all, searchedvalue, page, rowsPerPage]);
 
-  const socket = async () => {
-    ws.onopen = (event) => {
-      ws.send(JSON.stringify(datas));
-    };
+  // useEffect(() => {
+  //   if (page * rowsPerPage > 0) {
+  //     ws.onopen = (event) => {
+  //       ws.send(
+  //         JSON.stringify({
+  //           op: "unsubscribe",
+  //           args: datas.args,
+  //         })
+  //       );
+  //     };
+  //     const dt = {
+  //       op: "subscribe",
+  //       args: [],
+  //     };
+  //     setdatas();
+  //     for (let i = page + rowsPerPage; i < (page + 1) * rowsPerPage; i++) {
+  //       dt?.args?.push({
+  //         channel: "tickers",
+  //         instId: all[i]?.data?.instId,
+  //       });
+  //     }
+  //     setdatas(dt);
+  //   }
+  // }, [page, rowsPerPage]);
+  
 
-    ws.onmessage = (event) => {
-      const response = JSON.parse(event.data);
-      try {
-        const isdata = "classgreens";
-        const isdata1 = "classreds";
-        const increase = response?.data[0]?.last - response?.data[0]?.open24h;
-        const price_change = (increase / response?.data[0]?.open24h) * 100;
-        $(`.price-${response?.data[0]?.instId}`).html(response?.data[0]?.last);
-        $(`.high-${response?.data[0]?.instId}`).html(
-          response?.data[0]?.high24h
-        );
-        $(`.low-${response?.data[0]?.instId}`).html(response?.data[0]?.low24h);
-        $(`.volume-${response?.data[0]?.instId}`).html(
-          response?.data[0]?.vol24h
-        );
-        // $(`.change-${response?.data[0]?.instId}`).html(<span style={{ color: "green" }}>{parseFloat(price_change).toFixed(2)}%</span>)
-        $(`.change-${response?.data[0]?.instId}`).html(
-          parseFloat(price_change).toFixed(2) > 0
-            ? '<span class="' +
-            isdata +
-            '">' +
-            parseFloat(price_change).toFixed(2) +
-            "% </span>"
-            : '<span class="' +
-            isdata1 +
-            '">' +
-            parseFloat(price_change).toFixed(2) +
-            "% </span>"
-        );
+  // const socket = async () => {
+  //   ws.onopen = (event) => {
+  //     ws.send(JSON.stringify(datas));
+  //   };
 
-        $(`.ts-${response?.data[0]?.instId}`).html(response?.data[0]?.ts);
-        // rows.map(item => {
-        //   if(item.name === response.data[0].instId)
-        //   setSelected(item)
-        //   console.log(item.name,response.data[0].instId,response.data[0].askSz,"price");
-        //   item.price =response.data[0].askSz
-        //   setSelected(item)
-        // })
+  //   ws.onmessage = (event) => {
+  //     const response = JSON.parse(event.data);
+  //     try {
+  //       const isdata = "classgreens";
+  //       const isdata1 = "classreds";
+  //       const increase = response?.data[0]?.last - response?.data[0]?.open24h;
+  //       const price_change = (increase / response?.data[0]?.open24h) * 100;
+  //       $(`.price-${response?.data[0]?.instId}`).html(response?.data[0]?.last);
+  //       $(`.high-${response?.data[0]?.instId}`).html(
+  //         response?.data[0]?.high24h
+  //       );
+  //       $(`.low-${response?.data[0]?.instId}`).html(response?.data[0]?.low24h);
+  //       $(`.volume-${response?.data[0]?.instId}`).html(
+  //         response?.data[0]?.vol24h
+  //       );
+  //       // $(`.change-${response?.data[0]?.instId}`).html(<span style={{ color: "green" }}>{parseFloat(price_change).toFixed(2)}%</span>)
+  //       $(`.change-${response?.data[0]?.instId}`).html(
+  //         parseFloat(price_change).toFixed(2) > 0
+  //           ? '<span class="' +
+  //           isdata +
+  //           '">' +
+  //           parseFloat(price_change).toFixed(2) +
+  //           "% </span>"
+  //           : '<span class="' +
+  //           isdata1 +
+  //           '">' +
+  //           parseFloat(price_change).toFixed(2) +
+  //           "% </span>"
+  //       );
 
-        // rows?.forEach((element) => {
-        //   if (element?.name === response?.data[0]?.instId) {
-        //     console.log(response?.data[0]?.askSz, "adf")
-        //     element.price = response?.data[0]?.askSz
-        //   }
-        // })
+  //       $(`.ts-${response?.data[0]?.instId}`).html(response?.data[0]?.ts);
+  //       // rows.map(item => {
+  //       //   if(item.name === response.data[0].instId)
+  //       //   setSelected(item)
+  //       //   console.log(item.name,response.data[0].instId,response.data[0].askSz,"price");
+  //       //   item.price =response.data[0].askSz
+  //       //   setSelected(item)
+  //       // })
 
-        // setRows(
-        //   rows?.map((item) => {
-        //     if (item?.name === response?.data[0]?.instId) {
-        //       return [...rows, { name: item?.name, price: response?.data[0]?.askSz }]
-        //     }
-        //   })
-        // )
+  //       // rows?.forEach((element) => {
+  //       //   if (element?.name === response?.data[0]?.instId) {
+  //       //     console.log(response?.data[0]?.askSz, "adf")
+  //       //     element.price = response?.data[0]?.askSz
+  //       //   }
+  //       // })
 
-        // if (rows !== undefined) {
-        //   const newlist = rows.map((item) => {
-        //     if (item?.name === response?.data[0]?.instId) {
-        //       const update = { name: item?.name, price: response?.data[0]?.askSz }
-        //       return update
-        //     }
-        //   })
-        //   setRows(newlist)
-        // }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  };
+  //       // setRows(
+  //       //   rows?.map((item) => {
+  //       //     if (item?.name === response?.data[0]?.instId) {
+  //       //       return [...rows, { name: item?.name, price: response?.data[0]?.askSz }]
+  //       //     }
+  //       //   })
+  //       // )
+
+  //       // if (rows !== undefined) {
+  //       //   const newlist = rows.map((item) => {
+  //       //     if (item?.name === response?.data[0]?.instId) {
+  //       //       const update = { name: item?.name, price: response?.data[0]?.askSz }
+  //       //       return update
+  //       //     }
+  //       //   })
+  //       //   setRows(newlist)
+  //       // }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  // };
 
   useEffect(() => {
     getAssets();
   }, [searchedvalue]);
 
+  // useEffect(() => {
+  //   // if(all?.length > 0){
+  //     setAssetsData();
+  //   // }
+  // }, [searchedvalue]);
+
+
+  // useEffect(() => {
+  //   if (datas?.args?.length > 0) {
+  //     ws.close();
+  //     ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
+  //     socket();
+  //   }
+  // }, [datas, searchedvalue]);
+
   useEffect(() => {
     if (datas?.args?.length > 0) {
-      ws.close();
-      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197"); // Close the WebSocket connection on unmount
-      socket();
+      // console.log(datas, "datasaaa")
+      // alert('iscoming')
+      // Close the current WebSocket connection
+      if (client) {
+        client.close();
+      }
+      // Define the endpoint based on some criteria, such as the value of 'values'
+      let endpoint;
+      if (values === 'all') {
+        endpoint = 'wss://stream.bybit.com/v5/public/spot';
+      } else if (values === 'all') {
+        endpoint = 'wss://stream.bybit.com/v5/public/linear';
+      }
+
+      // Establish a new WebSocket connection with the selected endpoint
+      const newClient = new WebSocket.w3cwebsocket(endpoint);
+
+      // Set the new WebSocket client
+      setClient(newClient);
+      // Initialize WebSocket event handlers
+      Ticker();
     }
-  }, [datas, searchedvalue]);
+  }, [datas, searchedvalue, values, page, rowsPerPage]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -653,7 +1028,16 @@ export default function AllCryptoTable({ values, searchedvalue }) {
             />
 
             <TableBody>
-              {visibleRows.map((row, index) => {
+            {load ?
+                (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center">
+                      <CircularProgress />
+                    </TableCell>
+                  </TableRow>
+                ) : visibleRows?.length > 0 ?
+                  (
+              visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.name);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -671,38 +1055,44 @@ export default function AllCryptoTable({ values, searchedvalue }) {
                     <TableCell>
                       <div className="img-div">
                         {row?.instId?.split("-")[2] ? (
-                          <>  <div className="crypto-coin-size"><img src={row?.image} alt='coins' /></div>{`${row?.instId?.split("-")[0]}-${row?.instId?.split("-")[2]
+                          <> { /*<div className="crypto-coin-size"><img src={row?.image} alt='coins' /></div> */}{`${row?.instId?.split("-")[0]}-${row?.instId?.split("-")[2]
                             }`}</>
                         ) : (
-                          <>  <div className="crypto-coin-size"><img src={row?.image} alt='coins' /></div>{row?.instId?.split("-")[0]}</>
+                          <>  {/*<div className="crypto-coin-size"><img src={row?.image} alt='coins' /></div> */}{row?.instId?.split("-")[0]}</>
                         )}
                       </div>
                     </TableCell>
                     <TableCell align="left" className={`price-${row?.instId}`}>
-                      0
+                    {row.price ? row?.price : '0'}
                     </TableCell>
                     <TableCell align="left" className={`change-${row?.instId}`}>
-                      0
+                    {row?.change ? row?.change : '0'}
                     </TableCell>
                     <TableCell align="left" className={`high-${row?.instId}`}>
-                      {row.high}
+                      {row?.high ? row?.high : '- -'}
                     </TableCell>
                     <TableCell align="left" className={`low-${row?.instId}`}>
-                      {row.low}
+                      {row?.low ? row?.low : '- -'}
                     </TableCell>
                     <TableCell align="left" className={`volume-${row?.instId}`}>
-                      {row.long}
+                      {row?.long ? row?.long : '- -'}
                     </TableCell>
                     <TableCell
                       align="left"
                       className={`ts-${row?.instId}`}
                       style={{ color: "green" }}
                     >
-                      {row.vitamin}
+                      {row?.vitamin ? row?.vitamin : '- -'} 
                     </TableCell>
                   </TableRow>
                 );
-              })}
+              })) :
+              (<TableRow>
+                <TableCell colSpan={7} align="center" style={{ color: "#25deb0" }}>
+                  No Pairs Found
+                </TableCell>
+              </TableRow>)
+          }
               {emptyRows > 0 && (
                 <TableRow
                   style={{

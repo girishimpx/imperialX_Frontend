@@ -39,7 +39,7 @@ function a11yProps(index) {
   };
 }
 
-const Buyformtab = ({ selected, pair,index , lever, lab, mgnmode, reload }) => {
+const Buyformtab = ({ selected, pair,index , lever, lab, mgnmode,market, reload }) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -52,7 +52,7 @@ const Buyformtab = ({ selected, pair,index , lever, lab, mgnmode, reload }) => {
     <Tab label="Isolated" {...a11yProps(1)} />
   </Tabs> */}
   {/* <TabPanel value={value} index={0}> */}
-    <BuyFormInner selected={selected} pair={pair} index={mgnmode} lever={lever} ordertype={index} labe={lab} reload={reload} />
+    <BuyFormInner selected={selected} pair={pair} market={market} index={mgnmode} lever={lever} ordertype={index} labe={lab} reload={reload} />
   {/* </TabPanel>
   <TabPanel value={value} index={1}>
     <BuyFormInner selected={selected} pair={pair} index={'isolated'} ordertype={index} labe={lab}/>

@@ -89,7 +89,8 @@ const ValueLabelComponent = (props) => {
   );
 };
 
-const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
+const SellFormInnerMarket = ({ selected, pair, index, market, reload, cat }) => {
+  console.log(selected.price, pair, "pairssss")
   const user = JSON.parse(window.localStorage.getItem("users"))
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
@@ -102,8 +103,15 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
   const [value, setValue] = React.useState()
   const [sliderValue, setSliderValue] = useState();
   const [kycsubmit, setkycsubmit] = React.useState(false);
-  const [sellShow,setSellShow]= React.useState(false);
+  const [sellShow, setSellShow] = React.useState(false);
   const navigate = useNavigate();
+  const [maxsell, setMaxSell] = useState();
+  const [quantity, setQuantity] = React.useState(0.01);
+  const [maxquantity, setMaxQuantity] = React.useState(0.01);
+  const [basePrecision, setbasePrecision] = React.useState('0.0');
+  const [quotePrecision, setquotePrecision] = React.useState('0.0');
+  const [precesion, setPrecesion] = React.useState(0.01);
+  const [quoteprecesion, setQuotePrecesion] = React.useState(0.01);
 
 
   const handleSliderChange = async (event, data) => {
@@ -111,7 +119,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
     const da = (data / 100 * bs)
     parseFloat()
 
-    setSliderValue(parseFloat(da).toFixed(7));
+    setSliderValue(parseFloat(da).toFixed(precesion?.length));
   };
 
 
@@ -201,7 +209,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
         toast.error(`Please submit kyc to trade`, {
           duration: 1900,
           position: "top-center",
-  
+
           // Styling
           style: {
             backgroundColor: "#fc1922",
@@ -211,31 +219,31 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             fontWeight: "bold",
           },
           className: "",
-  
+
           // Custom Icon
           icon: "",
-  
+
           // Change colors of success/error/loading icon
           iconTheme: {
             primary: "#000",
             secondary: "#fff",
           },
-  
+
           // Aria
           ariaProps: {
             role: "status",
             "aria-live": "polite",
           },
         });
-  
+
         setTimeout(() => {
           navigate("/kycj-verification");
         }, 1600);
-      }else if(!sellShow && kycsubmit){
+      } else if (!sellShow && kycsubmit) {
         toast.error(`Your KYC submission is under verification`, {
           duration: 4000,
           position: "top-center",
-  
+
           // Styling
           style: {
             backgroundColor: "#fc1922",
@@ -245,23 +253,23 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             fontWeight: "bold",
           },
           className: "",
-  
+
           // Custom Icon
           icon: "",
-  
+
           // Change colors of success/error/loading icon
           iconTheme: {
             primary: "#000",
             secondary: "#fff",
           },
-  
+
           // Aria
           ariaProps: {
             role: "status",
             "aria-live": "polite",
           },
         });
-      }else if(Amountref === "") {
+      } else if (Amountref.current.value == "" || Number(Amountref.current.value) < 0 ) {
         toast.error("Pelese Fill the Amount", {
 
           duration: 4000,
@@ -291,34 +299,81 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             "aria-live": "polite",
           },
         });
-      } else {
+      } 
+      // else if (Number(sliderValue) < Number(quantity)) {
+      //   toast.error(`Minimum Order Quantiy Is ${quantity}` , {
+
+      //     duration: 4000,
+      //     position: "top-center",
+
+      //     // Styling
+      //     style: {
+      //       padding: "1rem",
+      //       fontSize: "15px",
+      //       color: "red",
+      //       fontWeight: "bold",
+      //     },
+      //     className: "",
+
+      //     // Custom Icon
+      //     icon: "",
+
+      //     // Change colors of success/error/loading icon
+      //     iconTheme: {
+      //       primary: "#000",
+      //       secondary: "#fff",
+      //     },
+
+      //     // Aria
+      //     ariaProps: {
+      //       role: "status",
+      //       "aria-live": "polite",
+      //     },
+      //   });
+      // }
+      
+      else {
         const usdtBalance = parseFloat(balance || 0);
         const pairName = pair ? pair.split("-")[0] : "USD"
-
+        // precesion = quotePrecision.split('.')[1]
 
 
         setload(false)
         if (user.trader_type === "user") {
-          const pair12 = pair.split('-')[1]
+          // const pair12 = pair.split('-')[1]
+          const pair12 = pair.slice(-4)
+
+          // const da = {
+          //   instId: pair,
+          //   tdMode: "cash",
+          //   ccy: pair12,
+          //   tag: "mk1",
+          //   side: "sell",
+          //   orderType: index,
+          //   sz: Amountref.current.value,
+          //   px: "1",
+          //   trade_at: "spot",
+          //   lever: "0",
+          //   market: market
+          // }
           const da = {
             instId: pair,
-            tdMode: "cash",
             ccy: pair12,
-            tag: "mk1",
             side: "sell",
             orderType: index,
-            sz: Amountref.current.value,
-            px: "1",
+            sz: `${Number(Amountref.current.value).toFixed(precesion?.length)}`,
+            px: price,
             trade_at: "spot",
             lever: "0",
             market: market
           }
-          const { data } = await Axios.post(`/trade/userTrade`, da, {
+          // const { data } = await Axios.post(`/trade/userTrade`, da, {
+          const { data } = await Axios.post(`/bybit/trade`, da, {
             headers: {
               Authorization: localStorage.getItem("Mellifluous"),
             }
           })
-          if (data) {
+          if (data.success) {
             setload(true)
             toast.success(data.message, {
 
@@ -351,10 +406,41 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             });
             setAmount("")
             reload(1)
-            getmyWallet()
+            // getmyWallet();
+            getTradebalance();
           } else {
             setload(true)
-            toast.success("Something Went Wrong", {
+            if(data?.message == 'Order quantity exceeded lower limit.'){
+              toast.error(`Minimum Order quantity should be ${quantity}`, {
+                duration: 4000,
+                position: "top-center",
+  
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red",
+                  fontWeight: "bold",
+                },
+                className: "",
+  
+                // Custom Icon
+                // icon: "👏",
+  
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "red",
+                  secondary: "#fff",
+                },
+  
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+            } else {
+            toast.error(data.message, {
 
               duration: 4000,
               position: "top-center",
@@ -363,17 +449,17 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
               style: {
                 padding: "1rem",
                 fontSize: "15px",
-                color: "green",
+                color: "red",
                 fontWeight: "bold",
               },
               className: "",
 
               // Custom Icon
-              icon: "👏",
+              // icon: "👏",
 
               // Change colors of success/error/loading icon
               iconTheme: {
-                primary: "#000",
+                primary: "red",
                 secondary: "#fff",
               },
 
@@ -383,9 +469,11 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
                 "aria-live": "polite",
               },
             });
+          }
           }
         } else {
-          const pair12 = pair.split('-')[1]
+          // const pair12 = pair.split('-')[1]
+          const pair12 = pair.slice(-4)
           const da = {
             instId: pair,
             tdMode: "cash",
@@ -393,18 +481,21 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             tag: "mk1",
             side: "sell",
             orderType: index,
-            sz: Amountref.current.value,
-            px: "1",
+            // sz: Amountref.current.value,
+            sz: `${Amountref.current.value}`,
+            px: `${price}`,
             trade_at: "spot",
             lever: "0",
             market: market
           }
-          const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+          // const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+          const { data } = await Axios.post(`/bybit/mastertrade`, da, {
             headers: {
               Authorization: localStorage.getItem("Mellifluous"),
             }
           })
-          if (data) {
+          console.log(data, 'masterdata');
+          if (data?.success == true) {
             setload(true)
             toast.success(data.message, {
 
@@ -438,9 +529,10 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             setAmount("")
             reload(1)
             getmyWallet()
-          } else {
+          }
+          else {
             setload(true)
-            toast.success("Something Went Wrong", {
+            toast.error(data?.message, {
 
               duration: 4000,
               position: "top-center",
@@ -449,17 +541,17 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
               style: {
                 padding: "1rem",
                 fontSize: "15px",
-                color: "green",
+                color: "red",
                 fontWeight: "bold",
               },
               className: "",
 
               // Custom Icon
-              icon: "👏",
+              // icon: "👏",
 
               // Change colors of success/error/loading icon
               iconTheme: {
-                primary: "#000",
+                primary: "red",
                 secondary: "#fff",
               },
 
@@ -476,7 +568,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
       }
     } catch (error) {
       setload(!false)
-      if (error.response.data.message == 'Parameter sz error'){
+      if (error?.message == 'Parameter sz error') {
         toast.error("Please Fill the Amount", {
           // Change colors of success/error/loading icon
           style: {
@@ -485,7 +577,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
             color: "red",
             fontWeight: "bold",
           },
-          className: "",  
+          className: "",
 
           // Aria
           ariaProps: {
@@ -494,37 +586,37 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
           },
         });
       } else {
-      console.log(error, "err");
-      toast.error(error?.response?.data?.message, {
+        console.log(error, "err");
+        toast.error(error?.response?.data?.message, {
 
-        duration: 4000,
-        position: "top-center",
+          duration: 4000,
+          position: "top-center",
 
-        // Styling
-        style: {
-          padding: "1rem",
-          fontSize: "15px",
-          color: "red",
-          fontWeight: "bold",
-        },
-        className: "",
+          // Styling
+          style: {
+            padding: "1rem",
+            fontSize: "15px",
+            color: "red",
+            fontWeight: "bold",
+          },
+          className: "",
 
-        // Custom Icon
-        icon: "",
+          // Custom Icon
+          icon: "",
 
-        // Change colors of success/error/loading icon
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
+          // Change colors of success/error/loading icon
+          iconTheme: {
+            primary: "#000",
+            secondary: "#fff",
+          },
 
-        // Aria
-        ariaProps: {
-          role: "status",
-          "aria-live": "polite",
-        },
-      });
-    }
+          // Aria
+          ariaProps: {
+            role: "status",
+            "aria-live": "polite",
+          },
+        });
+      }
     }
   }
 
@@ -560,7 +652,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
 
   const getmyWallet = () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
@@ -569,11 +661,19 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
           if (res?.data?.success) {
 
             for (let i = 0; i < res?.data?.result.length; i++) {
-              if (res?.data?.result[i].symbol === pair.split("-")[0]) {
-                setBalance(res?.data?.result[i].balance)
-                setSliderValue(res?.data?.result[i].balance)
+              // if (res?.data?.result[i].symbol === pair.split("-")[0]) {
+              //   setBalance(res?.data?.result[i].balance)
+              //   setSliderValue(res?.data?.result[i].balance)
+              // }
+              const coin = res?.data?.result[i]
+              
+              if (coin?.coinname == pair.slice(0, -cat.length)) {
+                setBalance(coin?.balance);
+                // console.log(res?.data?.result[i].balance, "baln")
               }
             }
+            setMaxSell(parseFloat(Number(balance) / Number(selected.price)).toFixed(7));
+
           }
         })
         .catch((err) => {
@@ -584,10 +684,64 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
     }
 
   }
-  useEffect(() => {
-    getmyWallet()
 
+  const getTradebalance = async () => {
+    try {
+      await Axios.post(`/bybit/gettradebalance`,{ pair : pair.slice(0, -cat?.length) }, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          if (res?.data?.success) {
+            const tradebalance = res?.data?.result?.result?.list[0]?.coin[0]?.availableToWithdraw
+              
+                setBalance(tradebalance);
+          
+                setMaxSell(parseFloat(Number(tradebalance ? tradebalance : 0) / Number(selected?.price)).toFixed(7));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  useEffect(() => {
+    // getmyWallet();
+    getTradebalance();
+    setAmount(parseFloat(balance / selected.price).toFixed(7));
+    setSliderValue(parseFloat(balance / selected.price).toFixed(precesion?.length));
+  }, [selected, pair]);
+
+  // }, [pair])
+  const getOrderQty = async () => {
+
+    const { data } = await Axios.post(`${Consts.BackendUrl}/bybit/getpairdetailes`, { type : 'spot' , pair: pair })
+       if(data?.success){
+         setQuantity(data?.result[0]?.lotSizeFilter?.minOrderQty);
+         setMaxQuantity(data?.result[0]?.lotSizeFilter?.maxOrderQty);
+         setquotePrecision(data?.result[0]?.lotSizeFilter?.quotePrecision);
+         setbasePrecision(data?.result[0]?.lotSizeFilter?.basePrecision);
+       } else {
+         setQuantity(0);
+         setMaxQuantity(0);
+         setquotePrecision(0);
+         setbasePrecision(0);
+       }
+   }
+
+   useEffect(()=> {
+    getOrderQty()
   }, [pair])
+
+  useEffect(()=> {
+    setPrecesion(basePrecision.split('.')[1])
+    setQuotePrecesion(quotePrecision.split('.')[1])
+  },[basePrecision])
 
   return (
     <>
@@ -597,7 +751,8 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
 
 
           <div className="amount-limit-spot">
-            <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
+            {/* <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label> */}
+            <label className="form-label-style">Amount ({pair ? pair.slice(0, -cat?.length) : "USD"})</label>
             <div className="">
               <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
@@ -608,7 +763,8 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
                   InputProps={{ inputProps: { min: "0" } }}
                   inputRef={Amountref}
                   onChange={Amountupdate}
-                  placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  // placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  placeholder={`Min ${pair ? pair.slice(0, -cat?.length) : "USD"}`}
 
                   aria-describedby="outlined-weight-helper-text"
                   inputProps={{
@@ -647,34 +803,46 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
           <div className="available-max-block available-max-buy">
             <div className="available-max-block-left">
               <div>
-                <label>Availabe</label>
-                {pair &&
+                <label>Available</label>
+
+                {balance ?
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    {pair ? pair.slice(0,-cat?.length) : 'USDT' }
+                  </div> :
+                  <>{(0).toFixed(3)}{" "}{pair ? pair.slice(0,-cat?.length) : 'USDT' }</>
+                }
+                {/* {pair &&
                   balance &&
                   <div>
                     {parseFloat(balance).toFixed(3)}{" "}
                     {pair.split("-")[0]}
                   </div>
-                }
+                } */}
               </div>
               <div>
                 <label>Maxsell</label>
-                {market ?
+                {balance ?
                   <div>
-                    {parseFloat(balance / market).toFixed(7)}{" "} {pair.split("-")[1]}
+                    {parseFloat(Number(balance) / Number(selected.price)).toFixed(7) != 'NaN' ? parseFloat(Number(balance) / Number(selected.price)).toFixed(7) : 0}{" "} {pair.slice(-cat?.length)}
                   </div>
                   :
-                  <div>{0.00}{" "}{pair.split("-")[1]}</div>
+                  <div>{0.00}{" "}{pair.slice(0, -cat?.length)}</div>
                 }
 
+              </div>
+              <div>
+                <label>MinOrderQty :</label>
+                <div> { Number(quantity).toFixed(6) } </div>
               </div>
             </div>
             <div className="available-max-block-right"><SwapHorizIcon /></div>
           </div>
 
-          <div className="take-profit-stop-loss-block">
+          {/* <div className="take-profit-stop-loss-block">
             <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="Take profit" /></div>
             <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div>
-          </div>
+          </div> */}
 
           {isCheckedTakeProfit && (
             <div className="take-profit-stop-loss-forms take-profit-form">
@@ -719,7 +887,7 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
           )
           }
 
-          {isCheckedStopLoss && (
+          {isCheckedTakeProfit && (
             <div className="take-profit-stop-loss-forms stop-loss-form">
               <div className="form-design-tp-sl form-design-tp-trigger-price">
                 <label>SL trigger price ({`${pair ? pair.split('-')[0] : "USD"}`})</label>
@@ -763,7 +931,8 @@ const SellFormInnerMarket = ({ selected, pair, index, market, reload }) => {
           }
 
           <Button className="Sell-SOL Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Sell {selected ? selected?.pair.split('-')[0] : ""}
+            {/* Sell {selected ? selected?.pair.split('-')[0] : ""} */}
+            Sell {pair ? pair.slice(0, -cat?.length) : ""}
           </Button>
         </div>
       </div>

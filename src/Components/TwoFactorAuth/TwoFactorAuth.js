@@ -38,9 +38,9 @@ const useStyles = makeStyles({
     boxShadow: "none !important",
     overflow: "hidden",
     position: 'sticky !important',
-        top: '0px',
-        padding:'0px !important',
-        height: '100vh'
+    top: '0px',
+    padding: '0px !important',
+    height: '100vh'
   },
   twofactorycls: {
     background: "#131a26 !important",
@@ -96,7 +96,7 @@ const TwoFactorAuth = () => {
         }
       )
         .then((res) => {
-          console.log(res,"rers");
+          console.log(res, "rers");
           localStorage.setItem("Mellifluous", history?.state?.token?.token);
           localStorage.setItem(
             "users",
@@ -106,34 +106,34 @@ const TwoFactorAuth = () => {
         })
         .catch((err) => {
           toast.error(`${err?.response?.data?.message}`, {
-            
-              duration: 4000,
-              position: "top-center",
-    
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "green",
-                fontWeight: "bold",
-              },
-              className: "",
-    
-              // Custom Icon
-             icon:"",
-    
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-    
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
+
+            duration: 4000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "red",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
         });
     }
   };

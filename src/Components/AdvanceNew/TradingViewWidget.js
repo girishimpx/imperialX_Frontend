@@ -10,7 +10,7 @@ export default function TradingViewWidget(props) {
   useEffect(
     () => {
      let  data1 = props?.data?.split("-")
-      console.log("data",data1,props?.data)
+      // console.log("data",data1,props?.data)
       let data = data1.join("")
       
      let dpair =  "Binance:" + data

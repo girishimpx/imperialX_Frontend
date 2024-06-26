@@ -48,48 +48,48 @@ export default function AllMasterTrade(searchName) {
   const [master, setMasters] = React.useState();
   const [loading, setLoading] = React.useState(true);
 
-     const getMasters = async () => {
-       try {
-         await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`,{}, {
-           headers: {
-             Authorization: localStorage.getItem("Mellifluous"),
-           },
-         }).then((res) => {
-           if (res?.data?.success) {
-            
-               console.log(res?.data?.result,"data1");
-               setMasters(res?.data?.result)
-               setLoading(false);
-           
-           }
-           setLoading(false);
-         })
-       } catch (error) {
-         setLoading(false);
-       }
-       
-     }
+  const getMasters = async () => {
+    try {
+      await Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`, {}, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      }).then((res) => {
+        if (res?.data?.success) {
+
+          console.log(res?.data?.result, "data1");
+          setMasters(res?.data?.result)
+          setLoading(false);
+
+        }
+        setLoading(false);
+      })
+    } catch (error) {
+      setLoading(false);
+    }
+
+  }
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
 
   React.useEffect(() => {
     getMasters()
-     }, []);
+  }, []);
 
 
   return (
     <Box sx={{ width: '100%' }}>
-      
+
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
         <Tabs aria-label="basic tabs example" id="tabstylecrypto" className='all-master-tabs-outer' value={value} onChange={handleChange} >
-          <Tab sx={{color:"white"}} label="7D" {...a11yProps(0)}  />
-          <Tab sx={{color:"white"}} label="Trader Rank" {...a11yProps(1)} />
-          <Tab sx={{color:"white"}} label="Trader Type" {...a11yProps(2)} />
-          <Tab sx={{color:"white"}} label="Country" {...a11yProps(3)} />
-          <Tab sx={{color:"white"}} label="Trader Badge" {...a11yProps(4)}  />
+          <Tab sx={{ color: "white" }} label="7D" {...a11yProps(0)} />
+          <Tab sx={{ color: "white" }} label="Trader Rank" {...a11yProps(1)} />
+          <Tab sx={{ color: "white" }} label="Trader Type" {...a11yProps(2)} />
+          <Tab sx={{ color: "white" }} label="Country" {...a11yProps(3)} />
+          <Tab sx={{ color: "white" }} label="Trader Badge" {...a11yProps(4)} />
           <Tab label="Available Master Traders" {...a11yProps(5)} />
         </Tabs>
 
@@ -97,25 +97,50 @@ export default function AllMasterTrade(searchName) {
 
 
       <TabPanel value={value} index={0}>
-        NO DATA
+        {/* NO DATA */}
+        <div style={{ padding: "1rem", color: "#25DEB0" }}>
+          <h4 style={{ width: "70%", center: "50%" }}>
+            Data not found
+          </h4>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      NO DATA
+        {/* NO DATA */}
+        <div style={{ padding: "1rem", color: "#25DEB0" }}>
+          <h4 style={{ width: "70%", center: "50%" }}>
+            Data not found
+          </h4>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={2}>
-      NO DATA
+        {/* NO DATA */}
+        <div style={{ padding: "1rem", color: "#25DEB0" }}>
+          <h4 style={{ width: "70%", center: "50%" }}>
+            Data not found
+          </h4>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={3}>
-      NO DATA
+        {/* NO DATA */}
+        <div style={{ padding: "1rem", color: "#25DEB0" }}>
+          <h4 style={{ width: "70%", center: "50%" }}>
+            Data not found
+          </h4>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={4}>
-      NO DATA
+        {/* NO DATA */}
+        <div style={{ padding: "1rem", color: "#25DEB0" }}>
+          <h4 style={{ width: "70%", center: "50%" }}>
+            Data not found
+          </h4>
+        </div>
       </TabPanel>
       <TabPanel value={value} index={5}>
-      <AllMasterTradeTable searchName={searchName}/>
+        <AllMasterTradeTable searchName={searchName} />
       </TabPanel>
 
-      
+
     </Box>
   );
 }

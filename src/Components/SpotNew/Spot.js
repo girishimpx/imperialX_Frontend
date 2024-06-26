@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../Header/Header'
 import Sidebar from '../Sidebar/Sidebar'
 import { styled } from '@mui/material/styles';
@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { makeStyles } from '@mui/styles';
 import SpotBody from './SpotBody';
+import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -60,6 +62,9 @@ const useStyles = makeStyles({
 
 
 const Spot = ({ sideBarShow, setSideBarShow, openSideBar, setOpenSideBar }) => {
+  const location = useLocation();
+  const coinname = location.state?.name;
+  // console.log(coinname, 'coinname');
 
   const classes = useStyles();
 
@@ -76,13 +81,13 @@ const Spot = ({ sideBarShow, setSideBarShow, openSideBar, setOpenSideBar }) => {
               setOpenSideBar={setOpenSideBar} />
           </Item>
           {/* </Grid> */}
-          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={10} xl={10}>
+          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Item className={classes.headercls}>
               <Header sideBarShow={sideBarShow}
                 setSideBarShow={setSideBarShow}
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar} />
-              <SpotBody />
+              <SpotBody coinName={coinname} />
             </Item>
           </Grid>
         </Grid>

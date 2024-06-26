@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     "& th": {
       color: "#909090 !important",
-      fontSize: "11px !important",
+      fontSize: "10px !important",
       padding: "2px 0 !important",
       border: "none !important",
     },
@@ -67,7 +67,7 @@ export default function BuyingTable({ ticker, setSelected, pair, market }) {
             ticker[0],
             ticker[1],
             (ticker[0] * ticker[1]).toFixed(4),
-            ticker[4]
+            ticker[2]
           )
         );
       }
@@ -89,17 +89,20 @@ export default function BuyingTable({ ticker, setSelected, pair, market }) {
         <TableHead>
           <TableRow>
             <TableCell align="left">
-              Price( {pair ? pair.split("-")[1] : "USDT"} )
+              {/* Price( {pair ? pair.split("-")[1] : "USDT"} ) */}
+              Price({pair ? pair.substring(pair.length - 4) : "USDT"})
             </TableCell>
             <TableCell align="right">
               {" "}
-              Amount({pair ? pair.split("-")[0] : "BTC"} )
+              {/* Amount({pair ? pair.split("-")[0] : "BTC"} ) */}
+              Amount({pair ? pair.substring(0, pair.length - 4) : "BTC"})
             </TableCell>
             <TableCell align="right">Total</TableCell>
           </TableRow>
         </TableHead>
         {rows?.length > 5 && (
           <TableBody>
+            {/* {console.log(rows,"ROWSSSU")} */}
             {rows?.map((row, index) => (
               <TableRow
                 key={index}
@@ -114,7 +117,7 @@ export default function BuyingTable({ ticker, setSelected, pair, market }) {
                 <TableCell align="left">
                   {Number(row.price).toLocaleString()}
                 </TableCell>
-                <TableCell align="right">{row.amount}</TableCell>
+                <TableCell align="right">{row.amount != NaN ? row.amount : 0}</TableCell>
                 <TableCell align="right">{row.total}</TableCell>
               </TableRow>
             ))}

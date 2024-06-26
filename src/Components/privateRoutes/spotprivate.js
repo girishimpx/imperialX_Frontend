@@ -7,11 +7,10 @@ function SpotRoute({ children }) {
   const [allow, setAllow] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
 
     if (localStorage.getItem("Mellifluous")) {
-
-
 
       Axios.get(`${Constant.BackendUrl}/trade/getMysubscription`, {
         headers: {
@@ -19,7 +18,7 @@ function SpotRoute({ children }) {
         },
       })
         .then((res) => {
-          console.log("🚀 ~ file: spotprivate.js:23 ~ .then ~ res.data.success:", res.data.success)
+          // console.log("🚀 ~ file: spotprivate.js:23 ~ .then ~ res.data.success:", res.data.success)
 
           if (res?.data?.success === true) {
             setAllow(true);
@@ -38,7 +37,7 @@ function SpotRoute({ children }) {
         });
 
     } else {
-      navigate(`/`);
+      navigate(`/login`);
     }
   }, []);
 

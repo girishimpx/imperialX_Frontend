@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     "& th": {
       color: "#909090 !important",
-      fontSize: "11px !important",
+      fontSize: "10px !important",
       padding: "2px 0 !important",
       border: "none !important",
     },
@@ -82,11 +82,11 @@ export default function SellingTable({ ticker, setSelected, pair,market }) {
         <TableHead>
           <TableRow>
             <TableCell align="left">
-              Price( {pair ? pair.split('-')[1] : "USDT"} )
+              Price({pair ? pair.split('-')[1] : "USDT"})
             </TableCell>
             <TableCell align="right">
               {/* Amount({ticker ? ticker[4].split("-")[0] : "USD"}) */}
-              Amount({pair ? pair.split('-')[0] : "BTC"} )
+              Amount({pair ? pair.split('-')[0] : "BTC"})
 
             </TableCell>
             {/* <TableCell align="right">Total({ticker ? ticker[4].split("-")[0] : "USD"})</TableCell> */}

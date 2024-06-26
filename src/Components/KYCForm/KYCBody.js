@@ -262,7 +262,7 @@ const KYCBody = () => {
     if (history?.state != "null") {
       if (history?.state?.kyc == true) {
         toast.error("Please Verify Your KYC ", {
-             
+
           duration: 3000,
           position: "top-center",
 
@@ -276,7 +276,7 @@ const KYCBody = () => {
           className: "",
 
           // Custom Icon
-         icon:"",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -301,7 +301,7 @@ const KYCBody = () => {
     if (history?.state != "null") {
       if (history?.state?.page == "exchnage") {
         toast.error(`${history?.state?.message}`, {
-             
+
           duration: 3000,
           position: "top-center",
 
@@ -315,7 +315,7 @@ const KYCBody = () => {
           className: "",
 
           // Custom Icon
-         icon:"",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -388,7 +388,7 @@ const KYCBody = () => {
     } else if (
       datepickr.$d === "Mon Aug 18 2014 21:11:54 GMT+0530 (India Standard Time)"
     ) {
-      
+
       setdatepickrerr("Please Select DOB");
     } else if (country === "null") {
       setcountryerr("Please Select Country");
@@ -438,73 +438,73 @@ const KYCBody = () => {
           .then((res) => {
             // console.log(res,"created")
             toast.success("Kyc update successfully", {
-                 
-          duration: 3000,
-          position: "top-center",
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "green",
-            fontWeight: "bold",
-          },
-          className: "",
+              duration: 3000,
+              position: "top-center",
 
-          // Custom Icon
-          icon: "👏",
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Custom Icon
+              icon: "👏",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
-            setTimeout(()=>{
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+            setTimeout(() => {
               navigate(`${Constant.route}/Subscription`);
-            },1300)
-            
+            }, 1300)
+
           })
           .catch((err) => {
             toast.error(err.response.data.message, {
-                 
-          duration: 3000,
-          position: "top-center",
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "greenred",
-            fontWeight: "bold",
-          },
-          className: "",
+              duration: 3000,
+              position: "top-center",
 
-          // Custom Icon
-          icon: "👏",
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "greenred",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Custom Icon
+              icon: "👏",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
           });
       } else {
         toast.error("Something went wrong", {
-             
+
           duration: 3000,
           position: "top-center",
 
@@ -518,7 +518,7 @@ const KYCBody = () => {
           className: "",
 
           // Custom Icon
-         icon:"",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -763,7 +763,7 @@ const KYCBody = () => {
                         variant="h6"
                         component="h2"
                       >
-                        Select area code{" "}
+                        Select Country{" "}
                         <CancelIcon onClick={handleCountryClose} />
                       </Typography>
 
@@ -801,7 +801,7 @@ const KYCBody = () => {
                               if (
                                 country.name.includes(
                                   search?.charAt(0).toUpperCase() +
-                                    search?.slice(1)
+                                  search?.slice(1)
                                 )
                               ) {
                                 return (

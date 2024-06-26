@@ -2,15 +2,19 @@ body {
   background-color: #131a26 !important;
   font-family: Plus Jakarta Sans !important;
 }
+
 .traind-profile-detail-part h6 {
   font-size: 24px !important;
 }
+
 .traind-profile-detail-part p {
   font-size: 20px !important;
 }
+
 .traind-profile-detail-part label {
   font-size: 14px !important;
 }
+
 .traind-profile-detail-part span {
   font-size: 11px !important;
 }
@@ -30,23 +34,28 @@ h4.intro-head {
   letter-spacing: 0.3px;
   margin: 0px;
 }
+
 .mini-content div {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .mini-content,
 .crowning-min-cont-clock {
   display: flex;
   gap: 15px;
 }
+
 .person-profile {
   display: flex;
 }
+
 img .profile {
   width: 68px;
   height: 68px;
 }
+
 .mini-content span {
   color: #fff;
   font-size: 11.258px !important;
@@ -55,16 +64,19 @@ img .profile {
   letter-spacing: 0.113px;
   text-transform: capitalize;
 }
+
 .crownimg img {
   display: flex;
   justify-content: end;
 }
+
 .intro {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .intro {
   display: flex;
   flex-direction: column;
@@ -72,6 +84,7 @@ img .profile {
   align-items: flex-start;
   margin-left: 25px;
 }
+
 .profile-contain {
   background-image: url("../../images/profile-details-bg.svg");
   background-color: black;
@@ -82,12 +95,15 @@ img .profile {
   border-radius: 30px;
   border: 1px solid #25dcaf;
 }
+
 .details {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  flex-wrap: nowrap;
+  /* flex-wrap: nowrap; */
+  flex-flow: wrap;
 }
+
 .views {
   display: flex;
   margin-left: 24px;
@@ -95,6 +111,7 @@ img .profile {
   align-items: center;
   gap: 20px;
 }
+
 .views h6 {
   color: #fff;
   font-family: Plus Jakarta Sans;
@@ -102,18 +119,22 @@ img .profile {
   line-height: 32px;
   margin: 0px;
 }
+
 .l1 label {
   color: #71757a;
   font-size: 14px;
   font-family: Plus Jakarta Sans;
   line-height: 22px;
 }
+
 .l1 {
   text-align: left;
 }
+
 .no label {
   color: #fff;
 }
+
 .copy-trade {
   margin-left: 24px;
   display: flex;
@@ -122,6 +143,7 @@ img .profile {
   align-items: center;
   gap: 9px;
 }
+
 .copy-trade Button {
   border-radius: 5px !important;
   background: #25deb0 !important;
@@ -129,6 +151,7 @@ img .profile {
   cursor: pointer;
   border: none;
 }
+
 .fireImg {
   color: #fff;
   text-align: center;
@@ -140,20 +163,24 @@ img .profile {
   justify-content: center;
   align-items: center;
 }
+
 .fireImg img {
   margin-right: 7px;
 }
+
 .list {
-    display: flex;
-    gap: 22px;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  align-items: center;
 }
+
 .arrow img {
-    justify-content: center;
-    align-items: center;
-    display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
+
 .mini-div,
 .list-trade,
 .profitsImg,
@@ -164,15 +191,18 @@ img .profile {
   flex-direction: row;
   flex-wrap: wrap;
 }
+
 hr.line {
   width: 0px;
   flex-shrink: 0;
   color: #404347 !important;
   border: 1px solid #404347;
 }
+
 span.wait {
   color: #25deb0 !important;
 }
+
 .copy-label,
 span.wait {
   color: #adb1b8;
@@ -182,6 +212,7 @@ span.wait {
   font-weight: 600;
   line-height: 18px;
 }
+
 .describ label.des-label {
   color: #fff;
   font-size: 15px !important;
@@ -190,6 +221,7 @@ span.wait {
   letter-spacing: 0.15px;
   text-transform: capitalize;
 }
+
 .describ .para label,
 .describ .para label span {
   color: #fff;
@@ -198,9 +230,11 @@ span.wait {
   font-weight: 500;
   letter-spacing: 0.14px;
 }
+
 .describ .para {
   color: rgba(217, 217, 217, 0.1);
 }
+
 .describ .para {
   background: rgba(217, 217, 217, 0.1);
   padding: 25px;
@@ -208,43 +242,53 @@ span.wait {
   margin-top: 13px;
   /* max-width: 670px; */
 }
+
 .describ {
   text-align: start;
 }
+
 .describ .para span {
   color: rgba(37, 222, 176, 1) !important;
 }
+
 .profits label {
   font-size: 14px !important;
   color: #fff;
 }
+
 .list-trade {
   gap: 20px;
   margin: 20px 0px;
 }
+
 Button.mini-but {
   border-radius: 4px;
   background: rgba(92, 135, 199, 0.16);
   margin-right: 5px;
 }
+
 Button.mini-but:hover {
   border-radius: 4px;
   background: rgba(119, 186, 118, 0.14);
   margin-right: 5px;
 }
+
 Button.mini-but label {
   font-size: 12px !important;
   line-height: 16px;
   color: #6c8bb8;
 }
+
 Button.mini-but label:hover {
   font-size: 12px !important;
   line-height: 16px;
   color: #3ead5d;
 }
+
 .mini-buttons {
   text-align: left;
 }
+
 .premium {
   display: flex;
   justify-content: space-around;
@@ -253,12 +297,13 @@ Button.mini-but label:hover {
   background-position: center;
   background-repeat: no-repeat !important;
   background-size: cover;
-  padding: 80px 90px;
+  padding: 80px 30px;
   border-radius: 30px;
   border: 1px solid #25dcaf;
   height: 100%;
   position: relative;
 }
+
 .premium::before {
   content: '';
   position: absolute;
@@ -269,44 +314,50 @@ Button.mini-but label:hover {
   background: var(--01, #25DEB0);
   filter: blur(116.5px);
 }
+
 .premium .pre-sub {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   position: relative;
 }
+
 .mini-div label {
-    font-size: 14px !important;
-    color: #FFF;
-    text-align: center;
-    font-size: 14px;
-    font-family: Plus Jakarta Sans;
-    line-height: 22px;
+  font-size: 14px !important;
+  color: #FFF;
+  text-align: center;
+  font-size: 14px;
+  font-family: Plus Jakarta Sans;
+  line-height: 22px;
 }
+
 .premium .pre-sub p {
   color: #fff;
   font-family: Plus Jakarta Sans;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
+
 .pre-span {
-    color: #FFF;
-    font-size: 16px;
-    font-family: Plus Jakarta Sans;
-    font-weight: 500;
-    line-height: 143%;
-    display: flex;
-    letter-spacing: 0.16px;
-    flex-direction: column;
+  color: #FFF;
+  font-size: 16px;
+  font-family: Plus Jakarta Sans;
+  font-weight: 500;
+  line-height: 143%;
+  display: flex;
+  letter-spacing: 0.16px;
+  flex-direction: column;
 }
+
 button.sub-button {
-    border-radius: 5px;
-    background: #25DEB0;
-    border: none;
-    padding: 7px 24px;
-    color: #fff;
-    /* margin-top: 20px; */
+  border-radius: 5px;
+  background: #25DEB0;
+  border: none;
+  padding: 7px 24px;
+  color: #fff;
+  /* margin-top: 20px; */
 }
+
 h3.Trader-Details-heading {
   text-align: left;
   color: #fff;
@@ -316,6 +367,7 @@ h3.Trader-Details-heading {
 .trader-details-page {
   padding-top: 60px;
 }
+
 h3.Trader-Details-heading {
   text-align: left;
   color: #fff;
@@ -334,6 +386,7 @@ h3.Trader-Details-heading {
   min-height: 40px;
   height: 40px;
 }
+
 .min-height-block {
   display: flex;
   flex-direction: column;
@@ -365,7 +418,7 @@ h3.Trader-Details-heading {
   margin-top: 0px !important;
 }
 
-.MasterTrader_modal__LLhBE.MuiBox-root{
+.MasterTrader_modal__LLhBE.MuiBox-root {
   padding: 20px !important;
   height: auto !important;
 }
@@ -375,24 +428,28 @@ h3.Trader-Details-heading {
 }
 
 
-@media (max-width:900px){
-  .details{
+@media (max-width:900px) {
+  .details {
     flex-wrap: wrap !important;
   }
 }
-@media  (min-width:502px) and (max-width:900px){
-  .profile-contain{
-    padding:35px
+
+@media (min-width:502px) and (max-width:900px) {
+  .profile-contain {
+    padding: 35px
   }
 }
-@media (max-width:550px){
-.profits label{
-  font-size: 11px !important;
-}
-hr.line{
-  display: none !important;
-}
-.profile-contain{
-  padding:25px
-}
+
+@media (max-width:550px) {
+  .profits label {
+    font-size: 11px !important;
+  }
+
+  hr.line {
+    display: none !important;
+  }
+
+  .profile-contain {
+    padding: 25px
+  }
 }

@@ -1,8 +1,10 @@
-.margin-none div#basic-graph-chart, .margin-none div#sell-buy-form-outer-id {
+.margin-none div#basic-graph-chart,
+.margin-none div#sell-buy-form-outer-id {
     padding: 10px;
 }
 
-.margin-none div#basic-graph-chart, .margin-none div#sell-buy-form-outer-id {
+.margin-none div#basic-graph-chart,
+.margin-none div#sell-buy-form-outer-id {
     padding: 10px;
     margin-top: 20px;
 }
@@ -15,7 +17,8 @@ div#my-profile-details .top-part-all-page.basic-page-top-part {
     justify-content: space-between;
 }
 
-div#my-profile-details .top-part-all-page.basic-page-top-part, div#my-profile-details .top-part-all-page.basic-page-top-part span {
+div#my-profile-details .top-part-all-page.basic-page-top-part,
+div#my-profile-details .top-part-all-page.basic-page-top-part span {
     font-size: 16px;
     text-align: left;
     align-items: center;
@@ -25,7 +28,9 @@ div#my-profile-details .top-part-all-page.basic-page-top-part, div#my-profile-de
     color: #fff;
 }
 
-.margin-none div#sell-buy-form-outer-id{margin-top: 20px;}
+.margin-none div#sell-buy-form-outer-id {
+    margin-top: 20px;
+}
 
 .part-left-part.part-top-part {
     display: flex;
@@ -48,7 +53,9 @@ div#my-profile-details .top-part-all-page.basic-page-top-part, div#my-profile-de
     color: #fff;
 }
 
-.margin-none div#open-order-id-outer{padding: 30px}
+.margin-none div#open-order-id-outer {
+    padding: 30px
+}
 
 .mid-right-mid-bottom button {
     background: #fff !important;
@@ -59,7 +66,7 @@ div#my-profile-details .top-part-all-page.basic-page-top-part, div#my-profile-de
     margin-left: 0px !important;
 }
 
-.coin-buttons-row > span {
+.coin-buttons-row>span {
     display: inline-block;
     background: #FFFFFF;
     border-radius: 3.05282px;
@@ -105,7 +112,7 @@ span.Rewards-Unlocked {
     color: #81858C;
     font-size: 16px;
     margin-bottom: 20px;
-}  
+}
 
 .part-left-part.part-bottom-part.recommended h3 {
     text-align: left;
@@ -148,7 +155,8 @@ span.Rewards-Unlocked {
     right: 0;
 }
 
-.recommend-1, .recommend-4 {
+.recommend-1,
+.recommend-4 {
     padding: 20px;
     border: 1px solid #F3F5F7;
     border-radius: 12px;
@@ -160,16 +168,21 @@ span.Rewards-Unlocked {
     color: #BABABA;
 }
 
-.recommend-2.cmn-flex-block-type, .recommend-3.cmn-flex-block-type {
+.recommend-2.cmn-flex-block-type,
+.recommend-3.cmn-flex-block-type {
     margin-top: 20px;
     padding: 9px;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
     border-radius: 15px;
 }
 
-.recommend-1, .recommend-2, .recommend-3 {
+.recommend-1,
+.recommend-2,
+.recommend-3 {
     width: 48%;
 }
 
@@ -196,9 +209,12 @@ span.Rewards-Unlocked {
     font-weight: 600;
 }
 
-.recommend-1{flex-direction: column;}
+.recommend-1 {
+    flex-direction: column;
+}
 
-.recommend-2, .recommend-3{
+.recommend-2,
+.recommend-3 {
     align-items: center;
     justify-content: center;
 }
@@ -260,16 +276,21 @@ span.Rewards-Unlocked {
     font-weight: 600;
 }
 
-.depoit-trade-progress {position: relative;margin-top: 20px;}
+.depoit-trade-progress {
+    position: relative;
+    margin-top: 20px;
+}
 
 .task-1.complete-common {
     display: flex;
     justify-content: space-between;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-/* #01 */
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
+    /* #01 */
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 15px;
     padding: 33px 25px;
 }
@@ -277,11 +298,13 @@ span.Rewards-Unlocked {
 .task-1.plan-common {
     display: flex;
     justify-content: space-between;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-/* #01 */
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
+    /* #01 */
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 15px;
     padding: 33px 25px;
 }
@@ -311,7 +334,7 @@ span.add-mid-round {
     height: 50px;
     background: #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 100px;
     display: flex;
     align-items: center;
@@ -348,16 +371,21 @@ span.add-mid-round {
     color: #81858C;
 }
 
-.depoit-trade-progress {position: relative;margin-top: 20px;}
+.depoit-trade-progress {
+    position: relative;
+    margin-top: 20px;
+}
 
 .task-1.complete-common {
     display: flex;
     justify-content: space-between;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-/* #01 */
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
+    /* #01 */
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 15px;
     padding: 33px 25px;
 }
@@ -388,7 +416,7 @@ span.add-mid-round {
     height: 50px;
     background: #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 100px;
     display: flex;
     align-items: center;
@@ -445,6 +473,7 @@ span.add-mid-round::before {
     font-weight: 600;
     font-size: 24px;
 }
+
 .user-asset-block-dtls.padding14px {
     padding: 14px;
 }
@@ -470,7 +499,7 @@ span.add-mid-round::before {
 }
 
 .make-your-first-deposit button.MuiButton-contained {
-    padding: 15px 35px;
+    /* padding: 15px 35px; */
     background: #25DEB0;
     border-radius: 4px;
 }
@@ -482,11 +511,13 @@ span.add-mid-round::before {
 
 .make-first-deposit {
     margin-top: 50px;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-/* #01 */
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
+    /* #01 */
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 15px;
     padding: 50px 0 50px;
 }
@@ -502,11 +533,13 @@ span.add-mid-round::before {
 .announment-block {
     width: 48%;
     padding: 10px;
-    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-/* #01 */
+    background: radial-gradient(35.18% 134.17% at 50% 50%, rgba(41, 197, 161, 0.2) 0%, rgba(28, 112, 99, 0.2) 100%)
+        /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
+    ;
+    /* #01 */
     border: 1px solid #25DEB0;
     backdrop-filter: blur(2px);
-/* Note: backdrop-filter has minimal browser support */
+    /* Note: backdrop-filter has minimal browser support */
     border-radius: 15px;
     text-align: left;
     color: #fff;
@@ -531,7 +564,9 @@ span.add-mid-round::before {
     padding-top: 175px;
 }
 
-#current-plan-details-left h4, #current-plan-details-left h4 span, #current-plan-details-left h1 {
+#current-plan-details-left h4,
+#current-plan-details-left h4 span,
+#current-plan-details-left h1 {
     color: #fff !important;
 }
 
@@ -539,7 +574,7 @@ span.add-mid-round::before {
     width: 100%;
 }
 
-.current-plan-details .task-left >div > div {
+.current-plan-details .task-left>div>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -549,7 +584,7 @@ span.add-mid-round::before {
     width: 50%;
 } */
 
-#current-plan-details-right{
+#current-plan-details-right {
     margin-bottom: 0px !important;
     text-align: right;
     width: 50%;
@@ -615,28 +650,30 @@ button.redeem-btn-cls-style {
 }
 
 
-@media (max-width:1199.98px){
+@media (max-width:1199.98px) {
 
-    .plan-task{
+    .plan-task {
         margin-left: 0px !important;
     }
 
 }
 
-@media (max-width:991.98px){
+@media (max-width:991.98px) {
 
-    div#my-profile-details .top-part-all-page.basic-page-top-part{justify-content: flex-start;}
+    div#my-profile-details .top-part-all-page.basic-page-top-part {
+        justify-content: flex-start;
+    }
 
     .flex-box-my-asset {
         flex-direction: column;
         gap: 20px;
     }
-    
-    .current-plan-details .task-left >div > div {
+
+    .current-plan-details .task-left>div>div {
         flex-direction: column;
         gap: 40px;
     }
-    
+
     h6#current-plan-details-right {
         text-align: center;
         font-weight: 400;
@@ -647,7 +684,8 @@ button.redeem-btn-cls-style {
         padding-top: 20px !important;
     }
 
-    h6#current-plan-details-right, .current-plan-details div#current-plan-details-left {
+    h6#current-plan-details-right,
+    .current-plan-details div#current-plan-details-left {
         width: 100%;
     }
 
@@ -657,41 +695,65 @@ button.redeem-btn-cls-style {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .person-profile .intro {
         margin-left: 0px;
     }
-    
+
     .details .views {
         flex-direction: column;
         margin-left: 0px;
         margin: 20px 0;
     }
-    
+
     .copy-trade {
         margin-left: 0px !important;
         margin-bottom: 20px;
         justify-content: flex-start !important;
         align-items: flex-start !important;
     }
-    
+
     .premium {
         flex-direction: column;
         padding: 20px !important;
         gap: 30px;
     }
-    
+
     .min-height-block {
         margin-bottom: 0px !important;
         min-height: auto !important;
         margin-top: 15px;
     }
-    
+
     .trade-outer p.view-para {
         font-size: 15px !important;
         margin: 0px !important;
     }
 
-    .trade-outer{padding: 20px !important;}
+    .trade-outer {
+        padding: 20px !important;
+    }
+
+
+
 
 }
+
+/* img.profile-img {
+    width: 15%;
+    border-radius: 20px; 
+    height: 40px;
+    width: 40px;
+    background: #ccc;
+    border-radius: 50%;
+} */
+
+profile-img {
+    /* width: 15%;
+    border-radius: 20px; */
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    color: "#25DEB0"
+}
+

@@ -17,7 +17,12 @@ table#common-color-white th {
     color: #25DEB0 !important;
     font-size: 17px !important;
     font-weight: 500 !important;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    white-space: nowrap;
 }
+
+table#common-color-white td{border-color: #000 !important;}
 
 table#common-color-white td {
     color: #fff !important;
@@ -440,17 +445,60 @@ div#wallet-table-id {
     height: 600px;
     overflow: auto;
 }
+
+
+
+/* width */
+div#wallet-table-id::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  /* Track */
+  div#wallet-table-id::-webkit-scrollbar-track {
+    background: #004232; 
+    border-radius: 5px !important;
+  }
+   
+  /* Handle */
+  div#wallet-table-id::-webkit-scrollbar-thumb {
+    background: #25DEB0; 
+    border-radius: 5px !important;
+  }
+  
+
+
 div#wallet-table-id table thead {
     position: sticky !important;
-    top: -2px !important;
+    top: 0px !important;
     background: #131a26;
     z-index: 99;
 }
 
 div.balance-blocks-trade-view table#common-color-white {
-    border: 1px solid;
+    border: 1px solid #000;
 }
 
 div.balance-blocks-trade-view table#common-color-white tbody tr:nth-child(odd) {
     background: #174a486b;
+}
+
+table#common-color-white {
+    border-collapse: separate;
+}
+
+
+
+.Wallet-Body-Page.Wallet-Body-Page-main-page .MuiTablePagination-actions button.MuiButtonBase-root.Mui-disabled.MuiIconButton-root.Mui-disabled {
+    background: #25deb0;
+}
+.Wallet-Body-Page.Wallet-Body-Page-main-page .MuiTablePagination-actions {
+    display: flex;
+    gap: 8px;
+}
+.Wallet-Body-Page.Wallet-Body-Page-main-page .MuiTablePagination-actions button.MuiButtonBase-root {
+    background: #00a079;
+}
+
+.Wallet-Body-Page.Wallet-Body-Page-main-page .MuiTablePagination-root {
+    margin-top: 30px;
 }

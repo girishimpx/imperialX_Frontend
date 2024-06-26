@@ -25,7 +25,7 @@ import Modal from "@mui/material/Modal";
 import Classstyle from "./MasterTrader.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import Checkbox from '@mui/material/Checkbox';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import nextarrow from "../../images/Next-arrow.svg";
 
@@ -129,7 +129,7 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
           follower_id: params.id,
           amount: amount,
         };
-  
+
         Axios.post(`${Consts.BackendUrl}/trade/addsubscriber`, data, {
           headers: {
             Authorization: localStorage.getItem("Mellifluous"),
@@ -138,34 +138,34 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
           .then((res) => {
             if (res.data.success) {
               toast.success(`${res.data.message}`, {
-                   
-            duration: 3000,
-            position: "top-center",
-  
-            // Styling
-            style: {
-              padding: "1rem",
-              fontSize: "15px",
-              color: "green",
-              fontWeight: "bold",
-            },
-            className: "",
-  
-            // Custom Icon
-            icon: "👏",
-  
-            // Change colors of success/error/loading icon
-            iconTheme: {
-              primary: "#000",
-              secondary: "#fff",
-            },
-  
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
+
+                duration: 3000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "green",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "👏",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
               setTimeout(() => {
                 // handleClose();
                 // handleCloses();
@@ -173,34 +173,34 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
               }, 1500);
             } else {
               toast.error(`${res.data.message}`, {
-                   
-            duration: 3000,
-            position: "top-center",
-  
-            // Styling
-            style: {
-              padding: "1rem",
-              fontSize: "15px",
-              color: "red ",
-              fontWeight: "bold",
-            },
-            className: "",
-  
-            // Custom Icon
-           icon:"",
-  
-            // Change colors of success/error/loading icon
-            iconTheme: {
-              primary: "#000",
-              secondary: "#fff",
-            },
-  
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
+
+                duration: 3000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red ",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
               // setTimeout(()=>{
               //   handleClose()
               //   handleCloses()
@@ -209,11 +209,11 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
           })
           .catch((err) => console.log(err, "err"));
       }
-      }
-     catch (error) {
-      
     }
-   
+    catch (error) {
+
+    }
+
   };
 
   useEffect(() => {
@@ -243,14 +243,14 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
             xs={12}
             sm={12}
             md={12}
-            lg={8}
+            lg={7}
             xl={8}
             className={classes.profiletraderdtlsclsmid}
           >
             <Item className={classes.profiletraderdtlsclsinner}>
               <div className="profile-contain">
-              <div className="details">
-                  
+                <div className="details">
+
                   <div className="person-profile">
                     <div className="profile">
                       <img src={profile} />
@@ -274,7 +274,7 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
                       </div>
                     </div>
                   </div>
-                 
+
                 </div>
 
                 <div className="details">
@@ -292,7 +292,7 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
                         {Math.ceil(
                           (new Date().getTime() -
                             new Date(master?.createdAt).getTime()) /
-                            (1000 * 3600 * 24)
+                          (1000 * 3600 * 24)
                         )}
                       </h6>
                     </div>
@@ -335,11 +335,11 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
                           </Button>
                         ) : null
                       ) : (
-                       <></>
+                        <></>
                       )
                     ) : null}
 
-{/* <Button
+                    {/* <Button
                           onClick={() => {
                             handleOpen();
                           }}
@@ -413,7 +413,7 @@ const TradingProfileDetails = ({ sideBarShow, setSideBarShow }) => {
               </div>
             </Item>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <Grid item xs={12} sm={12} md={12} lg={5} xl={4}>
             <Item className={classes.profiletraderdtlsclsinner}>
               <div className="premium">
                 <div className="pre-sub">

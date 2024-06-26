@@ -40,7 +40,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handleEdit }) => {
+const Subscribebody = ({ selected, selected1, gettSelected, getSubscription, handleEdit }) => {
   const [exchange, setexchange] = useState(selected);
 
   const [apikey, setapikey] = useState(selected1?.apikey);
@@ -73,17 +73,17 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
 
   const onSubscribe = () => {
     if (!exchange) {
-      setexchangeerr("* Exchange Required");
+      setexchangeerr("Exchange Required");
     } else if (!apikey) {
-      setapikeyerr("* Apikey Required");
+      setapikeyerr("Apikey Required");
     } else if (!secretkey) {
-      setsecretkeyerr("* SecretKey Required");
+      setsecretkeyerr("SecretKey Required");
     } else if (!passphrase) {
-      setpassphraseerr("* Passphrase Required");
+      setpassphraseerr("Passphrase Required");
     } else if (!api_name) {
-      setapi_nameerr("* Api_name Required");
+      setapi_nameerr("Api name Required");
     } else if (!permission) {
-      setpermissionerr("* Permission Required");
+      setpermissionerr("Permission Required");
     } else if (!spot && !margin && !future) {
       setfuture("Atleast any one of above sholud be checked");
     } else {
@@ -191,99 +191,99 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
   };
 
   const onDisable = (status) => {
-   
+
     setWaits(true)
-      
-      const data = {
-        _id: selected1._id,
-        status : status,
-        exchange: exchange,
-      };
 
-      Axios.post(`${Consts.BackendUrl}/trade/disable-subscription`, data, {
-        headers: {
-          Authorization: localStorage.getItem("Mellifluous"),
-        },
+    const data = {
+      _id: selected1._id,
+      status: status,
+      exchange: exchange,
+    };
+
+    Axios.post(`${Consts.BackendUrl}/trade/disable-subscription`, data, {
+      headers: {
+        Authorization: localStorage.getItem("Mellifluous"),
+      },
+    })
+      .then((res) => {
+        if (res.data.success) {
+
+          toast.success(`${res.data.message}`, {
+
+            duration: 3000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "green",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            // Custom Icon
+            icon: "👏",
+
+            // Change colors of success/error/loading icon
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+          setTimeout(() => {
+
+            setOpen(false)
+            setWaits(false)
+            getSubscription()
+            gettSelected()
+            handleEdit()
+          }, 1500);
+        } else {
+          toast.error(`${res.data.message}`, {
+
+            duration: 3000,
+            position: "top-center",
+
+            // Styling
+            style: {
+              padding: "1rem",
+              fontSize: "15px",
+              color: "red",
+              fontWeight: "bold",
+            },
+            className: "",
+
+            iconTheme: {
+              primary: "#000",
+              secondary: "#fff",
+            },
+
+            // Aria
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          });
+          setTimeout(() => {
+            setOpen(false)
+            setWaits(false)
+            getSubscription()
+            gettSelected()
+            handleEdit()
+          }, 1500);
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-
-            toast.success(`${res.data.message}`, {
-
-              duration: 3000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "green",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              // Custom Icon
-              icon: "👏",
-
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-            setTimeout(() => {
-              
-              setOpen(false)
-              setWaits(false)
-              getSubscription()
-              gettSelected()
-              handleEdit()
-            }, 1500);
-          } else {
-            toast.error(`${res.data.message}`, {
-
-              duration: 3000,
-              position: "top-center",
-
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "red",
-                fontWeight: "bold",
-              },
-              className: "",
-
-              iconTheme: {
-                primary: "#000",
-                secondary: "#fff",
-              },
-
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
-            setTimeout(() => {
-              setOpen(false)
-              setWaits(false)
-              getSubscription()
-              gettSelected()
-              handleEdit()
-            }, 1500);
-          }
-        })
-        .catch((err) => { seterrs(err) });
+      .catch((err) => { seterrs(err) });
 
 
-    
+
   };
 
   const handleClose = () => {
@@ -296,7 +296,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
     setamount("");
     setpassphrase("");
   };
-  
+
   return (
     <div>
       <Box sx={{ flexGrow: 1 }} className={classes.loginpageBox}>
@@ -337,7 +337,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                         setexchange(e.target.value);
                       }}
                     />
-                    {exchangeerr && <p className={classes.paragraph}>{exchangeerr}</p>}
+                    {exchangeerr && <p className={classes.paragraph} style={{ color: "red" }}>{exchangeerr}</p>}
                   </div>
 
                   <div className="formtxt">
@@ -355,7 +355,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                         setapikey(e.target.value);
                       }}
                     />
-                    {apikeyerr && <p className={classes.paragraph}>{apikeyerr}</p>}
+                    {apikeyerr && <p className={classes.paragraph} style={{ color: "red" }}>{apikeyerr}</p>}
                   </div>
                 </div>
                 <div className={classes.formFlex}>
@@ -374,7 +374,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                       }}
                     />
                     {secretkeyerr && (
-                      <p className={classes.paragraph}>{secretkeyerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{secretkeyerr}</p>
                     )}
                   </div>
                   <div className="formtxt">
@@ -392,7 +392,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                       }}
                     />
                     {passphraseerr && (
-                      <p className={classes.paragraph}>{passphraseerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{passphraseerr}</p>
                     )}
                   </div>
                 </div>
@@ -411,7 +411,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                         setapi_name(e.target.value);
                       }}
                     />
-                    {api_nameerr && <p className={classes.paragraph}>{api_nameerr}</p>}
+                    {api_nameerr && <p className={classes.paragraph} style={{ color: "red" }}>{api_nameerr}</p>}
                   </div>
 
                   <div className="formtxt">
@@ -435,7 +435,7 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
                     </FormControl>
 
                     {permissionerr && (
-                      <p className={classes.paragraph}>{permissionerr}</p>
+                      <p className={classes.paragraph} style={{ color: "red" }}>{permissionerr}</p>
                     )}
                   </div>
 
@@ -467,52 +467,52 @@ const Subscribebody = ({ selected, selected1,gettSelected,getSubscription,handle
 
                 <div className={classes.formButton}>
 
-{selected1?.trade_status === "disable" ? <Button
-                  className="login-button"
-                  style={{ borderRadius: "5px" }}
-                  variant="contained"
-                  disabled={waits}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDisable("enable")
+                  {selected1?.trade_status === "disable" ? <Button
+                    className="login-button"
+                    style={{ borderRadius: "5px" }}
+                    variant="contained"
+                    disabled={waits}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onDisable("enable")
 
-                  }}
-                >
-                
-                  {waits ? "processing..." : "enable"}
-                </Button>:<>
-                <Button
-                  className="login-button"
-                  style={{ borderRadius: "5px" }}
-                  variant="contained"
-                  disabled={waits}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDisable("disable")
+                    }}
+                  >
 
-                  }}
-                >
-                
-                  {waits ? "processing..." : "disable"}
-                </Button>
-                <Button
-                  className="login-button"
-                  style={{ borderRadius: "5px" }}
-                  variant="contained"
-                  disabled={wait}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onSubscribe()
+                    {waits ? "processing..." : "enable"}
+                  </Button> : <>
+                    <Button
+                      className="login-button"
+                      style={{ borderRadius: "5px" }}
+                      variant="contained"
+                      disabled={waits}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onDisable("disable")
 
-                  }}
-                >
-                  {wait ? "processing..." : "Submit"}
-                </Button>
-                </> 
-                }
-                
-</div>
-                
+                      }}
+                    >
+
+                      {waits ? "processing..." : "disable"}
+                    </Button>
+                    <Button
+                      className="login-button"
+                      style={{ borderRadius: "5px" }}
+                      variant="contained"
+                      disabled={wait}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onSubscribe()
+
+                      }}
+                    >
+                      {wait ? "processing..." : "Submit"}
+                    </Button>
+                  </>
+                  }
+
+                </div>
+
               </Box>
             </Item>
 

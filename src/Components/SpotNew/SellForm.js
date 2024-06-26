@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function SellForm({ selected, pair, market, reload }) {
+export default function SellForm({ selected, pair, market, reload, cat }) {
   const [value, setValue] = React.useState(0);
   const [listvalue, setListvalue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -70,24 +70,25 @@ export default function SellForm({ selected, pair, market, reload }) {
             <MenuItem value={2}>Stop</MenuItem>
 
           </Select>
+
         </div>
         <div className='tabsection'>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='lms'>
             <Tab label="Limit" {...a11yProps(0)} />
             <Tab label="Market" {...a11yProps(1)} />
-            <Tab label="Stop" {...a11yProps(2)} />
+            {/* <Tab label="Stop" {...a11yProps(2)} /> */}
           </Tabs>
         </div>
       </Box>
       <TabPanel value={value} index={0}>
-        <SellFormInner selected={selected} pair={pair} index={"limit"} market={market} reload={reload}/>
+        <SellFormInner selected={selected} pair={pair} index={"limit"} market={market} reload={reload} cat={cat}/>
       </TabPanel>
       <TabPanel value={value} index={1}  >
-        <SellFormInnerMarket selected={selected} pair={pair} index={"market"} market={market} reload={reload}/>
+        <SellFormInnerMarket selected={selected} pair={pair} index={"market"} market={market} reload={reload} cat={cat}/>
       </TabPanel>
-      <TabPanel value={value} index={2} >
-        <SellFormInner selected={selected} pair={pair} index={"stop"} market={market} reload={reload}/>
-      </TabPanel>
+      {/* <TabPanel value={value} index={2} >
+        <SellFormInner selected={selected} pair={pair} index={"stop"} market={market} reload={reload} cat={cat}/>
+      </TabPanel> */}
     </Box>
   );
 }

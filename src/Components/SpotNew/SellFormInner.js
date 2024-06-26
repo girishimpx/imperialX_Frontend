@@ -19,7 +19,7 @@ import { styled } from '@mui/material/styles';
 import { Slider, Tooltip, Stack } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import Consts from "../../Constansts";
-
+// import Bybit from 'bybit-sdk';
 
 
 const ThumbSlider = styled(Slider)(({ theme }) => ({
@@ -89,8 +89,10 @@ const ValueLabelComponent = (props) => {
   );
 };
 
-const SellFormInner = ({ selected, pair, index, market, reload }) => {
+const SellFormInner = ({ selected, pair, index, market, reload, cat }) => {
   const user = JSON.parse(window.localStorage.getItem("users"))
+  {console.log(cat,'catAT5')}
+
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
   const [total, settotal] = React.useState();
@@ -103,15 +105,23 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
   const [pm, setPm] = useState()
   const navigate = useNavigate();
   const [kycsubmit, setkycsubmit] = React.useState(false);
-  const [sellShow,setSellShow]= React.useState(false);
-
+  const [sellShow, setSellShow] = React.useState(false);
+  const [maxsell, setMaxSell] = useState();
+  const [quantity, setQuantity] = React.useState(0.01);
+  const [maxquantity, setMaxQuantity] = React.useState(0.01);
+  const [basePrecision, setbasePrecision] = React.useState('0.0');
+  const [quotePrecision, setquotePrecision] = React.useState('0.0');
+  const [precesion, setPrecesion] = React.useState(0.01);
+  const [quoteprecesion, setQuotePrecesion] = React.useState(0.01);
+  const TP = useRef('');
+  const SL = useRef('');
 
   const handleSliderChange = async (event, data) => {
     const bs = parseFloat(Amount).toFixed(7)
     const da = data / 100 * bs
     if (da > 0) {
-      setSliderValue(parseFloat(da).toFixed(7));
-      settotal(parseFloat(da / price).toFixed(7))
+      setSliderValue(parseFloat(da).toFixed(quoteprecesion?.length));
+      settotal(parseFloat(da / price).toFixed(precesion?.length))
     } else {
       setSliderValue(0)
       settotal(0)
@@ -185,14 +195,14 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
     const newValue = Math.max(0, Number(event.target.value));
 
     setAmount(Amountref.current.value)
-    settotal(selected.price * Amountref.current.value)
+    settotal((selected.price * Amountref.current.value).toFixed(precesion?.length))
 
   };
   const totalupdate = (event) => {
     const newValue = Math.max(0, Number(event.target.value));
     const da = newValue * selected.price
-    setSliderValue(parseFloat(da).toFixed(7))
-    settotal(newValue)
+    setSliderValue(parseFloat(da).toFixed(quoteprecesion?.length))
+    settotal((newValue).toFixed(precesion?.length))
   };
 
 
@@ -208,30 +218,30 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
 
   const getdatas = async () => {
 
-    await Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`,{pair:pair},{
-         headers: {
-           Authorization: localStorage.getItem("Mellifluous"),
-         },
-       })
-         .then((res) => {
-           console.log(res,'res');
-           // let data = [];
-           // res?.data?.result.map((item, index) => {
-           //   if(item.trade_at == "future" || item.trade_at == "Future"){
-           //   if (item.status == "init" || item.status == "partially_filled") {
-           //     data.push(item);
-           //   }
-           // }
-           // });
-           // if (data.length > 0) {
-           //   settradelist(data.reverse());
-           // }
-           // setLoading(false);
-         })
-         .catch((err) => {
-     console.log(err,'error');          
-         });
-       }
+    await Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: pair }, {
+      headers: {
+        Authorization: localStorage.getItem("Mellifluous"),
+      },
+    })
+      .then((res) => {
+        console.log(res, 'res');
+        // let data = [];
+        // res?.data?.result.map((item, index) => {
+        //   if(item.trade_at == "future" || item.trade_at == "Future"){
+        //   if (item.status == "init" || item.status == "partially_filled") {
+        //     data.push(item);
+        //   }
+        // }
+        // });
+        // if (data.length > 0) {
+        //   settradelist(data.reverse());
+        // }
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, 'error');
+      });
+  }
 
   const buytrade = async () => {
     try {
@@ -239,7 +249,7 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
         toast.error(`Please submit kyc to trade`, {
           duration: 1900,
           position: "top-center",
-  
+
           // Styling
           style: {
             backgroundColor: "#fc1922",
@@ -249,31 +259,31 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             fontWeight: "bold",
           },
           className: "",
-  
+
           // Custom Icon
           icon: "",
-  
+
           // Change colors of success/error/loading icon
           iconTheme: {
             primary: "#000",
             secondary: "#fff",
           },
-  
+
           // Aria
           ariaProps: {
             role: "status",
             "aria-live": "polite",
           },
         });
-  
+
         setTimeout(() => {
           navigate("/kycj-verification");
         }, 1600);
-      }else if(!sellShow && kycsubmit){
+      } else if (!sellShow && kycsubmit) {
         toast.error(`Your KYC submission is under verification`, {
           duration: 4000,
           position: "top-center",
-  
+
           // Styling
           style: {
             backgroundColor: "#fc1922",
@@ -283,24 +293,24 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             fontWeight: "bold",
           },
           className: "",
-  
+
           // Custom Icon
           icon: "",
-  
+
           // Change colors of success/error/loading icon
           iconTheme: {
             primary: "#000",
             secondary: "#fff",
           },
-  
+
           // Aria
           ariaProps: {
             role: "status",
             "aria-live": "polite",
           },
         });
-      }else if(price === "") {
-        toast.error("Pelese Fill the Price", {
+      } else if (price === "") {
+        toast.error("Please Fill the Price", {
 
           duration: 4000,
           position: "top-center",
@@ -329,8 +339,9 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             "aria-live": "polite",
           },
         });
-      } else if (Amount === "") {
-        toast.error("Pelese Fill the Amount", {
+      } 
+      else if (Amount === "" || Amount <= 0) {
+        toast.error("Pelase Fill the Amount", {
 
           duration: 4000,
           position: "top-center",
@@ -359,33 +370,75 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             "aria-live": "polite",
           },
         });
-      } else {
+      } else if (Number(sliderValue) < Number(quantity)) {
+        toast.error(`Minimum Order Quantiy Is ${quantity}` , {
+
+          duration: 4000,
+          position: "top-center",
+
+          // Styling
+          style: {
+            padding: "1rem",
+            fontSize: "15px",
+            color: "red",
+            fontWeight: "bold",
+          },
+          className: "",
+
+          // Custom Icon
+          icon: "",
+
+          // Change colors of success/error/loading icon
+          iconTheme: {
+            primary: "#000",
+            secondary: "#fff",
+          },
+
+          // Aria
+          ariaProps: {
+            role: "status",
+            "aria-live": "polite",
+          },
+        });
+      }
+      else {
         const pairName = pair ? pair.split("-")[0] : "USD"
         const usdtBalance = parseFloat(balance || 0);
 
-
-
         setload(false)
         if (user.trader_type === "user") {
-          const pair12 = pair.split('-')[1]
+          const pair12 = pair.slice(-cat?.length)
+          
+
+          // const da = {
+          //   instId: pair,
+          //   tdMode: "cash",
+          //   ccy: pair12,
+          //   tag: "mk1",
+          //   side: "sell",
+          //   orderType: index,
+          //   sz: Math.round( Number (Amount)),
+          //   px: price,
+          //   trade_at: "spot",
+          //   lever: "0"
+          // }
           const da = {
             instId: pair,
-            tdMode: "cash",
             ccy: pair12,
-            tag: "mk1",
             side: "sell",
             orderType: index,
-            sz: Math.round( Number (Amount)),
-            px: price,
+            sz: `${Number(sliderValue).toFixed(precesion?.length)}`, //`${20}`,
+            px: `${price}`,
             trade_at: "spot",
             lever: "0"
           }
-          const { data } = await Axios.post(`/trade/userTrade`, da, {
+          // const { data } = await Axios.post(`/trade/userTrade`, da, {
+          const { data } = await Axios.post(`/bybit/trade`, da, {
             headers: {
               Authorization: localStorage.getItem("Mellifluous"),
             }
           })
-          if (data) {
+          if (data.success) {
             setload(true)
             toast.success(data.message, {
 
@@ -417,11 +470,12 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
               },
             });
             // window.location.reload();
+            getTradebalance();
             setAmount("")
             reload(1)
           } else {
             setload(true)
-            toast.success("Something Went Wrong", {
+            toast.error(data.message, {
 
               duration: 4000,
               position: "top-center",
@@ -430,17 +484,17 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
               style: {
                 padding: "1rem",
                 fontSize: "15px",
-                color: "green",
+                color: "red",
                 fontWeight: "bold",
               },
               className: "",
 
               // Custom Icon
-              icon: "👏",
+              // icon: "👏",
 
               // Change colors of success/error/loading icon
               iconTheme: {
-                primary: "#000",
+                primary: "red",
                 secondary: "#fff",
               },
 
@@ -452,27 +506,55 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             });
           }
         } else {
-          const pair12 = pair.split('-')[1]
-          const da = {
+          // const pair12 = pair.split('-')[1]
+          var da = {};
+          const pair12 = pair.slice(-cat?.length)
+
+          if(isCheckedTakeProfit == true){
+            da = {
+              istpsl : isCheckedTakeProfit,
+              // tdMode: "cash",
+              instId: pair,
+              side:'buy',
+              orderType: index,
+              px: price,
+              sz: sliderValue != 'NaN' ? `${Number(sliderValue).toFixed(precesion?.length)}` : '1',
+              trade_at:'spot',
+              lever:'0',
+              tpPrice: `${TP?.current?.value}`,
+              slPrice: `${SL?.current?.value}`,
+              tpOrderType:'Limit',
+              timeInForce:'GTC',
+              slOrderType:'Limit',
+              tpLimitPrice: `${TP?.current?.value}`,
+              slLimitPrice: `${SL?.current?.value}`
+            };
+          } else {
+
+             da = {
             instId: pair,
             tdMode: "cash",
             ccy: pair12,
             tag: "mk1",
             side: "sell",
             orderType: index,
-            sz: Amount,
+            sz: sliderValue != 'NaN' ? `${Number(sliderValue).toFixed(precesion?.length)}` : '1',
+            // sz: `${Amount}`,
+            // sz: `${123}`,
             px: price,
             trade_at: "spot",
             lever: "0"
           }
-          const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+        }
+          // const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+          const { data } = await Axios.post(`/bybit/mastertrade`, da, {
             headers: {
               Authorization: localStorage.getItem("Mellifluous"),
             }
           })
-          if (data) {
+          if (data?.success) {
             setload(true)
-            toast.success(data.message, {
+            toast.success(data?.message, {
 
               duration: 4000,
               position: "top-center",
@@ -505,7 +587,7 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             reload(1)
           } else {
             setload(true)
-            toast.success("Something Went Wrong", {
+            toast.error(data?.message, {
 
               duration: 4000,
               position: "top-center",
@@ -514,17 +596,17 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
               style: {
                 padding: "1rem",
                 fontSize: "15px",
-                color: "green",
+                color: "red",
                 fontWeight: "bold",
               },
               className: "",
 
               // Custom Icon
-              icon: "👏",
+              // icon: "👏",
 
               // Change colors of success/error/loading icon
               iconTheme: {
-                primary: "#000",
+                primary: "red",
                 secondary: "#fff",
               },
 
@@ -541,7 +623,7 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
       }
     } catch (error) {
       setload(!false)
-      if (error.response.data.message == 'Parameter sz error'){
+      if (error.message == 'Parameter sz error') {
         toast.error("Please Fill the Amount", {
           // Change colors of success/error/loading icon
           style: {
@@ -550,7 +632,7 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
             color: "red",
             fontWeight: "bold",
           },
-          className: "",  
+          className: "",
 
           // Aria
           ariaProps: {
@@ -559,37 +641,37 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
           },
         });
       } else {
-      console.log(error, "err");
-      toast.error(error?.response?.data?.message, {
+        console.log(error, "err");
+        toast.error(error?.message, {
 
-        duration: 4000,
-        position: "top-center",
+          duration: 4000,
+          position: "top-center",
 
-        // Styling
-        style: {
-          padding: "1rem",
-          fontSize: "15px",
-          color: "red",
-          fontWeight: "bold",
-        },
-        className: "",
+          // Styling
+          style: {
+            padding: "1rem",
+            fontSize: "15px",
+            color: "red",
+            fontWeight: "bold",
+          },
+          className: "",
 
-        // Custom Icon
-        icon: "",
+          // Custom Icon
+          icon: "",
 
-        // Change colors of success/error/loading icon
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
+          // Change colors of success/error/loading icon
+          iconTheme: {
+            primary: "#000",
+            secondary: "#fff",
+          },
 
-        // Aria
-        ariaProps: {
-          role: "status",
-          "aria-live": "polite",
-        },
-      });
-    }
+          // Aria
+          ariaProps: {
+            role: "status",
+            "aria-live": "polite",
+          },
+        });
+      }
     }
   }
 
@@ -623,40 +705,129 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
 
   }, []);
 
-  const getmyWallet = () => {
+
+
+  // const getmyWallet = () => {
+  //   try {
+  //     Axios.get(`/wallet/getWalletById`, {
+  //       headers: {
+  //         Authorization: localStorage.getItem("Mellifluous"),
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res?.data?.success) {
+  //           for (let i = 0; i < res?.data?.result.length; i++) {
+  //             if (res?.data?.result[i].symbol === pair?.slice(0,- 4)) {
+  //               setBalance(res?.data?.result[i].balance)
+  //             }
+  //           }
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+
+  // }
+
+  const getmyWallet = async () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      await Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
           if (res?.data?.success) {
+            // console.log(res, 'WALLET BALANCE', pair.substring(0, pair.length - 4));
             for (let i = 0; i < res?.data?.result.length; i++) {
-              if (res?.data?.result[i].symbol === pair.split('-')[0]) {
-                setBalance(res?.data?.result[i].balance)
+              // if (res?.data?.result[i].symbol === pair.split("-")[1]) {
+              //   setBalance(res?.data?.result[i].balance);
+              // }
+              const coin = res?.data?.result[i]
+              
+              if (coin?.coinname == pair.slice(0, -cat.length)) {
+                setBalance(coin?.balance);
+                // console.log(res?.data?.result[i].balance, "baln")
               }
+
             }
+            // setBalance(res?.data?.result)
+
+            setMaxSell(parseFloat(Number(balance) / Number(selected.price)).toFixed(7));
           }
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
 
-  }
+  const getTradebalance = async () => {
+    try {
+      await Axios.post(`/bybit/gettradebalance`,{ pair : pair.slice(0, -cat?.length) }, {
+        headers: {
+          Authorization: localStorage.getItem("Mellifluous"),
+        },
+      })
+        .then((res) => {
+          if (res?.data?.success) {
+            const tradebalance = res?.data?.result?.result?.list[0]?.coin[0]?.availableToWithdraw
+              
+                setBalance(tradebalance);
+          
+                setMaxSell(parseFloat(Number(tradebalance ? tradebalance : 0) / Number(selected?.price)).toFixed(7));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   useEffect(() => {
-    getmyWallet()
+    // getmyWallet();
+    getTradebalance();
     setAmount(parseFloat((balance) * (selected.price)).toFixed(7))
-    settotal(parseFloat(parseFloat((balance) * (selected.price)).toFixed(7) / (selected.price)).toFixed(7))
-    setSliderValue(parseFloat((balance) * (selected.price)).toFixed(7))
-  }, [selected])
+    settotal(parseFloat(parseFloat((balance) * (selected.price)).toFixed(precesion?.length) / (selected.price)).toFixed(7))
+    setSliderValue(parseFloat((balance) * (selected.price)).toFixed(quoteprecesion?.length))
+  }, [selected, pair])
 
   useEffect(() => {
     setPm(market)
   }, [market])
+
+  const getOrderQty = async () => {
+
+    const { data } = await Axios.post(`${Consts.BackendUrl}/bybit/getpairdetailes`, { type : 'spot' , pair: pair })
+       if(data?.success){
+         setQuantity(data?.result[0]?.lotSizeFilter?.minOrderQty);
+         setMaxQuantity(data?.result[0]?.lotSizeFilter?.maxOrderQty);
+         setquotePrecision(data?.result[0]?.lotSizeFilter?.quotePrecision);
+         setbasePrecision(data?.result[0]?.lotSizeFilter?.basePrecision);
+       } else {
+         setQuantity(0);
+         setMaxQuantity(0);
+         setquotePrecision(0);
+         setbasePrecision(0);
+       }
+   }
+
+   useEffect(()=> {
+    getOrderQty()
+  }, [pair])
+
+  useEffect(()=> {
+    setPrecesion(basePrecision.split('.')[1])
+    setQuotePrecesion(quotePrecision.split('.')[1])
+  },[basePrecision])
 
 
   return (
@@ -667,7 +838,8 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
         {/* <label className="form-label-style">Price ({selected ? selected?.pair.split('-')[1] : "USD"})</label> */}
         <Stack direction="column" spacing={10}>
           <div className="price-limit-spot">
-            <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+            {/* <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label> */}
+            <label className="form-label-style">Price ({pair ? pair.slice(-cat?.length) : "USD"})</label>
             <div className="">
               {/* {console.log(total,'total')} */}
               {pm === undefined && <TextField
@@ -683,8 +855,8 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                 type={"number"}
                 id="outlined-basic"
                 variant="outlined"
-                defaultValue={price ? price :pm}
-                value={price ? price :pm}
+                defaultValue={price ? price : pm}
+                value={price ? price : pm}
                 InputProps={{ inputProps: { min: "0" } }}
                 onChange={priceupdate}
               />}
@@ -692,7 +864,8 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
           </div>
 
           <div className="amount-limit-spot">
-            <label className="form-label-style">Amount ({pair ? pair.split('-')[1] : "USD"})</label>
+            {/* <label className="form-label-style">Amount ({pair ? pair.split('-')[1] : "USD"})</label> */}
+            <label className="form-label-style">Amount ({pair ? pair.slice(-4) : "USD"})</label>
             <div className="">
               <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                 <OutlinedInput
@@ -703,7 +876,7 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                   InputProps={{ inputProps: { min: "0" } }}
                   inputRef={Amountref}
                   onChange={Amountupdate}
-                  placeholder={`Min ${pair ? pair.split('-')[0] : "USD"}`}
+                  placeholder={`Min ${pair ? pair.slice(0, -cat?.length) : "USD"}`}
                   aria-describedby="outlined-weight-helper-text"
                   inputProps={{
                     "aria-label": "weight",
@@ -734,7 +907,8 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
 
 
         <div className="total-limit-spot">
-          <label className="form-label-style">Total ({pair ? pair.split('-')[0] : "USD"})</label>
+          {/* <label className="form-label-style">Total ({pair ? pair.split('-')[0] : "USD"})</label> */}
+          <label className="form-label-style">Total ({pair ? pair.slice(0, -cat?.length) : "USD"})</label>
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <OutlinedInput
               value={total}
@@ -753,39 +927,67 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
           <div className="available-max-block available-max-buy">
             <div className="available-max-block-left">
               <div>
-                <label>Availabe</label>
-                {pair &&
+                <label>Available</label>
+
+                {balance ?
+                  <div>
+                    {parseFloat(balance).toFixed(3)}{" "}
+                    {pair ? pair.slice(0,-cat?.length) : 'USDT' }
+                  </div> :
+                  <>{(0).toFixed(3)}{" "}{pair ? pair.slice(0,-cat?.length) : 'USDT' }</>
+                  
+                }
+                {/* <div>
+                  { balance != "NaN" ? parseFloat(balance).toFixed(3) : 0} USDT</div> */}
+                {/* {
+                pair &&
                   balance &&
                   <div>
-                    {balance.toFixed(3)}{" "}
-                    {pair.split("-")[0]}
+                    {parseFloat(balance).toFixed(3)}{" "} */}
+                {/* {pair.split("-")[0]} */}
+                {/* {pair.split(-4)}
                   </div>
-                }
+                } */}
 
               </div>
               <div>
                 <label>Maxsell</label>
-                {pair && balance &&
+
+
+                {balance ?
+                  <div>
+                    {parseFloat(balance / selected.price).toFixed(7) != 'NaN' ? parseFloat(balance / selected.price).toFixed(7) : 0} {pair.slice(-cat?.length)}
+                  </div>
+                  :
+                  // <div>{0.00}{" "}{pair.split("-")[0]}</div>
+                  <div>{0.00}{" "}{pair.slice(0, -cat?.length)}</div>
+                }
+                {/* {pair && balance &&
                   <div>
                     {selected.amount ?
                       parseFloat((balance) * (selected.price)).toFixed(8)
                       :
                       0.000
                     }
-                    {" "}
+                    {" "} */}
 
-                    {pair.split("-")[1]}
+                {/* {pair.split("-")[1]} */}
+                {/* {pair.split(0,-4)}
                   </div>
-                }
+                } */}
 
+              </div>
+              <div>
+              <label>MinOrderQty : </label>
+              <div> { Number(quantity).toFixed(6) } </div>
               </div>
             </div>
             <div className="available-max-block-right"><SwapHorizIcon /></div>
           </div>
 
           <div className="take-profit-stop-loss-block">
-            <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="Take profit" /></div>
-            <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div>
+            <div><FormControlLabel control={<Checkbox checked={isCheckedTakeProfit} onChange={handleChangeTakeProfit} />} label="TP/SL" /></div>
+            {/* <div><FormControlLabel control={<Checkbox checked={isCheckedStopLoss} onChange={handleChangeStopLoss} />} label="Stop loss" /></div> */}
           </div>
 
           {isCheckedTakeProfit && (
@@ -798,8 +1000,10 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                   <TextField
                     id="outlined-basic"
                     InputProps={{ inputProps: { min: "0" } }}
+                    inputRef={TP}
+                    type="number"
                   />
-                  <FormControl className="select-hours-outer">
+                  {/* <FormControl className="select-hours-outer">
                     <InputLabel id="demo-simple-select-label">Last</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
@@ -813,11 +1017,11 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                       <MenuItem value={20}>24h</MenuItem>
                       <MenuItem value={30}>7h</MenuItem>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
               </div>
 
-              <div className="form-design-tp-sl form-design-tp-order-price">
+              {/* <div className="form-design-tp-sl form-design-tp-order-price">
                 <label>TP order price (USDT)</label>
                 <div>
                   <TextField
@@ -827,13 +1031,13 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                   />
                   <Button>Market</Button>
                 </div>
-              </div>
+              </div> */}
 
             </div>
           )
           }
 
-          {isCheckedStopLoss && (
+          {isCheckedTakeProfit && (
             <div className="take-profit-stop-loss-forms stop-loss-form">
 
 
@@ -843,8 +1047,10 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                   <TextField
                     id="outlined-basic"
                     InputProps={{ inputProps: { min: "0" } }}
+                    inputRef={SL}
+                    type="number"
                   />
-                  <FormControl className="select-hours-outer">
+                  {/* <FormControl className="select-hours-outer">
                     <InputLabel id="demo-simple-select-label">Last</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
@@ -858,11 +1064,11 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                       <MenuItem value={20}>24h</MenuItem>
                       <MenuItem value={30}>7h</MenuItem>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
               </div>
 
-              <div className="form-design-tp-sl form-design-tp-order-price">
+              {/* <div className="form-design-tp-sl form-design-tp-order-price">
                 <label>SL order price (USDT)</label>
                 <div>
                   <TextField
@@ -872,13 +1078,14 @@ const SellFormInner = ({ selected, pair, index, market, reload }) => {
                   />
                   <Button>Market</Button>
                 </div>
-              </div>
+              </div> */}
 
             </div>
           )
           }
           <Button className="Sell-SOL Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-            Sell {selected ? selected?.pair.split('-')[0] : ""}
+            {/* Sell {selected ? selected?.pair.split('-')[0] : ""} */}
+            Sell {pair ? pair.slice(0, -cat?.length) : ""}
           </Button>
         </div>
       </div>

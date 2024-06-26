@@ -54,6 +54,7 @@ import Avatar from '@mui/material/Avatar';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import moment from "moment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { setConstantValue } from "typescript";
 
 
 function CustomTabPanel(props) {
@@ -305,7 +306,7 @@ const KYCBody = () => {
 
   const navigate = useNavigate();
   // var userData;
-  const [userData,setUserdata] = useState('');
+  const [userData, setUserdata] = useState('');
   useEffect(() => {
     if (history?.state != "null") {
       if (history?.state?.kyc == true) {
@@ -388,7 +389,8 @@ const KYCBody = () => {
   const lastname = useRef(null);
   const phonenumber = useRef(null);
   const [gender, setGender] = useState("null");
-  const [datepickr, setDatePickr] = useState(dayjs("2014-08-18"));
+  // const [datepickr, setDatePickr] = useState(dayjs("2014-08-18"));
+  const [datepickr, setDatePickr] = useState(null);
   const [dob, setdob] = useState(null);
   const [country, setCountry] = useState("null");   //state
   const state = useRef(null);
@@ -401,7 +403,11 @@ const KYCBody = () => {
   const address = useRef('');
   const [document_type, setdocument_type] = useState("Passport");
   const document_num = useRef(null);
-  const [expiredate, setexpiredate] = useState(dayjs("2014-08-18T21:11:54"));
+  const expiry_date = useRef(null);
+  // const [expiredate, setexpiredate] = useState(dayjs("2014-08-18T21:11:54"));
+  const [expiredate, setexpiredate] = useState(null);
+  const [expiredate1, setexpiredate1] = useState(null);
+
   const [Image, setImage] = useState("null");
   const [imageurl, setimageurl] = useState("null");
   const [firstnameerr, setfirstnameerr] = useState(null);
@@ -443,60 +449,112 @@ const KYCBody = () => {
     setValue(newValue)
     if (newValue === 0) {
       setValues("passport")
+      setexpiredate(null)
     } else if (newValue === 1) {
       console.log(newValue, "111111")
       setValues("national card")
+      setexpiredate(null)
     } else if (newValue === 2) {
       console.log(newValue, "222222")
       setValues("Driver's licence")
+      setexpiredate(null)
     }
   };
+
+
 
   const onSubmit = async () => {
     if (firstname.current.value === "") {
       setfirstnameerr("Please Enter First Name");
-    } else if (lastname.current.value === "") {
+      firstname.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    else if (lastname.current.value === "") {
       setlastnameerr("Please Enter Last Name");
-    } else if (phonenumber.current.value === "") {
+      firstname.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    else if (phonenumber.current.value === "") {
       setphonenumbererr("Please Enter Phonenumber");
-    } else if (phonenumber.current.value?.length < 4) {
-      setphonenumbererr("Phone Number Must be Greate then 4");
-    } else if (phonenumber.current.value?.length > 15) {
-      setphonenumbererr("Phone Number Must be Less then 15");
-    } else if (gender === "null") {
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    else if (phonenumber.current.value?.length < 4) {
+      setphonenumbererr("Phone Number Must be Greater than 4");
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    else if (phonenumber.current.value?.length > 15) {
+      setphonenumbererr("Phone Number Must be Less than 15");
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    else if (gender === "null") {
       setgendererr("Please Select Gender");
-    } else if (
-      datepickr.$d === "Mon Aug 18 2014 21:11:54 GMT+0530 (India Standard Time)"
-    ) {
-
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    // else if (datepickr.$d === "Mon Aug 18 2014 21:11:54 GMT+0530 (India Standard Time)") {
+    //   setdatepickrerr("Please Select DOB");
+    //   phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // }
+    else if (datepickr === null) {
       setdatepickrerr("Please Select DOB");
-    } else if (country === "null") {
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    else if (datepickrerr != null) {
+      setdatepickrerr(datepickrerr)
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    else if (country === "null") {
       setcountryerr("Please Select Country");
-    } else if (state.current.value === "") {
+      phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    else if (state.current.value === "") {
       setstateerr("Please Enter State");
-    } else if (city.current.value === "") {
+      state.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (city.current.value === "") {
       setcityerr("Please Enter City");
-    } else if (zipcode.current.value === "") {
+      state.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (zipcode.current.value === "") {
       setzipcodeerr("Please Enter ZIP Code");
-    } else if (telegram.current.value === "") {
-      settelegramerr("Please Enter Telegram");
-    } else if (accountNumber.current.value === "") {
-      setAccerr("Please Enter Account Number");
-    } else if (ifscCode.current.value === "") {
-      settIfscerr("Please Enter IFSC Code");
-    } else if (bankName.current.value == "") {
+      zipcode.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (telegram.current.value === "") {
+      settelegramerr("Please Enter Telegram Username");
+      zipcode.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (bankName.current.value == "") {
       setBankerr("Please Enter Bank Name");
-    } else if (address.current.value === "") {
+      bankName.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (accountNumber.current.value === "") {
+      setAccerr("Please Enter Account Number");
+      accountNumber.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (ifscCode.current.value === "") {
+      settIfscerr("Please Enter IFSC Code");
+      ifscCode.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (ifscerr != null) {
+      console.log(ifscerr, 'ifscerr');
+      settIfscerr("Invalid IFSC code")
+      ifscCode.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (address.current.value === "") {
       setaddresserr("Please Enter Address");
+      address.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
     // else if (document_type === "null") {
     // }
     else if (document_num.current.value === "") {
       setdocument_numerr("Please Enter Document Number");
-    } else if (Image === "null") {
+      document_num.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (expiredate === null) {
+      setexpiredateerr("Please Select Expire Date")
+      document_num.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+    else if (Image === "null") {
       setImageerr("Please Select Image");
     } else {
-      const imageupload = await Axios.post("/users/imageUpload", imageurl, {  
+      const imageupload = await Axios.post("/users/imageUpload", imageurl, {
         headers: { Authorization: localStorage.getItem("Mellifluous") },
       });
       // console.log(imageupload,"upload")
@@ -514,11 +572,12 @@ const KYCBody = () => {
           telegram: telegram.current.value,
           account_no: accountNumber.current.value,
           ifsc_code: ifscCode.current.value,
-          bank : bankName.current.value,
+          bank_name: bankName.current.value,
           address: address.current.value,
           document_type: valuess,
           document_num: document_num.current.value,
           document_image: imageupload?.data?.result,
+          expiry_date: expiredate1
         };
         console.log(data, "datasaaaa")
 
@@ -557,41 +616,76 @@ const KYCBody = () => {
               },
             });
             setTimeout(() => {
-              console.log(userData,'userData*******************');
-              navigate(`${Constant.route}/Subscription`,{state : {userdetail : userData}});
+              console.log(userData, 'userData*******************');
+              navigate(`${Constant.route}/Subscription`, { state: { userdetail: userData } });
             }, 1300)
 
           })
           .catch((err) => {
-            toast.error(err.response.data.message, {
+            if (err.response.data.message == 'Please Enter DOB') {
+              setdatepickrerr("Please Select DOB");
+              phonenumber.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              toast.error(err.response.data.message, {
 
-              duration: 3000,
-              position: "top-center",
+                duration: 3000,
+                position: "top-center",
 
-              // Styling
-              style: {
-                padding: "1rem",
-                fontSize: "15px",
-                color: "red",
-                fontWeight: "bold",
-              },
-              className: "",
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red",
+                  fontWeight: "bold",
+                },
+                className: "",
 
-              // Custom Icon
-              icon: "👏",
+                // Custom Icon
+                icon: "👏",
 
-              // Change colors of success/error/loading icon
-              iconTheme: {
-                primary: "red",
-                secondary: "#fff",
-              },
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "red",
+                  secondary: "#fff",
+                },
 
-              // Aria
-              ariaProps: {
-                role: "status",
-                "aria-live": "polite",
-              },
-            });
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+            } else {
+              toast.error(err.response.data.message, {
+
+                duration: 3000,
+                position: "top-center",
+
+                // Styling
+                style: {
+                  padding: "1rem",
+                  fontSize: "15px",
+                  color: "red",
+                  fontWeight: "bold",
+                },
+                className: "",
+
+                // Custom Icon
+                icon: "👏",
+
+                // Change colors of success/error/loading icon
+                iconTheme: {
+                  primary: "red",
+                  secondary: "#fff",
+                },
+
+                // Aria
+                ariaProps: {
+                  role: "status",
+                  "aria-live": "polite",
+                },
+              });
+            }
+
           });
       } else {
         toast.error("Something went wrong", {
@@ -654,13 +748,45 @@ const KYCBody = () => {
   };
 
   const handleDateChange = (newValue) => {
-    console.log(moment(newValue).format("YYYY-MM-DD"), "logs");
-    setDatePickr(newValue);
-    setdob(moment(newValue).format("YYYY-MM-DD"));
+    console.log(newValue, 'newValue');
+    // console.log(moment(newValue.$d).format("YYYY-MM-DD"), "logs");
+    setDatePickr(dayjs(newValue));
+    setdob(moment(newValue?.$d).format("YYYY-MM-DD"));
+
+    const today = new Date();
+    const date = moment(newValue?.$d).format("YYYY-MM-DD")
+    const nda = date.split("-")[0];
+    // console.log(nda, 'nda');
+    const age = today.getFullYear() - nda;
+    // console.log(age, 'age');
+    if (newValue === '') {
+      setdatepickrerr('Please Select Date');
+    } else if (age < 18) {
+      setdatepickrerr('You must be at least 18 years old');
+    } else {
+      setdatepickrerr(null);
+    }
   };
 
+  const handleErrorIfscChange = (e) => {
+    const reg = /^[A-Za-z]{4}[a-zA-Z0-9]{7}$/;
+    const ifsc = e.target.value
+    console.log(ifsc, 'ifsc')
+    if (ifsc === '') {
+      settIfscerr(null);
+    }
+    else if (!(reg.test(ifsc))) {
+      settIfscerr("Invalid IFSC code")
+    } else {
+      settIfscerr(null);
+    }
+  }
+
   const handleExpireDateChange = (newValue) => {
-    setexpiredate(newValue.$d);
+    console.log(newValue, 'value');
+    setexpiredate(dayjs(newValue))
+    setexpiredate1(moment(newValue?.$d).format("YYYY-MM-DD"));
+    setexpiredateerr(null)
   };
 
   return (
@@ -683,7 +809,7 @@ const KYCBody = () => {
           {/* <Grid item xs={12} sm={12} md={12} lg={1} xl={1}></Grid>   */}
 
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Item className={classes.loginwhole}>
+            <Item className={classes.loginwhole} id="kyc-verification-id">
               <h2 className="alpha-login-text">KYC Verification</h2>
 
               <div className="kyc-step-number-heading">
@@ -705,18 +831,25 @@ const KYCBody = () => {
                   Please carefully fill out the form with your personal details. Your can’t edit these details once you submitted the form.</p>
               </Grid>
 
-              <Grid container spacing={2} className={classes.tabpartmarket}>
+              <Grid container spacing={2} className={classes.tabpartmarket} id="kyc-verification-id">
                 <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
                   <label>First Name</label>
                   <TextField
                     fullWidth
                     required
                     id="input-with-icon-textfield"
+                    type="text"
                     variant="outlined"
                     className={classes.logintextbox}
                     inputRef={firstname}
                     onChange={() => {
                       setfirstnameerr(null);
+                    }}
+                    onKeyPress={(event) => {
+                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                        event.preventDefault();
+                        setfirstnameerr("Enter Valid First Name")
+                      }
                     }}
                     helperText={firstnameerr !== null ? firstnameerr : ""}
                   />
@@ -745,6 +878,12 @@ const KYCBody = () => {
                     onChange={() => {
                       setlastnameerr(null);
                     }}
+                    onKeyPress={(event) => {
+                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                        event.preventDefault();
+                        setlastnameerr("Enter Valid Last Name")
+                      }
+                    }}
                     helperText={lastnameerr !== null ? lastnameerr : ""}
                   />
                 </Grid>
@@ -761,6 +900,13 @@ const KYCBody = () => {
                     inputRef={phonenumber}
                     onChange={() => {
                       setphonenumbererr(null);
+                    }}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                        setphonenumbererr("Enter Valid Number")
+                      }
                     }}
                     helperText={phonenumbererr !== null ? phonenumbererr : ""}
                   />
@@ -850,6 +996,7 @@ const KYCBody = () => {
                     variant="outlined"
                     className={classes.logintextbox}
                     onClick={handleCountryOpen}
+                    value={`${coin.name}`}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -857,9 +1004,10 @@ const KYCBody = () => {
                         </InputAdornment>
                       ),
                     }}
-                    value={`${coin.name}`}
-                    helperText={countryerr !== null ? countryerr : ""}
+                  // helperText={countryerr !== null ? countryerr : ""}
                   />
+                  <p style={{ color: "red" }}>{countryerr !== null ? countryerr : ""}</p>
+
                   <Modal
                     open={countryopen}
                     aria-labelledby="modal-modal-title"
@@ -873,7 +1021,7 @@ const KYCBody = () => {
                         variant="h6"
                         component="h2"
                       >
-                        Select area code{" "}
+                        Select Country{" "}
                         <CancelIcon onClick={handleCountryClose} />
                       </Typography>
 
@@ -978,6 +1126,12 @@ const KYCBody = () => {
                     onChange={() => {
                       setstateerr(null);
                     }}
+                    onKeyPress={(event) => {
+                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                        event.preventDefault();
+                        setstateerr("Enter Valid State Name")
+                      }
+                    }}
                     helperText={stateerr !== null ? stateerr : ""}
                   />
                 </Grid>
@@ -993,6 +1147,12 @@ const KYCBody = () => {
                     inputRef={city}
                     onChange={() => {
                       setcityerr(null);
+                    }}
+                    onKeyPress={(event) => {
+                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                        event.preventDefault();
+                        setcityerr("Enter Valid City Name")
+                      }
                     }}
                     helperText={cityerr !== null ? cityerr : ""}
                   />
@@ -1010,6 +1170,13 @@ const KYCBody = () => {
                     inputRef={zipcode}
                     onChange={() => {
                       setzipcodeerr(null);
+                    }}
+                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                        setzipcodeerr("Enter Valid Postal Code")
+                      }
                     }}
                     helperText={zipcodeerr !== null ? zipcodeerr : ""}
                   />
@@ -1044,6 +1211,12 @@ const KYCBody = () => {
                     onChange={() => {
                       setBankerr(null)
                     }}
+                    onKeyPress={(event) => {
+                      if (!/^[a-zA-Z\s]*$/.test(event.key)) {
+                        event.preventDefault();
+                        setBankerr("Enter Valid Bank Name")
+                      }
+                    }}
                     helperText={bank !== null ? bank : ""}
                   />
                 </Grid>
@@ -1053,6 +1226,7 @@ const KYCBody = () => {
                   <TextField
                     fullWidth
                     required
+                    // type="number"
                     id="input-with-icon-textfield"
                     variant="outlined"
                     className={classes.logintextbox}
@@ -1060,9 +1234,15 @@ const KYCBody = () => {
                     onChange={() => {
                       setAccerr(null)
                     }}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                        setAccerr("Enter Valid Account Number")
+                      }
+                    }}
                     helperText={accerr !== null ? accerr : ""}
                   />
-                </Grid> 
+                </Grid>
 
                 <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
                   <label>IFSC Code</label>
@@ -1073,9 +1253,10 @@ const KYCBody = () => {
                     variant="outlined"
                     className={classes.logintextbox}
                     inputRef={ifscCode}
-                    onChange={() => {
-                      settIfscerr(null);
-                    }}
+                    // onChange={() => {
+                    //   settIfscerr(null);
+                    // }}
+                    onChange={(e) => { handleErrorIfscChange(e) }}
                     helperText={ifscerr !== null ? ifscerr : ""}
                   />
                 </Grid>
@@ -1163,10 +1344,15 @@ const KYCBody = () => {
                           onChange={() => {
                             setdocument_numerr(null);
                           }}
-
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                              setdocument_numerr("Enter Valid Document Number")
+                            }
+                          }}
                           helperText={document_numerr !== null ? document_numerr : ""}
                         />
-                        {console.log(document_num, "docsss")}
+                        {/* {console.log(document_num, "docsss")} */}
                       </Grid>
                       <Grid
                         item
@@ -1219,11 +1405,11 @@ const KYCBody = () => {
                             marginBottom: "20px",
                           }}
                         >
-                          To avoid delays when verifying account, Please make sure bellow:
+                          To avoid delays when verifying account, Please make sure below:
                         </p>
 
                         <ul className="color-dim">
-                          <li>Chosen credential must not be expaired.</li>
+                          <li>Choosen credential must not be expired.</li>
                           <li>Document should be good condition and clearly visible.</li>
                           <li>Make sure that there is no light glare on the card.</li>
                         </ul>
@@ -1309,6 +1495,12 @@ const KYCBody = () => {
                           onChange={() => {
                             setdocument_numerr(null);
                           }}
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                              setdocument_numerr("Enter Valid Document Number")
+                            }
+                          }}
                           helperText={document_numerr !== null ? document_numerr : ""}
                         />
                         {console.log(document_num, "docsss1")}
@@ -1330,6 +1522,7 @@ const KYCBody = () => {
                             inputFormat="DD/MM/YYYY"
                             value={expiredate}
                             onChange={handleExpireDateChange}
+                            // onChange={() => { handleExpireDateChange(); setexpiredateerr(null) }}
                             renderInput={(params) => (
                               <TextField fullWidth {...params} />
                             )}
@@ -1364,7 +1557,7 @@ const KYCBody = () => {
                             marginBottom: "20px",
                           }}
                         >
-                          To avoid delays when verifying account, Please make sure bellow:
+                          To avoid delays when verifying account, Please make sure below:
                         </p>
 
                         <ul className="color-dim">
@@ -1454,6 +1647,12 @@ const KYCBody = () => {
                           onChange={() => {
                             setdocument_numerr(null);
                           }}
+                          onKeyPress={(event) => {
+                            if (!/[0-9]/.test(event.key)) {
+                              event.preventDefault();
+                              setdocument_numerr("Enter Valid Document Number")
+                            }
+                          }}
                           helperText={document_numerr !== null ? document_numerr : ""}
                         />
                         {console.log(document_num, "docsss22")}
@@ -1475,6 +1674,7 @@ const KYCBody = () => {
                             inputFormat="DD/MM/YYYY"
                             value={expiredate}
                             onChange={handleExpireDateChange}
+                            // onChange={() => { handleExpireDateChange(); setexpiredateerr(null) }}
                             renderInput={(params) => (
                               <TextField fullWidth {...params} />
                             )}
@@ -1509,7 +1709,7 @@ const KYCBody = () => {
                             marginBottom: "20px",
                           }}
                         >
-                          To avoid delays when verifying account, Please make sure bellow:
+                          To avoid delays when verifying account, Please make sure below:
                         </p>
 
                         <ul className="color-dim">

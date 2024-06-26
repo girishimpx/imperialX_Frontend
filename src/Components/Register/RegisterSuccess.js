@@ -11,7 +11,8 @@ import googlelogo from '../../images/googlelogo.png'
 import twitterlogo from '../../images/twitterlogo.png'
 import Const from '../../Constansts'
 import { toast, Toaster, ToastBar } from "react-hot-toast";
-
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { Link, useLocation } from 'react-router-dom'
 import Axios from '../../Axios';
@@ -63,7 +64,10 @@ const useStyles = makeStyles({
         background: 'transparent !important',
         borderRadius: '0px !important',
         boxShadow: 'none !important',
-        width: '50%'
+        width: '50%',
+        '@media(max-width:575.98px)': {
+            width: '90%'
+        },
     },
     loginright: {
         background: 'transparent !important',
@@ -93,6 +97,8 @@ const RegisterSuccess = () => {
     //     setEmail(location?.state?.data)
     // }, [location])
 
+    const [counter, setCounter] = useState(60);
+
     const resendEmail = async () => {
         try {
             setStatus(true)
@@ -110,6 +116,14 @@ const RegisterSuccess = () => {
 
     }
 
+    useEffect(() => {
+        counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+    }, [counter]);
+
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
+
     return (
 
         <div className='login-page'>
@@ -124,7 +138,22 @@ const RegisterSuccess = () => {
                             <div className='logo'><img src={logo} alt="logo" /></div>
                             <h2>Verify Your Email Address to Continue</h2>
                             <p className='para-text'>We just emailed an activation link to <span className='send-your-mail'>example.mail@gmail.com</span>. Please confirm your email address to continue.</p>
-                            <p className='para-text'>Haven’t got verification letter? <Link className='resend-mail' > <button style={{ background: 'transparent' }} onClick={() => { resendEmail() }} disabled={status}> Resend letter</button> </Link></p>
+                            <p className='para-text'>Haven’t got verification letter? <Link className='resend-mail' >
+                                {
+                                    counter == 0 ?
+                                        <button style={{ background: 'transparent' }} onClick={() => { resendEmail() }} disabled={status}>
+                                            Resend letter
+                                        </button> :
+                                        <button style={{ background: 'transparent' }} disabled>
+                                            Resend letter
+                                        </button>
+                                }
+                            </Link></p>
+                            {
+                                counter > 0 ? <div style={{ color: "red" }}>Resend Letter : {counter} sec</div> :
+                                    <div style={{ color: "red", visibility: "hidden" }}>Resend Letter : {counter} sec</div>
+                            }
+
                             <div className='login-with register-success-other'>
                                 <p>Or Sign Up With</p>
                                 <ul className='login-with-list'>
@@ -134,14 +163,14 @@ const RegisterSuccess = () => {
                             </div>
                         </Item>
                     </Grid>
-
-                    <Grid item xs={12} sm={12} md={12} lg={6} xl={6} className={classes.loginrightouter}>
-                        <Item className={classes.loginright}>
-                            <div className='loginright'><img src={loginright} alt="loginright" /></div>
-                            <div className='text-big-login'>ImperialX for Investors</div>
-                            <div className='text-small-login'>Replicate successful trading strategies on autopilot</div>
-                        </Item>
-                    </Grid>
+                    {matches ?
+                        <Grid item xs={12} sm={12} md={12} lg={6} xl={6} className={classes.loginrightouter}>
+                            <Item className={classes.loginright}>
+                                <div className='loginright'><img src={loginright} alt="loginright" /></div>
+                                <div className='text-big-login'>ImperialX for Investors</div>
+                                <div className='text-small-login'>Replicate successful trading strategies on autopilot</div>
+                            </Item>
+                        </Grid> : null}
 
                 </Grid>
 

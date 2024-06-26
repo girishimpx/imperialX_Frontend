@@ -33,6 +33,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from "@mui/material/CircularProgress";
+import CloseIcon from '@mui/icons-material/Close';
+import Button from "@mui/material/Button";
+import { Stack } from "rsuite";
+
 
 const $ = window.$;
 
@@ -90,11 +94,12 @@ let ws1 = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
 let wsfuture = new WebSocket(
   "wss://ws.okx.com:8443/ws/v5/public?brokerId=197"
 );
+const endpoint = consts.bybitsocketurl;
 
 const AdvanceBody = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [pair, setPair] = useState("BTC-USDT");
+  const [pair, setPair] = useState("BTCUSDT");
 
   const [btc, setBtc] = useState();
   const [eth, setEth] = useState();
@@ -106,8 +111,14 @@ const AdvanceBody = () => {
   const [coinlist, setCoinList] = useState();
   const [oldpair, setoldpair] = useState("");
   const [pair1, setPair1] = useState("BTC-USDT");
-  const [assetList, setAssetList] = useState(["BTC-USDT", "ETH-USDT"]);
+  // const [assetList, setAssetList] = useState(["BTC-USDT", "ETH-USDT"]);
+  const [assetList, setAssetList] = useState([]);
   const [searchedpair, setsearchpair] = useState("");
+  const [sideData, setSideData] = useState([]);
+  const [cat, setCat] = useState('USDT');
+  const [inputValue, setInputValue] = useState('');
+
+
 
   const [selPair, setSelPair] = useState("");
   const [allpairs, setAllPairs] = useState([]);
@@ -115,11 +126,11 @@ const AdvanceBody = () => {
   const [futureData1, setfutureData1] = useState([]);
   const [futureDataerr, setfutureDataerr] = useState();
   const [selectedpair, setselectedpair] = React.useState("FUTURES");
-  const [reload,setReload] = useState(0);
+  const [reload, setReload] = useState(0);
 
-const handleReload = (value) => {
-  setReload(value)
-}
+  const handleReload = (value) => {
+    setReload(value)
+  }
 
   const [valuess, setValues] = React.useState(0);
   const [open, setOpen] = useState(false);
@@ -131,7 +142,7 @@ const handleReload = (value) => {
   const handleClose = () => setOpen(false);
 
   const handleList = (data) => {
-    console.log(data, "===datass");
+    // console.log(data, "===datass");/
     setoldpair(pair);
     setPair(data);
     setOpen(false);
@@ -142,7 +153,7 @@ const handleReload = (value) => {
   };
 
   const handleChange2 = (dts) => {
-    console.log(dts, "dtsdfadsf");
+    // console.log(dts, "dtsdfadsf");
     setOpen(false);
     setPair1(dts);
   };
@@ -173,7 +184,7 @@ const handleReload = (value) => {
         if (response?.arg?.channel != "books") {
           // console.log(response.data,'Margin BOdy');
           if (response?.data?.length > 0) {
-            setBtc(response?.data[0]);
+            // setBtc(response?.data[0]);
           }
         } else {
           if (response?.data[0]?.asks.length > 0) {
@@ -185,7 +196,7 @@ const handleReload = (value) => {
             ) {
               let values = response?.data[0]?.asks.slice(0, 1)[0];
               values.push(response?.arg?.instId);
-              setSellspot(values);
+              // setSellspot(values);
               // {console.log(values,"open22222")}
             }
           }
@@ -198,7 +209,7 @@ const handleReload = (value) => {
             ) {
               let values = response?.data[0]?.bids.slice(0, 1)[0];
               values.push(response?.arg?.instId);
-              setbuyspot(values);
+              // setbuyspot(values);
               // {console.log(values,"open3333")}
             }
           }
@@ -256,10 +267,12 @@ const handleReload = (value) => {
   };
 
   const getAllTradePairs = async (searchedpair) => {
+    searchedpair != '' ? setInputValue(searchedpair) : setInputValue('')
+
     try {
       const { data } = await Axios.post(
-        `/assets/marketPairsAuth`,
-        { type: "spot" },
+        `/bybit/getnewpairsbytype`,
+        { category: cat, type: 'margin' },
         {
           headers: {
             Authorization: localStorage.getItem("Mellifluous"),
@@ -284,28 +297,69 @@ const handleReload = (value) => {
         if (searchedpair) {
           const filtered = [];
           const use = localStorage.getItem('use')
+          // for (let j = 0; j < data.result.length; j++) {
+          //   const item = data.result[j];
+          //   if (data.result[j].data.instId.includes(searchedpair)) {
+          //     const foundPair = sideData.find((sdItem) => sdItem.symbol == item.data.instId);
+          //     filtered.push({ 
+          //       pairs: item.data.instId, 
+          //       check: item.data?.users_id?.includes(use) == true ? item.data?.users_id.includes(use) : false,
+          //       lastPrice: foundPair?.lastPrice || 0,
+          //       highPrice24h: foundPair?.highPrice24h || 0,
+          //     });
+          //   }
+          // }
           for (let j = 0; j < data.result.length; j++) {
-            if (data.result[j].data.instId.includes(searchedpair)) {
-              filtered.push({ pairs: data.result[j].data.instId, check: data.result[j].data?.users_id ? data.result[j].data?.users_id?.includes(use) : false });
+            const item = data.result[j];
+            if (item?.symbol?.includes(searchedpair)) {
+              filtered.push({
+                pairs: item?.symbol,
+                check: item?.users_id?.includes(use) === true ? true : false,
+              });
             }
           }
           setAssetList(filtered);
         } else {
           var arr = [];
           const use = localStorage.getItem('use')
-          for (let i = 0; i < data?.result.length; i++) {
-            const element = data?.result[i];
-            if (element?.data?.instId?.split("-")[1] == "USDT") {
-              arr.push({ pairs: element?.data?.instId, check: element?.data?.users_id ? element?.data?.users_id.includes(use) : false })
-            }
-          }
-          for (let i = 0; i < data?.result.length; i++) {
-            const element = data?.result[i];
-            if (element?.data?.instId?.split("-")[1] != "USDT") {
-              arr.push({ pairs: element?.data?.instId, check: element?.data?.users_id ? element?.data?.users_id.includes(use) : false })
-            }
+
+          for (let index = 0; index < data?.result?.length; index++) {
+            const element = data?.result[index];
+
+            arr.push({
+              pairs: element?.symbol,
+              check: element?.users_id?.includes(use) === true ? true : false
+            })
 
           }
+
+          setAssetList(arr);
+
+          // for (let i = 0; i < data?.result.length; i++) {
+          //   const element = data?.result[i];
+          //   if (element?.data?.instId?.split("-")[1] == "USDT") {
+          //     const foundPair = sideData.find((sdItem) => sdItem?.symbol == element?.data?.instId);
+          //     arr.push({
+          //       pairs: element?.data?.instId,
+          //       check: element?.data?.users_id ? element?.data?.users_id.includes(use) : false,
+          //       lastPrice: foundPair?.lastPrice || 0,
+          //       highPrice24h: foundPair?.highPrice24h || 0,
+          //     })
+          //   }
+          // }
+          // for (let i = 0; i < data?.result.length; i++) {
+          //   const element = data?.result[i];
+          //   if (element?.data?.instId?.split("-")[1] != "USDT") {
+          //     const foundPair = sideData.find((sdItem) => sdItem?.symbol == element?.data?.instId);
+          //     arr.push({
+          //       pairs: element?.data?.instId,
+          //       check: element?.data?.users_id ? element?.data?.users_id.includes(use) : false,
+          //       lastPrice: foundPair?.lastPrice || 0,
+          //       highPrice24h: foundPair?.highPrice24h || 0,
+          //     })
+          //   }
+
+          // }
           setAssetList(arr);
         }
       }
@@ -337,7 +391,7 @@ const handleReload = (value) => {
         setfutureData(datas);
         setfutureData1(datas);
       }
-      console.log(futureData, "data FUTURE API1");
+      // console.log(futureData, "data FUTURE API1");
     } catch (error) {
       console.log(error);
     }
@@ -345,7 +399,8 @@ const handleReload = (value) => {
 
   useEffect(() => {
     getAllTradePairs();
-  }, []);
+
+  }, [cat]);
 
   useEffect(() => {
     futurepairs();
@@ -367,20 +422,20 @@ const handleReload = (value) => {
         if (response?.arg?.channel != "books") {
           //  console.log(response.data,'Spot BOdy');
           if (response?.data?.length > 0) {
-            console.log(response?.data[0], "tickes");
+            // console.log(response?.data[0], "tickes");
             let increase =
               Number(response?.data[0]?.open24h) -
               Number(response?.data[0]?.low24h);
-            console.log(
-              "🚀 ~ file: SpotBody.js:233 ~ AllTicker ~ increase:",
-              increase
-            );
+            // console.log(
+            //   "🚀 ~ file: SpotBody.js:233 ~ AllTicker ~ increase:",
+            //   increase
+            // );
             let price_change =
               (increase / Number(response?.data[0]?.low24h)) * 100;
-            console.log(
-              "🚀 ~ file: SpotBody.js:234 ~ AllTicker ~ price_change:",
-              price_change
-            );
+            // console.log(
+            //   "🚀 ~ file: SpotBody.js:234 ~ AllTicker ~ price_change:",
+            //   price_change
+            // );
 
             $(".item_" + response?.data[0]?.instId).html(
               response?.data[0]?.open24h
@@ -473,6 +528,248 @@ const handleReload = (value) => {
     }
   }
 
+  useEffect(() => {
+    var symbol = pair
+    symbol = symbol.replace('-', '');
+    const client = new WebSocket(endpoint);
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      client.send(JSON.stringify({ op: 'subscribe', args: [`orderbook.${200}.${symbol}`] }));
+    };
+
+    client.onmessage = (event) => {
+      setTimeout(() => {
+        const response = JSON.parse(event.data);
+        // console.log('Message received from socket MARGIN', response?.data);
+        // Handle incoming messages from WebSocket
+
+        if (response?.data?.b.length > 0) {
+
+          if (response?.data?.b[0] != 0 && response?.data?.b[1] != 0) {
+            var values = response?.data?.b[0];
+            values.push(response?.data?.s);
+            // console.log(values,'REDRESPONSEMARGIN');
+            setbuyspot(values);
+          }
+
+          if (response?.data?.a[0] != 0 && response?.data?.a[1] != 0) {
+            var values1 = response?.data?.a[0];
+            values.push(response?.data?.s);
+            // console.log(values1,'GREENRESPONSEMARGIN');
+            setSellspot(values1);
+          }
+
+        }
+      }, 2000)
+
+    };
+
+    client.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    // Cleanup function
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client.close();
+    };
+  }, [pair]);
+
+
+
+  useEffect(() => {
+    handleOrderBookData()
+    var symbol = pair
+    symbol = symbol.replace('-', '');
+    const client = new WebSocket(endpoint);
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      client.send(JSON.stringify({ op: 'subscribe', args: [`orderbook.${200}.${symbol}`] }));
+    };
+
+    client.onmessage = (event) => {
+      setTimeout(() => {
+        const response = JSON.parse(event.data);
+        // console.log('Message received from socket SPOT', response?.data);
+        // Handle incoming messages from WebSocket
+
+        if (response?.data?.b.length > 0) {
+
+          if (response?.data?.b[0] != 0 && response?.data?.b[1] != 0) {
+            var values = response?.data?.b[0];
+            values.push(response?.data?.s);
+            // console.log(values,'REDRESPONSESPOT');
+            setbuyspot(values);
+          }
+
+          if (response?.data?.a[0] != 0 && response?.data?.a[1] != 0) {
+            var values1 = response?.data?.a[0];
+            values.push(response?.data?.s);
+            // console.log(values1,'GREENRESPONSESPOT');
+            setSellspot(values1);
+          }
+
+        }
+      }, 2000)
+
+    };
+
+    client.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    // Cleanup function
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client.close();
+    };
+  }, [pair]);
+
+
+
+  const handleOrderBookData = async () => {
+    try {
+
+      const { data } = await Axios.post(
+        `/bybit/orderbook`,
+        { type: 'spot', ccy: pair },
+        {
+          headers: {
+            Authorization: localStorage?.getItem("Mellifluous"),
+          },
+        }
+      );
+      if (data?.success) {
+        // console.log(data,'DATA-ORDERBOOK');
+        if (data?.result.length > 1) {
+          setBtc(data?.result)
+        } else {
+          setBtc(data?.result[0])
+        }
+
+      } else {
+        setBtc([])
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleAllOrderBookData = async () => {
+    try {
+
+      const { data } = await Axios.post(
+        `/bybit/orderbook`,
+        { type: 'spot', ccy: '' },
+        {
+          headers: {
+            Authorization: localStorage?.getItem("Mellifluous"),
+          },
+        }
+      );
+      if (data?.success && data?.result?.length > 1) {
+        // console.log(data?.result, 'RESULT');
+        setSideData(data?.result);
+      } else {
+        setSideData([]);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    handleAllOrderBookData()
+  }, [pair])
+
+  useEffect(() => {
+    // handleOrderBookData()
+    const client1 = new WebSocket("wss://stream.bybit.com/v5/public/spot");
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client1.onopen = () => {
+      console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client1.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      assetList?.forEach(pairData => {
+        const pair = pairData?.pairs
+        client1.send(JSON.stringify({ op: 'subscribe', args: [`tickers.${pair}`] }));
+      });
+    };
+
+    client1.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+
+      if (response) {
+        let increase =
+          Number(response?.data?.highPrice24h) -
+          Number(response?.data?.lowPrice24h);
+        let price_change =
+          (increase / Number(response?.data?.lowPrice24h)) * 100;
+
+        $(".item_" + response?.data?.symbol).html(
+          response?.data?.highPrice24h
+        );
+        $(".items_" + response?.data?.symbol).html(
+          `${response?.data?.price24hPcnt} %`
+        );
+      }
+
+    };
+
+    client1.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    client1.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client1.close();
+      // const client1 = new WebSocket(endpoint1);
+    };
+  }, [assetList]);
+
+  const handleClearClick = () => {
+    getAllTradePairs();
+    setInputValue('');
+  }
+
 
   return (
     <div className="dashboard-body spot-body spot-body-content advance-body-part">
@@ -484,14 +781,14 @@ const handleReload = (value) => {
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <div className="top-part-all-page basic-page-top-part">
                   <div className="top-col-1">
-                    <span></span>
-                    <span></span>
+                    {/* <span></span>
+                    <span></span> */}
                   </div>
 
                   <div className="top-col-4 comon-flex-top-bot-style">
                     {/* <span></span>
                 <span></span> */}
-                    <span style={{ textAlign: "left" }}>Spot</span>
+                    <span style={{ textAlign: "left" }}>Margin</span>
                     <div
                       className="iconDiv"
                       onClick={() => {
@@ -524,9 +821,14 @@ const handleReload = (value) => {
                             className="spot-graph-chart-tab"
                           >
                             <Tab label="Spot" {...a11yProps(0)} />
-                            <Tab label="Perpetual" {...a11yProps(1)} />
+                            {/* <Tab label="Perpetual" {...a11yProps(1)} /> */}
                           </Tabs>
                           <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                            <Stack>
+                              <Button onClick={() => { setCat('USDT') }} className={cat === 'USDT' ? 'activecls' : null}>USDT</Button>
+                              <Button onClick={() => { setCat('USDC') }} className={cat === 'USDC' ? 'activecls' : null}>USDC</Button>
+                              <Button onClick={() => { setCat('BTC') }} className={cat === 'BTC' ? 'activecls' : null}>BTC</Button>
+                            </Stack>
                             <Paper
                               component="form"
                               sx={{
@@ -539,6 +841,7 @@ const handleReload = (value) => {
                               <InputBase
                                 sx={{ ml: 1, flex: 1 }}
                                 placeholder="Search"
+                                value={inputValue}
                                 inputProps={{
                                   "aria-label": "search google maps",
                                 }}
@@ -552,8 +855,10 @@ const handleReload = (value) => {
                                 type="button"
                                 sx={{ p: "10px" }}
                                 aria-label="search"
+                                onClick={handleClearClick}
                               >
-                                <SearchIcon />
+                                {/* <SearchIcon />*/}
+                                <CloseIcon />
                               </IconButton>
                             </Paper>
                           </Grid>
@@ -569,36 +874,37 @@ const handleReload = (value) => {
                               <div className="menu-pair-head-2">Last price</div>
                               <div className="menu-pair-head-3">24h change</div>
                             </div>
-                            { assetList.length <= 2 ?
-                           (
-                            <div style={{ padding: "1rem", textAlign:'center' }}>
-                            <CircularProgress size={60}  />
-                          </div>
-                          )
-                          :  ( assetList.map((item, index) => {
-                              return (
-                                // <MenuItem key={index} value={item}>{`${item.split("-")[0]
-                                //   } - ${item.split("-")[1]}`}</MenuItem>
-                                <div
-                                  // onClick={() => handleList(item?.pairs)}
-                                  className="pair-menu-lists-top"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <div className="coin-block-first">
-                                    {item?.check ?
-                                      <StarIcon onClick={(e) => { handlefavpair(item?.check, item?.pairs) }} /> :
-                                      <StarBorderIcon onClick={(e) => { handlefavpair(item?.check, item?.pairs) }} />
-                                    }
-                                    <div onClick={() => handleList(item?.pairs)}>{`${item?.pairs}`}</div>
-                                  </div>
-                                  <div className={`remove item_${item?.pairs}`} onClick={() => handleList(item?.pairs)}></div>
-                                  <div
-                                    className={`remove high-rate items_${item?.pairs}`} onClick={() => handleList(item?.pairs)}
-                                  ></div>
+                            {assetList.length <= 0 ?
+                              (
+                                <div style={{ padding: "1rem", textAlign: 'center' }}>
+                                  {/* <CircularProgress size={60} /> */}
+                                  {<p>Pairs Not Found</p>}
                                 </div>
-                              );
-                            })) 
-                          }
+                              )
+                              : (assetList.map((item, index) => {
+                                return (
+                                  // <MenuItem key={index} value={item}>{`${item.split("-")[0]
+                                  //   } - ${item.split("-")[1]}`}</MenuItem>
+                                  <div key={index}
+                                    // onClick={() => handleList(item?.pairs)}
+                                    className="pair-menu-lists-top"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <div className="coin-block-first">
+                                      {item?.check ?
+                                        <StarIcon onClick={(e) => { handlefavpair(item?.check, item?.pairs) }} /> :
+                                        <StarBorderIcon onClick={(e) => { handlefavpair(item?.check, item?.pairs) }} />
+                                      }
+                                      <div onClick={() => handleList(item?.pairs)}>{`${item?.pairs}`}</div>
+                                    </div>
+                                    <div className={`remove item_${item?.pairs}`} onClick={() => handleList(item?.pairs)}>{Number(item?.lastPrice ? item?.lastPrice : 0).toFixed(6)}</div>
+                                    <div
+                                      className={`remove high-rate items_${item?.pairs}`} onClick={() => handleList(item?.pairs)}
+                                    >{Number(item?.highPrice24h ? item?.highPrice24h : 0).toFixed(6)}</div>
+                                  </div>
+                                );
+                              }))
+                            }
                           </TabPanel>
                           <TabPanel
                             value={valuess}
@@ -620,19 +926,19 @@ const handleReload = (value) => {
                                 <div
                                   className="pair-menu-lists-top"
                                   onClick={() => {
-                                    console.log(
-                                      `${item?.data?.instFamily} (${item?.data?.alias == "quarter"
-                                        ? "Qtly"
-                                        : item?.data.alias == "next_quarter"
-                                          ? "Bi-Qtly"
-                                          : item?.data.alias == "this_week"
-                                            ? "Wkly"
-                                            : item?.data.alias == "next_week"
-                                              ? "Bi-Wkly"
-                                              : ""
-                                      })`,
-                                      "item.data.instFamily"
-                                    );
+                                    // console.log(
+                                    //   `${item?.data?.instFamily} (${item?.data?.alias == "quarter"
+                                    //     ? "Qtly"
+                                    //     : item?.data.alias == "next_quarter"
+                                    //       ? "Bi-Qtly"
+                                    //       : item?.data.alias == "this_week"
+                                    //         ? "Wkly"
+                                    //         : item?.data.alias == "next_week"
+                                    //           ? "Bi-Wkly"
+                                    //           : ""
+                                    //   })`,
+                                    //   "item.data.instFamily"
+                                    // );
                                     handleChange2(
                                       `${item?.data?.instFamily} (${item?.data?.alias == "quarter"
                                         ? "Qtly"
@@ -684,7 +990,7 @@ const handleReload = (value) => {
                                   ></div>
                                 </div>
                               );
-                            }) }
+                            })}
                           </TabPanel>
                         </div>
                       </Box>
@@ -849,60 +1155,77 @@ const handleReload = (value) => {
                     <span
                       style={{
                         color: `${findPercentage(
-                          Number(btc?.idxPx),
-                          Number(btc?.open24h)
+                          Number(btc?.usdIndexPrice),
+                          Number(btc?.ask1Price)
                         ) > 0
                           ? "#10D876 !important"
                           : "#CA3F64 !important"
                           }`,
                       }}
-                    >{`${btc?.open24h
-                      ? `${Number(btc?.open24h).toLocaleString()}`
+                    // >{`${btc?.open24h
+                    //   ? `${Number(btc?.open24h).toLocaleString()}`
+                    //   : "0"
+                    //   }`}</span>
+                    >{`${btc?.ask1Price
+                      ? `${Number(btc?.ask1Price).toLocaleString()}`
                       : "0"
                       }`}</span>
                     <span
                       style={{
                         color: `${findPercentage(
-                          Number(btc?.idxPx),
+                          Number(btc?.ask1Price),
                           Number(btc?.open24h)
                         ) > 0
                           ? "#10D876 !important"
                           : "#CA3F64 !important"
                           } `,
                       }}
-                    >{`${btc?.idxPx
-                      ? findPercentage(
-                        Number(btc?.idxPx),
-                        Number(btc?.open24h)
-                      )
+                    // >{`${btc?.idxPx
+                    //   ? findPercentage(
+                    //     Number(btc?.ask1Price),
+                    //     Number(btc?.open24h)
+                    //   )
+                    //   : 0
+                    //   }%`}</span>
+                    >{`${btc?.price24hPcnt
+                      ? btc?.price24hPcnt
                       : 0
                       }%`}</span>
                   </div>
                   <div className="top-col-4 comon-flex-top-bot-style">
+                    {/* <span>{pair ? pair.split("-")[0] : "USD"}</span> */}
+                    <span>{pair ? pair.slice(0, -4) : "USD"}</span>
+                    <span>{`${sellspot?.length > 0
+                      ? `${Number(sellspot[0]).toFixed(3).toLocaleString()}`
+                      : "0"
+                      }`}</span>
+                  </div>
+                  {/* <div className="top-col-4 comon-flex-top-bot-style">
                     <span>{pair ? pair.split("-")[0] : "USD"}</span>
                     <span>{`${btc?.idxPx
                       ? `${Number(btc?.idxPx).toFixed(3).toLocaleString()}`
                       : "0"
                       }`}</span>
-                  </div>
+                  </div> */}
                   <div className="top-col-5 comon-flex-top-bot-style">
                     <span>24h low</span>
-                    <span>{`${btc?.low24h
-                      ? `${Number(btc?.low24h).toLocaleString()}`
+                    <span>{`${btc?.lowPrice24h
+                      ? `${Number(btc?.lowPrice24h).toLocaleString()}`
                       : "0"
                       }`}</span>
                   </div>
                   <div className="top-col-6 comon-flex-top-bot-style">
                     <span>24h high</span>
-                    <span>{`${btc?.high24h
-                      ? `${Number(btc?.high24h).toLocaleString()}`
+                    <span>{`${btc?.highPrice24h
+                      ? `${Number(btc?.highPrice24h).toLocaleString()}`
                       : "0"
                       }`}</span>
                   </div>
                   <div className="top-col-7 comon-flex-top-bot-style">
-                    <span>24h volume({pair.split("-")[0]})</span>
-                    <span>{`${btc?.open24h
-                      ? `${Number(btc?.open24h).toLocaleString()}`
+                    {/* <span>24h volume({pair.split("-")[0]})</span> */}
+                    <span>24h volume({pair.slice(0, -4)})</span>
+                    <span>{`${btc?.volume24h
+                      ? `${Number(btc?.volume24h).toLocaleString()}`
                       : "0"
                       }`}</span>
                   </div>
@@ -1019,6 +1342,7 @@ const handleReload = (value) => {
                     pair={pair}
                     market={btc?.idxPx}
                     reload={handleReload}
+                    cat={cat}
                   />
                 </Item>
               </Grid>
@@ -1030,7 +1354,7 @@ const handleReload = (value) => {
             >
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <Item className={classes.dashboarbodycls}>
-                  <OpenOrderTab selectedPairs={pair} reload={reload}/>
+                  <OpenOrderTab selectedPairs={pair} reload={reload} />
                 </Item>
               </Grid>
             </Grid>

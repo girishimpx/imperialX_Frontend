@@ -22,8 +22,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "@mui/material/Button";
 import { Link, json, useNavigate, useLocation } from "react-router-dom";
 import consts from "../../Constansts";
-
+import BeatLoader from "react-spinners/BeatLoader";
 import Axios from "../../Axios";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -74,6 +77,9 @@ const useStyles = makeStyles({
     borderRadius: "0px !important",
     boxShadow: "none !important",
     width: "50%",
+    '@media(max-width:575.98px)': {
+      width: '90%'
+    },
   },
   loginright: {
     background: "transparent !important",
@@ -106,6 +112,8 @@ const Login = () => {
   const [passworderr, setpassworderr] = useState(null);
   const [buyShow, setBuyShow] = useState(false);
   const [verifyCheck, setVerifycheck] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [disable, setDisable] = useState(false);
   const email = useRef(null);
   const password = useRef(null);
 
@@ -121,40 +129,63 @@ const Login = () => {
 
         window.localStorage.removeItem("Mellifluous");
         window.localStorage.removeItem("users");
-
+        setLoad(true);
+        setDisable(true);
         const { data } = await Axios.post("/users/login", {
           email: email.current.value,
           password: password.current.value,
         });
-        console.log(data?.result, "res")
+        // console.log(data?.result, "res")
         // alert('login')
         if (data?.success) {
           // alert('sucess login')
-          console.log(data.result.token, "token");
-          window.localStorage.setItem('use',data?.result.user._id)
-          const data1 = await Axios.post("/trade/createsubaccount", {}, {
+          // console.log(data.result.token, "token");
+          window.localStorage.setItem('use', data?.result.user._id)
+
+          // OKX API TO CREATE SUB ACCOUNT
+          // const data1 = await Axios.post("/trade/createsubaccount", {}, {
+          //   headers: {
+          //     Authorization: data?.result?.token,
+          //   },
+          // })
+
+          const data1 = await Axios.post("/bybit/createsub", { name: data.result.user.name }, {
             headers: {
               Authorization: data?.result?.token,
             },
           })
 
-          console.log(data1.data, "qpidata");
+          // console.log(data1.data, "qpidata");
+          //OKX API TO CREATE DEPOSIT ADDRESS
+          // if (data1?.data?.success === true) {
+          // alert('success createsubaccount')
+          //   console.log(data?.data?.message, "message");
+          //   const data2 = await Axios.post("wallet/createDepositeAddress", {}, {
+          //     headers: {
+          //       Authorization: data?.result?.token,
+          //     },
+          //   })
+
           if (data1?.data?.success === true) {
             // alert('success createsubaccount')
-            console.log(data?.data?.message, "message");
-            const data2 = await Axios.post("wallet/createDepositeAddress", {}, {
-              headers: {
-                Authorization: data?.result?.token,
-              },
-            })
-            if (data2?.data?.succes === true) {
+            // console.log(data?.data?.message, "message");
+            // const data2 = await Axios.post("bybit/createdepoAdd", {}, {
+            //   headers: {
+            //     Authorization: data?.result?.token,
+            //   },
+            // })
+
+            setLoad(false);
+            setDisable(false);
+            // if (data2?.data?.succes === true) {
+            if (true) {
               // alert('success deposit address')
               await Axios.get("/users/check2fa", {
                 headers: {
                   Authorization: data?.result?.token,
                 },
               })
-              // alert('2FA')
+                // alert('2FA')
                 .then((res) => {
                   // return res.data.result
                   //   ? navigate(`${consts.route}/2FA`, {
@@ -175,19 +206,19 @@ const Login = () => {
                   //     navigate(`${consts.route}/`)
                   //   );
 
-                  if(res.data.result){
-                    navigate(`${consts.route}/2FA`, {state: { token: data?.result },})
-                  }else{
+                  if (res.data.result) {
+                    navigate(`${consts.route}/2FA`, { state: { token: data?.result }, })
+                  } else {
                     // alert('2fa else')
-                    window.localStorage.setItem("Mellifluous",data.result.token)
-                    window.localStorage.setItem("users",JSON.stringify(data?.result?.user))
+                    window.localStorage.setItem("Mellifluous", data.result.token)
+                    window.localStorage.setItem("users", JSON.stringify(data?.result?.user))
                     window.localStorage.setItem("kyc_verify", data?.result?.user?.kyc_verify)
-                      //     navigate(`${consts.route}/`)
-                      // alert(window.localStorage.getItem("kyc_verify"));
-                    if(window.localStorage.getItem("kyc_verify") == 'false'){
+                    //     navigate(`${consts.route}/`)
+                    // alert(window.localStorage.getItem("kyc_verify"));
+                    if (window.localStorage.getItem("kyc_verify") == 'false') {
                       navigate(`${consts.route}/kycj-verification`);
-                    }else{
-                      navigate(`${consts.route}/`)
+                    } else {
+                      navigate(`${consts.route}/dashboard`)
                     }
                   }
 
@@ -195,7 +226,8 @@ const Login = () => {
                 .catch((err) => {
                   console.log(err.response.data.message, "err");
                 });
-            } else {
+            }
+            else {
               // alert('else ')
               await Axios.get("/users/check2fa", {
                 headers: {
@@ -253,37 +285,39 @@ const Login = () => {
                 //     navigate(`${consts.route}/`)
                 //   );
 
-                if(res.data.result == true){
-                  navigate(`${consts.route}/2FA`, {state: { token: data?.result },})
-                }else{
-                  window.localStorage.setItem("Mellifluous",data.result.token)
-                  window.localStorage.setItem("users",JSON.stringify(data?.result?.user))
+                if (res.data.result == true) {
+                  navigate(`${consts.route}/2FA`, { state: { token: data?.result }, })
+                } else {
+                  window.localStorage.setItem("Mellifluous", data.result.token)
+                  window.localStorage.setItem("users", JSON.stringify(data?.result?.user))
                   window.localStorage.setItem("kyc_verify", data?.result?.user?.kyc_verify)
                   window.localStorage.setItem("referaldeposit", data?.result?.user?.referaldeposit)
                   var submitCheck;
-                    //     navigate(`${consts.route}/`)
-                    await Axios.get("/users/kycsybmit", {
-                      headers: {
-                        Authorization: data?.result?.token,
-                      },
-                    })
+                  //     navigate(`${consts.route}/`)
+                  await Axios.get("/users/kycsybmit", {
+                    headers: {
+                      Authorization: data?.result?.token,
+                    },
+                  })
                     .then((res) => {
                       submitCheck = true
                     })
                     .catch((err) => {
                       submitCheck = false
                     });
-                    const userData = JSON.parse(window.localStorage.getItem("users"));
-                   
+                  const userData = JSON.parse(window.localStorage.getItem("users"));
 
-                    // console.log(res, '*******************res');
-                    // alert(submitCheck);
-                  if(userData?.kyc_verify == false &&  submitCheck == false){
-                    navigate(`${consts.route}/kycj-verification`,{state : {user : data?.result}});
-                  }else if(userData?.referaldeposit == 'null'){
-                    navigate(`${consts.route}/wallet`);
-                  }else{
-                    navigate(`${consts.route}/`)
+
+                  // console.log(res, '*******************res');
+                  // alert(submitCheck);
+                  if (userData?.kyc_verify == false && submitCheck == false) {
+                    navigate(`${consts.route}/kycj-verification`, { state: { user: data?.result } });
+                  }
+                  // else if(userData?.referaldeposit == 'null'){
+                  //   navigate(`${consts.route}/wallet`);
+                  // }
+                  else {
+                    navigate(`${consts.route}/dashboard`)
                   }
                 }
 
@@ -294,6 +328,9 @@ const Login = () => {
 
 
           }
+        } else {
+          setLoad(false);
+          setDisable(false);
         }
       }
     } catch (error) {
@@ -308,6 +345,9 @@ const Login = () => {
       } else {
         setemailerr(error?.response?.data?.message);
       }
+    } finally {
+      setLoad(false);
+      setDisable(false);
     }
   };
 
@@ -316,8 +356,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (history?.state?.emailVerify == 0) {
-      toast.success("Email Verified Successfully", {
+    // console.log(history?.state?.emailVerify, 'emailverify  ');
+    if (history?.state?.emailVerify == 'Email Verified Successfully') {
+      toast.success(history?.state?.emailVerify, {
 
         duration: 4000,
         position: "top-center",
@@ -346,8 +387,9 @@ const Login = () => {
           "aria-live": "polite",
         },
       });
-    } else if (history?.state?.emailVerify == 1) {
-      toast.error("Email Verify Failed", {
+    }
+    else if (history?.state?.emailVerify == 'Email Already verified' || history?.state?.emailVerify == 'Email verify Failed') {
+      toast.error(history?.state?.emailVerify, {
 
         duration: 4000,
         position: "top-center",
@@ -377,7 +419,42 @@ const Login = () => {
         },
       });
     }
+    //     else if (history?.state?.emailVerify == 2) {
+    //   toast.error("Email Already Verified", {
+
+    //     duration: 4000,
+    //     position: "top-center",
+
+    //     // Styling
+    //     style: {
+    //       padding: "1rem",
+    //       fontSize: "15px",
+    //       color: "red",
+    //       fontWeight: "bold",
+    //     },
+    //     className: "",
+
+    //     // Custom Icon
+    //     icon: "",
+
+    //     // Change colors of success/error/loading icon
+    //     iconTheme: {
+    //       primary: "#000",
+    //       secondary: "#fff",
+    //     },
+
+    //     // Aria
+    //     ariaProps: {
+    //       role: "status",
+    //       "aria-live": "polite",
+    //     },
+    //   });
+    // }
   }, []);
+
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
 
   return (
     <>
@@ -421,7 +498,7 @@ const Login = () => {
                 >
                   <TextField
                     id="outlined-basic"
-                    label="Email or Username"
+                    label="Email"
                     variant="outlined"
                     inputRef={email}
                     onChange={() => {
@@ -481,8 +558,11 @@ const Login = () => {
                     className="login-button"
                     variant="contained"
                     onClick={onSubmit}
+                    disabled={disable}
                   >
-                    Login
+                    {load == true ? "Logging In" : "Login"}
+                    {load ? <span>&nbsp;</span> : null}
+                    {load == true ? <BeatLoader size={8} color={disable ? "grey" : "white"} /> : null}
                   </Button>
                   {/* <div className="login-with">
                     <p>Or Log In With</p>
@@ -502,26 +582,26 @@ const Login = () => {
                 </Box>
               </Item>
             </Grid>
-
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              lg={6}
-              xl={6}
-              className={classes.loginrightouter}
-            >
-              <Item className={classes.loginright}>
-                <div className="loginright">
-                  <img src={loginright} alt="loginright" />
-                </div>
-                <div className="text-big-login">ImperialX for Investors</div>
-                <div className="text-small-login">
-                  Replicate successful trading strategies on autopilot
-                </div>
-              </Item>
-            </Grid>
+            {matches ?
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={6}
+                xl={6}
+                className={classes.loginrightouter}
+              >
+                <Item className={classes.loginright}>
+                  <div className="loginright">
+                    <img src={loginright} alt="loginright" />
+                  </div>
+                  <div className="text-big-login">ImperialX for Investors</div>
+                  <div className="text-small-login">
+                    Replicate successful trading strategies on autopilot
+                  </div>
+                </Item>
+              </Grid> : null}
           </Grid>
         </Box>
       </div>

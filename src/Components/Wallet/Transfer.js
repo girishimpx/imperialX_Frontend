@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
+import { useLocation } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -162,7 +163,10 @@ const Transfer = ({
     toValue: "",
     amountValue: "",
   });
-
+  // console.log(formData.fromValue,formData.toValue,'valuessss');
+  const location = useLocation()
+  const coinname = location.state
+  // console.log(coinname, 'coinname');
   const [pairs, setPairs] = useState([]);
 
   const [types, setTypes] = useState([
@@ -181,16 +185,29 @@ const Transfer = ({
 
   const [balance, setBalance] = useState(0);
   const [secType, setSecType] = useState("");
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      assetValue: coinname
+    });
+  }, [coinname])
   const handleChangeAsset = (event) => {
-    setFormData({ ...formData, assetValue: event.target.value });
+    setFormData({
+      ...formData,
+      // assetValue: event.target.value 
+      assetValue: coinname
+    });
   };
 
   const handleFromChange = (event) => {
     setFormData({ ...formData, fromValue: event.target.value });
+    // var accountType = event.target.value == "Funding" ? "FUND" : event.target.value == "Trading" ? "UNIFIED" : ""
+    // fundingBalance(accountType)
   };
 
   const handleToChange = (data) => {
-    console.log(data, "data");
+    // console.log(data, "data");
     setFormData({ ...formData, toValue: data });
   };
 
@@ -221,7 +238,7 @@ const Transfer = ({
       const { data } = await Axios.get(`/users/getInternalTransfer`, {
         headers: { Authorization: window.localStorage.getItem("Mellifluous") },
       });
-      console.log(data, "datasf");
+      // console.log(data, "datasf");
       if (data?.success == true) {
         setList(data?.result);
       } else {
@@ -235,81 +252,146 @@ const Transfer = ({
     }
   };
 
-  const fundingBalance = async (ccy, type) => {
-    console.log(ccy, type, "types");
+  // const fundingBalance = async (ccy, type) => {
+  //   console.log(ccy, type, "types");
+  //   try {
+  //     const { data } = await Axios.post(
+  //       `/wallet/subAccountFundingBalance`,
+  //       {
+  //         ccy: ccy,
+  //         type: type,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: window.localStorage.getItem("Mellifluous"),
+  //         },
+  //       }
+  //     );
+  //     if (data?.success == true) {
+  //       if (type == "funding") {
+  //         setBalance(data?.result?.bal);
+  //       } else {
+  //         const dts = data?.result?.details;
+  //         if (dts?.length > 0) {
+  //           for (let i = 0; i < dts.length; i++) {
+  //             const element = dts[i];
+  //             if (ccy == element?.ccy) {
+  //               setBalance(element?.cashBal);
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const fundingBalance = async (accountType, coinName) => {
+
     try {
       const { data } = await Axios.post(
-        `/wallet/subAccountFundingBalance`,
-        {
-          ccy: ccy,
-          type: type,
-        },
+        // `/wallet/getSubAccBal?accountType=${accountType}&coin=${coinName}`, {},
+        `/wallet/getSubAccBal`, { accountType: accountType, coin: coinName },
         {
           headers: {
             Authorization: window.localStorage.getItem("Mellifluous"),
           },
         }
-      );
-      if (data?.success == true) {
-        if (type == "funding") {
-          setBalance(data?.result?.bal);
-        } else {
-          const dts = data?.result?.details;
-          if (dts?.length > 0) {
-            for (let i = 0; i < dts.length; i++) {
-              const element = dts[i];
-              if (ccy == element?.ccy) {
-                setBalance(element?.cashBal);
-              }
-            }
-          }
-        }
+      )
+      // console.log(data, 'datas');
+      if (data.success == true) {
+        setBalance(data.result.transferBalance)
+      }
+      else {
+        setBalance(0)
       }
     } catch (error) {
       console.log(error);
     }
-  };
+
+  }
 
   const getPairs = async () => {
     try {
       const { data } = await Axios.get(
-        `${consts.BackendUrl}/wallet/getWalletById`,
+        // `${consts.BackendUrl}/wallet/getWalletById`,
+        `${consts.BackendUrl}/bybit/getwallets`,
+
         {
           headers: {
             Authorization: localStorage.getItem("Mellifluous"),
           },
         }
       );
-      console.log("🚀 ~ file: Transfer.js:188 ~ getPairs ~ data:", data);
+      // console.log("🚀 ~ file: Transfer.js:188 ~ getPairs ~ data:", data);
       setPairs(data?.result);
     } catch (error) {
       console.log("🚀 ~ file: Transfer.js:197 ~ getPairs ~ error:", error);
     }
   };
 
+  // const transferAmount = async () => {
+  //   try {
+  //     // console.log(formData.amountValue, balance, "formData");
+  //     if (Number(formData?.amountValue) <= Number(balance)) {
+  //       var payload = {
+  //         Amount: formData?.amountValue,
+  //         Currency: formData?.assetValue,
+  //         from: formData?.fromValue === "Funding" ? "6" : "18",
+  //         to: secType === "Funding" ? "6" : "18",
+  //       };
+  //       // console.log(payload, "payload");
+  //       const { data } = await Axios.post(`/users/transferFunds`, payload, {
+  //         headers: {
+  //           Authorization: window.localStorage.getItem("Mellifluous"),
+  //         },
+  //       });
+  //       if (data?.success == true) {
+  //         internalTransfers();
+  //         toast.success("Amount Transfer Successfully");
+  //       } else {
+  //         toast.error("Something Went Wrong ");
+  //       }
+  //     } else {
+  //       toast.error("You Don't Have Balance ");
+  //     }
+  //   } catch (error) {
+  //     console.log(
+  //       "🚀 ~ file: Transfer.js:220 ~ transferAmount ~ error:",
+  //       error
+  //     );
+  //     toast.error("Something Went Wrong ");
+  //   }
+  // };
+
+
   const transferAmount = async () => {
     try {
-      console.log(formData.amountValue, balance, "formData");
       if (Number(formData?.amountValue) <= Number(balance)) {
         var payload = {
-          Amount: formData?.amountValue,
-          Currency: formData?.assetValue,
-          from: formData?.fromValue === "Funding" ? "6" : "18",
-          to: secType === "Funding" ? "6" : "18",
+          amount: formData?.amountValue,
+          coin: formData?.assetValue,
+          fromAccountType: formData?.fromValue === "Funding" ? "FUND" : "UNIFIED",
+          toAccountType: secType === "Funding" ? "FUND" : "UNIFIED",
         };
-        console.log(payload, "payload");
-        const { data } = await Axios.post(`/users/transferFunds`, payload, {
+        const { data } = await Axios.post(`/bybit/createInternalTransfer`, payload, {
           headers: {
             Authorization: window.localStorage.getItem("Mellifluous"),
           },
         });
         if (data?.success == true) {
           internalTransfers();
+            setFormData({
+              amountValue: ""
+            });
+            fundingBalance( payload?.toAccountType,formData.assetValue );
           toast.success("Amount Transfer Successfully");
         } else {
           toast.error("Something Went Wrong ");
         }
-      } else {
+      }
+      else {
         toast.error("You Don't Have Balance ");
       }
     } catch (error) {
@@ -330,7 +412,7 @@ const Transfer = ({
     <div className="transfer-main-page">
       <Toaster />
       <Box sx={{ flexGrow: 1 }}>
-      
+
         <Grid container spacing={0}>
           {/* <Grid item xs={12} sm={12} md={12} lg={2} xl={2}> */}
           <Item className={classes.sidebarcls}>
@@ -349,8 +431,8 @@ const Transfer = ({
             xs={12}
             sm={12}
             md={12}
-            lg={10}
-            xl={10}
+            lg={12}
+            xl={12}
           >
             <Item className={classes.headercls}>
               <Header
@@ -362,7 +444,21 @@ const Transfer = ({
 
               <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={0}>
+                  <Grid item xs={12} sm={3} md={3} lg={3} xl={3} className={classes.backItem}>
+                    <Button
+                      className="back-icon-page"
+                      sx={{ marginTop: "30px" }}
+                      variant="contained"
+                      startIcon={<ArrowBackIcon />}
+                      onClick={() => {
+                        navigate(-1);
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+
                     <Item className={classes.walletbodycls}>
                       <h3 className="welcome-msg">Transfer</h3>
                     </Item>
@@ -392,7 +488,7 @@ const Transfer = ({
                     lg={7}
                     xl={7}
                   >
-                    <div>
+                    {/* <div>
                       <label>Asset</label>
                       <FormControl fullWidth>
                         <Select
@@ -415,7 +511,24 @@ const Transfer = ({
                           })}
                         </Select>
                       </FormControl>
-                    </div>
+                    </div> */}
+
+                    <label>Asset</label>
+                    <OutlinedInput
+                      fullWidth
+                      id="outlined-adornment-weight"
+                      // endAdornment={
+                      //   <InputAdornment position="end">
+                      //     {formData.assetValue}
+                      //   </InputAdornment>
+                      // }
+                      aria-describedby="outlined-weight-helper-text"
+                      inputProps={{
+                        "aria-label": "weight",
+                      }}
+                      value={formData.assetValue}
+                    // onChange={handleChangeAsset}
+                    />
                     <div className="flex-row-swapping">
                       <div className="flex-row-swapping-from">
                         <label>From</label>
@@ -434,14 +547,14 @@ const Transfer = ({
                                   onClick={() => {
                                     if (item?.name == "Funding") {
                                       fundingBalance(
+                                        "FUND",
                                         formData.assetValue,
-                                        "funding"
                                       );
                                       setSecType("Trading");
                                     } else {
                                       fundingBalance(
+                                        "UNIFIED",
                                         formData.assetValue,
-                                        "trading"
                                       );
                                       setSecType("Funding");
                                     }
@@ -570,7 +683,7 @@ const Transfer = ({
           </Grid>
         </Grid>
       </Box>
-    </div>
+    </div >
   );
 };
 

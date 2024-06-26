@@ -13,6 +13,9 @@ import Consts from "../../Constansts";
 import Axios from "../../Axios";
 import { toast, Toaster, ToastBar } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+// import { WebsocketClient } from 'bybit-api';
+// import Bybit from 'bybit-sdk';
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -72,6 +75,13 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
   const [eth1, setEth1] = useState();
   const [xpr1, setxrp1] = useState();
   const [ltc, setLtc] = useState();
+
+
+  const [btcUsd, setBtcUsd] = useState();
+  const [ethUsd, setEthUsd] = useState();
+  const [xprUsd, setxrpUsd] = useState();
+  const [ltcUsd, setLtcUsd] = useState();
+
   const [totalBalance, setTotalBalance] = useState();
   const history = useLocation();
 
@@ -102,15 +112,15 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
   };
 
   const Ticker = () => {
-    console.log('TICKER*******');
+    // console.log('TICKER*******');
     ws.onopen = (event) => {
-      console.log('rspse***');
+      // console.log('rspse***');
       ws.send(JSON.stringify(datas));
     };
 
     ws.onmessage = (event) => {
       const response = JSON.parse(event.data);
-      console.log(response,'rspse***');
+      // console.log(response, 'rspse***');
       try {
         if (response?.arg?.instId == "BTC-USDT") {
 
@@ -145,31 +155,40 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
 
   const getmyWallet = () => {
     try {
-      Axios.get(`/wallet/getWalletById`, {
+      Axios.get(`/bybit/getwallets`, {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
         },
       })
         .then((res) => {
+          // console.log(res, 'res');
           if (res?.data?.success) {
             setTotalBalance(res?.data?.total_price_in_usd)
             // console.log(res.data.total_price_in_usd,'rewrfedferwv');
             const walbal = res?.data?.result
             for (var i = 0; i < walbal.length; i++) {
-              if (walbal[i].symbol === "BTC") {
+              if (walbal[i].coinname === "BTC") {
+                // console.log(walbal[i].balance, 'btcbalance');
                 setBtc1(walbal[i].balance)
+                setBtcUsd(walbal[i].usdValue)
               }
 
-              if (walbal[i].symbol === "XRP") {
+              if (walbal[i].coinname === "XRP") {
+                // console.log(walbal[i].balance, 'XRPbalance');
                 setxrp1(walbal[i].balance)
+                setxrpUsd(walbal[i].usdValue)
               }
 
-              if (walbal[i].symbol === "ETH") {
+              if (walbal[i].coinname === "ETH") {
+                // console.log(walbal[i].balance, 'ETHbalance');
                 setEth1(walbal[i].balance)
+                setEthUsd(walbal[i].usdValue)
               }
 
-              if (walbal[i].symbol === "LTC") {
+              if (walbal[i].coinname === "LTC") {
+                // console.log(walbal[i].balance, 'LTCbalance');
                 setLtc(walbal[i].balance)
+                setLtcUsd(walbal[i].usdValue)
               }
             }
 
@@ -183,7 +202,7 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
     }
 
   }
-
+  // console.log(btc1, eth1, xpr1, ltc, 'balance');
   useEffect(() => {
     getmyWallet()
   }, [])
@@ -237,8 +256,7 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
         },
       }).then((res) => {
         if (res?.status === 200) {
-
-          console.log(res?.data);
+          // console.log(res?.data);
           if (res?.data?.isgoogle === "true" && res?.data?.issubscribed === "false") {
             navigate("/Subscription", {
               state: {
@@ -275,7 +293,7 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
             />
           </Item>
           {/* </Grid> */}
-          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={10} xl={10}>
+          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Item className={classes.headercls}>
               <Header
                 sideBarShow={sideBarShow}
@@ -283,7 +301,7 @@ const Dashboard = ({ data, setSideBarShow, sideBarShow, openSideBar, setOpenSide
                 openSideBar={openSideBar}
                 setOpenSideBar={setOpenSideBar}
               />
-              <DasboardBody btc={btc} eth={eth} dash={dash} xrp={xpr} btc1={btc1} eth1={eth1} xrp1={xpr1} ltc={ltc} totalBalance={totalBalance} />
+              <DasboardBody btc={btc} eth={eth} dash={dash} xrp={xpr} btc1={btc1} eth1={eth1} xrp1={xpr1} ltc={ltc} btcUsd={btcUsd} ethUsd={ethUsd} xprUsd={xprUsd} ltcUsd={ltcUsd} totalBalance={totalBalance} />
             </Item>
           </Grid>
         </Grid>

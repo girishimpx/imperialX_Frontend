@@ -49,8 +49,10 @@ import futureicon from '../../images/future-icon.png'
 import exchangeaccicon from '../../images/exchange-account-icon.png'
 import strategiesicon from '../../images/strategies-icon.png'
 import subscriptionicon from '../../images/subscription-icon.png'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-const drawerWidth = 260;
+const drawerWidth = 220;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -78,9 +80,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   position: 'sticky',
-  right:'-20px',
-  background:'#ccc',
-  top:'0%',
+  right: '-20px',
+  background: '#ccc',
+  top: '0%',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -142,17 +144,18 @@ const useStyles = makeStyles({
     // width: "17%",
     // position: "fixed",
     height: "100%",
-    background: "#1E1E1E !important",
+    background: "#010712 !important",
     // left: "0px",
     // top: "0px",
     overflow: 'auto',
     paddingTop: '20px',
-    "& nav" : {
-      "& ul" : {
-        "& li" : {
-          "& span" : {
+    paddingRight: '15px',
+    "& nav": {
+      "& ul": {
+        "& li": {
+          "& span": {
             "@media (max-width: 1199.98px)": {
-            fontSize: '1rem !important'
+              fontSize: '1rem !important'
             }
           },
         },
@@ -198,7 +201,7 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
   }
 
   const walletfunction = () => {
-    Axios.get(`${Consts.BackendUrl}/wallet/getWalletById`, {
+    Axios.get(`${Consts.BackendUrl}/bybit/getwallets`, {
       headers: {
         Authorization: token,
       },
@@ -259,196 +262,234 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
 
       return true
     } else { return false }
+
+
+  };
+
+  const setwidth = () => {
+    const isFullWidth = window.localStorage.getItem('widthAlignment');
+    if (isFullWidth !== undefined) {
+      const body = document.querySelector("body");
+      body.className = isFullWidth == 'FullWidth' ? 'full-width' : 'original-width';
+    }
+  }
+
+  const handleDrawerOpen = () => {
+    setOpenSideBar(true);
+    if (window.localStorage.getItem('widthAlignment')) {
+      window.localStorage.setItem('widthAlignment', 'OriginalWidth')
+      setwidth()
+    }
+  };
+
+  const handleDrawerClose = () => {
+    setOpenSideBar(false);
+    if (window.localStorage.getItem('widthAlignment')) {
+      window.localStorage.setItem('widthAlignment', 'FullWidth')
+      setwidth()
+    }
   };
   return (
 
     <>
-    
-    <Drawer className="drawer-sidemenu-block" variant="permanent" open={openSideBar}>
+
+      <Drawer className="drawer-sidemenu-block" variant="permanent" open={openSideBar}>
         {/* <DrawerHeader className="sidebar-close-button">
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ?  : <ChevronLeftIcon />}
             <ChevronRightIcon />
           </IconButton>
         </DrawerHeader> */}
-    <div
-      className={classes.sidebarclsinner}
-      id="showidemenu"
-    >
-      <div className="sidebar-cols">
-        <div className="logo logo-flex-responsive">
-        
-          {!openSideBar ?
-          <div style={{
-            minHeight:30,
-            justifyContent: openSideBar ? 'initial' : 'center',
-            px: 2.5,
-            display: 'flex',
-            alignItems: 'center'
-          }} className="logominimize"><img src={logominimize} alt="logo" /></div>:
-          <Link className={isActivePath("/") ? 'activebar' : 'transparent'} to={`${Constant.route}`}>
-            <div><img src={logo} alt="logo" /></div>
-          </Link>
-          }
-          {/* <div
+        <div
+          className={classes.sidebarclsinner}
+          id="showidemenu"
+        >
+          <div className="sidebar-cols">
+            <div className="logo logo-flex-responsive">
+
+              {!openSideBar ?
+                <div style={{
+                  minHeight: 30,
+                  justifyContent: openSideBar ? 'space-between' : 'center',
+                  px: 2.5,
+                  display: 'flex',
+                  alignItems: 'center'
+                }} className="logominimize">
+
+                  <img src={logominimize} alt="logo" />
+                  {/* <ArrowForwardIosIcon sx={{ fill: "#25DEB0", cursor: 'pointer' }} onClick={handleDrawerOpen} /> */}
+                </div> :
+                <Link className={isActivePath("/") ? 'activebar' : 'transparent'} to={`${Constant.route}/`}>
+                  <div
+                    style={{
+                      justifyContent: openSideBar ? 'space-between' : 'space-between',
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                  ><img src={logo} alt="logo" />
+                    {/* <ArrowBackIosIcon sx={{ fill: "#25DEB0", cursor: 'pointer' }} onClick={handleDrawerClose} /> */}
+                  </div>
+                </Link>
+              }
+              {/* <div
             onClick={() => setSideBarShow(true)}
             className={classes.closeiconresponsive}
           >
             <HighlightOffIcon />
           </div> */}
-        </div>
-        <nav aria-label="main mailbox folders">
-          <List>
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/`}
-              sx={{
-                minHeight: 30,
-                justifyContent: openSideBar ? 'initial' : 'center',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={dashboard} alt="dashboard" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Dashboard"
-                  className={isActivePath("/") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: openSideBar ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/market-overview`}
-              sx={{
-                minHeight: 30,
-                justifyContent: openSideBar ? 'initial' : 'center',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={market} alt="market" />
-                </ListItemIcon>
-                <ListItemText primary="Market" className={isActivePath("/market-overview") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }}/>
-              </ListItemButton>
-            </ListItem>
-
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton
-                  onClick={() => {
-                    setDrop(!drop);
-                  }}
-                  sx={{
-                    minHeight: 30,
-                    justifyContent: openSideBar ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  {localStorage.getItem("Mellifluous") && (
+            </div>
+            <nav aria-label="main mailbox folders">
+              <List>
+                <ListItem disablePadding className="liststyle">
+                  <ListItemButton to={`${Constant.route}/dashboard`}
+                    sx={{
+                      minHeight: 30,
+                      justifyContent: openSideBar ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
                     <ListItemIcon>
-                      <img src={exchange} alt="exchange" />
+                      <img src={dashboard} alt="dashboard" />
                     </ListItemIcon>
-                  )}
-                  {localStorage.getItem("Mellifluous") && (
                     <ListItemText
-                      primary="Exchange"
-                      className={isActivePath("/spot") || isActivePath("/margin") || isActivePath("/future") ? 'text-color-green' : 'text-color-white'}
+                      primary="Dashboard"
+                      className={isActivePath("/") ? 'text-color-green' : 'text-color-white'}
                       sx={{ opacity: openSideBar ? 1 : 0 }}
                     />
-                  )}
+                  </ListItemButton>
+                </ListItem>
 
-                  <div
-                    className="dropdownicon"
-                    id={drop ? "rotate-id-down" : "rotate-id-right"}
-                    style={{ display: openSideBar ? "block" : "none" }}
+                <ListItem disablePadding className="liststyle">
+                  <ListItemButton to={`${Constant.route}/market-overview`}
+                    sx={{
+                      minHeight: 30,
+                      justifyContent: openSideBar ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
                   >
-                    <img src={dropdownicon} alt="dropdown-icon" />
-                  </div>
-                </ListItemButton>
-              </ListItem>
-            )}
-
-            {drop && localStorage.getItem("Mellifluous") && (
-              <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
-                <li
-                  onClick={() => {
-                    setDrop(true);
-                  }}
-                >
-                  <Link className={isActivePath("/spot") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/spot`}><span className="smf-icons-left"><img src={spoticon} alt="spoticon"/></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Spot</span></Link>
-                </li>
-                <li
-                  onClick={() => {
-                    setDrop(true);
-                  }}
-                >
-                  <Link className={isActivePath("/margin") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/margin`}><span className="smf-icons-left"><img src={marginicon} alt="marginicon"/></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Margin</span></Link>
-                </li>
-                <li
-                  onClick={() => {
-                    setDrop(true);
-                  }}
-                >
-                  <Link className={isActivePath("/future") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/future`}><span className="smf-icons-left"><img src={futureicon} alt="futureicon"/></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Future</span></Link>
-                </li>
-              </ul>
-            )}
-
-            {/*copy trade*/}
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton
-                  onClick={() => {
-                    setDrop1(!drop1);
-                  }}
-                  sx={{
-                    minHeight: 30,
-                    justifyContent: openSideBar ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  {localStorage.getItem("Mellifluous") && (
                     <ListItemIcon>
-                      <img src={copytrade} alt="exchange" />
+                      <img src={market} alt="market" />
                     </ListItemIcon>
-                  )}
-                  {localStorage.getItem("Mellifluous") && (
-                    <ListItemText
-                      primary="Copy Trade"
-                      className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'}
-                      sx={{ opacity: openSideBar ? 1 : 0 }}
-                    />
-                  )}
+                    <ListItemText primary="Market" className={isActivePath("/market-overview") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }} />
+                  </ListItemButton>
+                </ListItem>
 
-                  <div
-                    className="dropdownicon"
-                    id={drop1 ? "rotate-id-down" : "rotate-id-right"}
-                    style={{ display: openSideBar ? "block" : "none" }}
-                  >
-                    <img src={dropdownicon} alt="dropdown-icon" />
-                  </div>
-                </ListItemButton>
-              </ListItem>
-            )}
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop(!drop);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={exchange} alt="exchange" />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Exchange"
+                          className={isActivePath("/spot") || isActivePath("/margin") || isActivePath("/future") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: openSideBar ? 1 : 0 }}
+                        />
+                      )}
 
-            {drop1 && localStorage.getItem("Mellifluous") && (
-              <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
-                <li
-                  onClick={() => {
-                    // setDrop1(true);
-                  }}
-                >
-                  <Link className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/copy-trade`}>
-                  <span className="smf-icons-left"><img src={strategiesicon} alt="spoticon"/></span>
-                    <span style={{ opacity: openSideBar ? 1 : 0 }}>Strategies List</span>
-                  </Link>
-                </li>
-              </ul>
-            )}
+                      <div
+                        className="dropdownicon"
+                        id={drop ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: openSideBar ? "block" : "none" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {drop && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/spot") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/spot`}><span className="smf-icons-left"><img src={spoticon} alt="spoticon" /></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Spot</span></Link>
+                    </li>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/margin") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/margin`}><span className="smf-icons-left"><img src={marginicon} alt="marginicon" /></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Margin</span></Link>
+                    </li>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/future") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/future`}><span className="smf-icons-left"><img src={futureicon} alt="futureicon" /></span><span style={{ opacity: openSideBar ? 1 : 0 }}>Future</span></Link>
+                    </li>
+                  </ul>
+                )}
+
+                {/*copy trade*/}
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop1(!drop1);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={copytrade} alt="exchange" />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Copy Trade"
+                          className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: openSideBar ? 1 : 0 }}
+                        />
+                      )}
+
+                      <div
+                        className="dropdownicon"
+                        id={drop1 ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: openSideBar ? "block" : "none" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {drop1 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
+                    <li
+                      onClick={() => {
+                        // setDrop1(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/copy-trade`}>
+                        <span className="smf-icons-left"><img src={strategiesicon} alt="spoticon" /></span>
+                        <span style={{ opacity: openSideBar ? 1 : 0 }}>Strategies List</span>
+                      </Link>
+                    </li>
+                  </ul>
+                )}
 
 
-            {/* {localStorage.getItem("Mellifluous") && (
+                {/* {localStorage.getItem("Mellifluous") && (
               <ListItem disablePadding className="liststyle">
                 <ListItemButton
                   onClick={() => {
@@ -487,75 +528,75 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
               </ListItem>
             )} */}
 
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton
-                  onClick={() => {
-                    setDrop2(!drop2);
-                  }}
-                  sx={{
-                    minHeight: 30,
-                    justifyContent: openSideBar ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                >
-                  {localStorage.getItem("Mellifluous") && (
-                    <ListItemIcon>
-                      <img src={AccountPng} alt="exchange" style={{ width: "23px", color: "white" }} />
-                    </ListItemIcon>
-                  )}
-                  {localStorage.getItem("Mellifluous") && (
-                    <ListItemText
-                      primary="Account"
-                      className={isActivePath("/exchange-account") || isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'}
-                      sx={{ opacity: openSideBar ? 1 : 0 }}
-                    />
-                  )}
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop2(!drop2);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={AccountPng} alt="exchange" style={{ width: "23px", color: "white" }} />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Account"
+                          className={isActivePath("/exchange-account") || isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: openSideBar ? 1 : 0 }}
+                        />
+                      )}
 
-                  <div
-                    className="dropdownicon"
-                    id={drop2 ? "rotate-id-down" : "rotate-id-right"}
-                    style={{ display: openSideBar ? "block" : "none" }}
-                  >
-                    <img src={dropdownicon} alt="dropdown-icon" />
-                  </div>
-                </ListItemButton>
-              </ListItem>
-            )}
+                      <div
+                        className="dropdownicon"
+                        id={drop2 ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: openSideBar ? "block" : "none" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {drop2 && localStorage.getItem("Mellifluous") && (
-              <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
-                <li
-                  onClick={() => {
-                    setDropAccount(true);
-                  }}
-                >
-                  <Link className={isActivePath("/exchange-account") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/exchange-account`}>
-                  <span className="smf-icons-left"><img src={exchangeaccicon} alt="exchangeaccicon"/></span>
-                  <span style={{ opacity: openSideBar ? 1 : 0 }}>Exchange Account</span>
-                  </Link>
-                </li>
+                {/* {drop2 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
+                    <li
+                      onClick={() => {
+                        setDropAccount(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/exchange-account") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/exchange-account`}>
+                        <span className="smf-icons-left"><img src={exchangeaccicon} alt="exchangeaccicon" /></span>
+                        <span style={{ opacity: openSideBar ? 1 : 0 }}>Exchange Account</span>
+                      </Link>
+                    </li>
 
-              </ul>
-            )}
-            {drop2 && localStorage.getItem("Mellifluous") && (
-              <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
-                <li
-                  onClick={() => {
-                    setDropAccount(true);
-                  }}
-                >
-                  <Link className={isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/my-subscription`}>
-                  <span className="smf-icons-left"><img src={subscriptionicon} alt="subscriptionicon"/></span>
-                  <span style={{ opacity: openSideBar ? 1 : 0 }}>My Subscription</span>
-                  </Link>
-                </li>
+                  </ul>
+                )} */}
+                {drop2 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: openSideBar ? '50px' : '12px' }}>
+                    <li
+                      onClick={() => {
+                        setDropAccount(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/my-subscription`}>
+                        <span className="smf-icons-left"><img src={subscriptionicon} alt="subscriptionicon" /></span>
+                        <span style={{ opacity: openSideBar ? 1 : 0 }}>My Subscription</span>
+                      </Link>
+                    </li>
 
-              </ul>
-            )}
+                  </ul>
+                )}
 
 
-            {/* {localStorage.getItem("Mellifluous") && (
+                {/* {localStorage.getItem("Mellifluous") && (
               <ListItem disablePadding className="liststyle">
                 <ListItemButton
                   onClick={() => {
@@ -610,157 +651,157 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
               </ul>
             )} */}
 
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/bot_trade`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img src={Ethereum} alt="Ethereum" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Bot Trade"
-                    className={isActivePath("/bot_trade") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
+                {/* {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/bot_trade`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={Ethereum} alt="Ethereum" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Bot Trade"
+                        className={isActivePath("/bot_trade") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )} */}
 
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/analytics`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img src={Analytics} alt="Analytics" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Analytics"
-                    className={isActivePath("/analytics") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
-            {token && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/trade-history`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img src={historyicon} alt="history" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Trade History"
-                    className={isActivePath("/trade-history") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/analytics`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={Analytics} alt="Analytics" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Analytics"
+                        className={isActivePath("/analytics") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+                {token && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/trade-history`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={historyicon} alt="history" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Trade History"
+                        className={isActivePath("/trade-history") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {walletExist && localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/wallet`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img
-                      src={Wallets}
-                      style={{ width: "23px", color: "white" }}
-                      alt="Wallet"
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Wallet" className={isActivePath("/wallet") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }}/>
-                </ListItemButton>
-              </ListItem>
-            )}
+                {walletExist && localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/wallet`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Wallet"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Wallet" className={isActivePath("/wallet") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/refferals`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img src={referal} alt="referal" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Referral"
-                    className={isActivePath("/refferals") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/refferals`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={referal} alt="referal" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Referral"
+                        className={isActivePath("/refferals") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {!localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/Login`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img
-                      src={Wallets}
-                      style={{ width: "23px", color: "white" }}
-                      alt="Login"
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Login" className={isActivePath("/Login") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }}/>
-                </ListItemButton>
-              </ListItem>
-            )}
+                {!localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/Login`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Login"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Login" className={isActivePath("/Login") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {!localStorage.getItem("Mellifluous") && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/register`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img
-                      src={Wallets}
-                      style={{ width: "23px", color: "white" }}
-                      alt="Register"
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Register"
-                    className={isActivePath("/register") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
+                {!localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/register`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Register"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Register"
+                        className={isActivePath("/register") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {/* {token && (
+                {/* {token && (
               <ListItem disablePadding className="liststyle">
                 <ListItemButton to={`${Constant.route}/Subscription`}>
                   <ListItemIcon>
@@ -774,28 +815,28 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
                 </ListItemButton>
               </ListItem>
             )} */}
-            {token && (
-              <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/profile`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img
-                      src={account}
-                      style={{ width: "13px", color: "white" }}
-                      alt="Profile"
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Profile" className={isActivePath("/profile") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }}/>
-                </ListItemButton>
-              </ListItem>
-            )}
+                {token && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/profile`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={account}
+                          style={{ width: "13px", color: "white" }}
+                          alt="Profile"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Profile" className={isActivePath("/profile") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: openSideBar ? 1 : 0 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
 
-            {/* {token && !kycsubmit && (
+                {/* {token && !kycsubmit && (
               <ListItem disablePadding className="liststyle">
                 <ListItemButton to={`${Constant.route}/kyc-verification`}>
                   <ListItemIcon>
@@ -812,31 +853,31 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
                 </ListItemButton>
               </ListItem>
             )} */}
-          </List>
-        </nav>
-        <div className="bottom-list">
-          <nav aria-label="main mailbox folders">
-            <List>
-              {localStorage.getItem('Mellifluous') && <ListItem disablePadding className="liststyle">
-                <ListItemButton to={`${Constant.route}/supportmain`}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: openSideBar ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                >
-                  <ListItemIcon>
-                    <img src={customerservice} alt="support" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Support"
-                    className={isActivePath("/supportmain") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: openSideBar ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>}
+              </List>
+            </nav>
+            <div className="bottom-list">
+              <nav aria-label="main mailbox folders">
+                <List>
+                  {localStorage.getItem('Mellifluous') && <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/supportmain`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: openSideBar ? 'initial' : 'center',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={customerservice} alt="support" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Support"
+                        className={isActivePath("/supportmain") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: openSideBar ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>}
 
-              {/* <ListItem disablePadding className="liststyle">
+                  {/* <ListItem disablePadding className="liststyle">
                 <ListItemButton to={`${Constant.route}/settings`}>
                   <ListItemIcon>
                     <img src={setting} alt="market" />
@@ -847,447 +888,447 @@ const Sidebar = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =
                   />
                 </ListItemButton>
               </ListItem> */}
-            </List>
-          </nav>
+                </List>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </Drawer>
+
+      <div className="hidesidemenu-for-mobile">
+        <div className={classes.sidebarclsinner} id={!sideBarShow ? "showidemenu" : "hidesidemenu"}>
+          <div className="sidebar-cols">
+            <div className="logo logo-flex-responsive">
+
+              <Link className={isActivePath("/") ? 'activebar' : 'transparent'} to={`${Constant.route}`}>
+                <div><img src={logo} alt="logo" /></div>
+              </Link>
+              <div
+                onClick={MobileMenuClose}
+                className={classes.closeiconresponsive}
+              >
+                <HighlightOffIcon />
+              </div>
+            </div>
+            <nav aria-label="main mailbox folders">
+              <List>
+                <ListItem disablePadding className="liststyle">
+                  <ListItemButton to={`${Constant.route}/dashboard`}
+                    sx={{
+                      minHeight: 30,
+                      justifyContent: 'initial',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon>
+                      <img src={dashboard} alt="dashboard" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Dashboard"
+                      className={isActivePath("/") ? 'text-color-green' : 'text-color-white'}
+                      sx={{ opacity: 1 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding className="liststyle">
+                  <ListItemButton to={`${Constant.route}/market-overview`}
+                    sx={{
+                      minHeight: 30,
+                      justifyContent: 'initial',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon>
+                      <img src={market} alt="market" />
+                    </ListItemIcon>
+                    <ListItemText primary="Market" className={isActivePath("/market-overview") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1 }} />
+                  </ListItemButton>
+                </ListItem>
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop(!drop);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={exchange} alt="exchange" />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Exchange"
+                          className={isActivePath("/spot") || isActivePath("/margin") || isActivePath("/future") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: 1 }}
+                        />
+                      )}
+
+                      <div
+                        className="dropdownicon"
+                        id={drop ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: openSideBar ? "block" : "none" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {drop && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: '50px' }}>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/spot") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/spot`}><span className="smf-icons-left"><img src={spoticon} alt="spoticon" /></span><span style={{ opacity: 1 }}>Spot</span></Link>
+                    </li>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/margin") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/margin`}><span className="smf-icons-left"><img src={marginicon} alt="marginicon" /></span><span style={{ opacity: 1 }}>Margin</span></Link>
+                    </li>
+                    <li
+                      onClick={() => {
+                        setDrop(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/future") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/future`}><span className="smf-icons-left"><img src={futureicon} alt="futureicon" /></span><span style={{ opacity: 1 }}>Future</span></Link>
+                    </li>
+                  </ul>
+                )}
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop1(!drop1);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={copytrade} alt="exchange" />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Copy Trade"
+                          className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: 1 }}
+                        />
+                      )}
+
+                      <div
+                        className="dropdownicon"
+                        id={drop1 ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: "block" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {drop1 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: '50px' }}>
+                    <li
+                      onClick={() => {
+                        // setDrop1(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/copy-trade`}>
+                        <span className="smf-icons-left"><img src={strategiesicon} alt="spoticon" /></span>
+                        <span style={{ opacity: 1 }}>Strategies List</span>
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton
+                      onClick={() => {
+                        setDrop2(!drop2);
+                      }}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemIcon>
+                          <img src={AccountPng} alt="exchange" style={{ width: "23px", color: "white" }} />
+                        </ListItemIcon>
+                      )}
+                      {localStorage.getItem("Mellifluous") && (
+                        <ListItemText
+                          primary="Account"
+                          className={isActivePath("/exchange-account") || isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'}
+                          sx={{ opacity: 1 }}
+                        />
+                      )}
+
+                      <div
+                        className="dropdownicon"
+                        id={drop2 ? "rotate-id-down" : "rotate-id-right"}
+                        style={{ display: "block" }}
+                      >
+                        <img src={dropdownicon} alt="dropdown-icon" />
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {drop2 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: '50px' }}>
+                    <li
+                      onClick={() => {
+                        setDropAccount(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/exchange-account") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/exchange-account`}>
+                        <span className="smf-icons-left"><img src={exchangeaccicon} alt="exchangeaccicon" /></span>
+                        <span style={{ opacity: 1 }}>Exchange Account</span>
+                      </Link>
+                    </li>
+
+                  </ul>
+                )}
+                {drop2 && localStorage.getItem("Mellifluous") && (
+                  <ul className="sab-list" style={{ paddingLeft: '50px' }}>
+                    <li
+                      onClick={() => {
+                        setDropAccount(true);
+                      }}
+                    >
+                      <Link className={isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/my-subscription`}>
+                        <span className="smf-icons-left"><img src={subscriptionicon} alt="subscriptionicon" /></span>
+                        <span style={{ opacity: 1 }}>My Subscription</span>
+                      </Link>
+                    </li>
+
+                  </ul>
+                )}
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/bot_trade`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={Ethereum} alt="Ethereum" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Bot Trade"
+                        className={isActivePath("/bot_trade") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/analytics`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={Analytics} alt="Analytics" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Analytics"
+                        className={isActivePath("/analytics") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+                {token && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/trade-history`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={historyicon} alt="history" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Trade History"
+                        className={isActivePath("/trade-history") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {walletExist && localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/wallet`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Wallet"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Wallet" className={isActivePath("/wallet") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/refferals`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={referal} alt="referal" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Referral"
+                        className={isActivePath("/refferals") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {!localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/Login`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Login"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Login" className={isActivePath("/Login") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {!localStorage.getItem("Mellifluous") && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/register`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={Wallets}
+                          style={{ width: "23px", color: "white" }}
+                          alt="Register"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Register"
+                        className={isActivePath("/register") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+                {token && (
+                  <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/profile`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img
+                          src={account}
+                          style={{ width: "13px", color: "white" }}
+                          alt="Profile"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Profile" className={isActivePath("/profile") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1 }} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+
+              </List>
+            </nav>
+            <div className="bottom-list">
+              <nav aria-label="main mailbox folders">
+                <List>
+                  {localStorage.getItem('Mellifluous') && <ListItem disablePadding className="liststyle">
+                    <ListItemButton to={`${Constant.route}/supportmain`}
+                      sx={{
+                        minHeight: 30,
+                        justifyContent: 'initial',
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon>
+                        <img src={customerservice} alt="support" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Support"
+                        className={isActivePath("/supportmain") ? 'text-color-green' : 'text-color-white'}
+                        sx={{ opacity: 1 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>}
+
+                </List>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </Drawer>
-    
-    <div className="hidesidemenu-for-mobile">
-    <div className={classes.sidebarclsinner} id={!sideBarShow ? "showidemenu" : "hidesidemenu"}>
-    <div className="sidebar-cols">
-      <div className="logo logo-flex-responsive">
-      
-        <Link className={isActivePath("/") ? 'activebar' : 'transparent'} to={`${Constant.route}`}>
-          <div><img src={logo} alt="logo" /></div>
-        </Link>
-        <div
-          onClick={MobileMenuClose}
-          className={classes.closeiconresponsive}
-        >
-          <HighlightOffIcon />
-        </div>
-      </div>
-      <nav aria-label="main mailbox folders">
-        <List>
-          <ListItem disablePadding className="liststyle">
-            <ListItemButton to={`${Constant.route}/`}
-            sx={{
-              minHeight: 30,
-              justifyContent:'initial' ,
-              px: 2.5,
-            }}
-            >
-              <ListItemIcon>
-                <img src={dashboard} alt="dashboard" />
-              </ListItemIcon>
-              <ListItemText
-                primary="Dashboard"
-                className={isActivePath("/") ? 'text-color-green' : 'text-color-white'}
-                sx={{ opacity: 1 }}
-              />
-            </ListItemButton>
-          </ListItem>
 
-          <ListItem disablePadding className="liststyle">
-            <ListItemButton to={`${Constant.route}/market-overview`}
-            sx={{
-              minHeight: 30,
-              justifyContent: 'initial',
-              px: 2.5,
-            }}
-            >
-              <ListItemIcon>
-                <img src={market} alt="market" />
-              </ListItemIcon>
-              <ListItemText primary="Market" className={isActivePath("/market-overview") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1}}/>
-            </ListItemButton>
-          </ListItem>
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton
-                onClick={() => {
-                  setDrop(!drop);
-                }}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: 'initial',
-                  px: 2.5,
-                }}
-              >
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemIcon>
-                    <img src={exchange} alt="exchange" />
-                  </ListItemIcon>
-                )}
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemText
-                    primary="Exchange"
-                    className={isActivePath("/spot") || isActivePath("/margin") || isActivePath("/future") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: 1}}
-                  />
-                )}
-
-                <div
-                  className="dropdownicon"
-                  id={drop ? "rotate-id-down" : "rotate-id-right"}
-                  style={{ display: openSideBar ? "block" : "none" }}
-                >
-                  <img src={dropdownicon} alt="dropdown-icon" />
-                </div>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {drop && localStorage.getItem("Mellifluous") && (
-            <ul className="sab-list" style={{ paddingLeft: '50px'}}>
-              <li
-                onClick={() => {
-                  setDrop(true);
-                }}
-              >
-                <Link className={isActivePath("/spot") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/spot`}><span className="smf-icons-left"><img src={spoticon} alt="spoticon"/></span><span style={{ opacity: 1}}>Spot</span></Link>
-              </li>
-              <li
-                onClick={() => {
-                  setDrop(true);
-                }}
-              >
-                <Link className={isActivePath("/margin") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/margin`}><span className="smf-icons-left"><img src={marginicon} alt="marginicon"/></span><span style={{ opacity: 1}}>Margin</span></Link>
-              </li>
-              <li
-                onClick={() => {
-                  setDrop(true);
-                }}
-              >
-                <Link className={isActivePath("/future") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/future`}><span className="smf-icons-left"><img src={futureicon} alt="futureicon"/></span><span style={{ opacity: 1}}>Future</span></Link>
-              </li>
-            </ul>
-          )}
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton
-                onClick={() => {
-                  setDrop1(!drop1);
-                }}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: 'initial',
-                  px: 2.5,
-                }}
-              >
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemIcon>
-                    <img src={copytrade} alt="exchange" />
-                  </ListItemIcon>
-                )}
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemText
-                    primary="Copy Trade"
-                    className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: 1}}
-                  />
-                )}
-
-                <div
-                  className="dropdownicon"
-                  id={drop1 ? "rotate-id-down" : "rotate-id-right"}
-                  style={{ display: "block"}}
-                >
-                  <img src={dropdownicon} alt="dropdown-icon" />
-                </div>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {drop1 && localStorage.getItem("Mellifluous") && (
-            <ul className="sab-list" style={{ paddingLeft:'50px'}}>
-              <li
-                onClick={() => {
-                  // setDrop1(true);
-                }}
-              >
-                <Link className={isActivePath("/copy-trade") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/copy-trade`}>
-                <span className="smf-icons-left"><img src={strategiesicon} alt="spoticon"/></span>
-                  <span style={{ opacity: 1}}>Strategies List</span>
-                </Link>
-              </li>
-            </ul>
-          )}
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton
-                onClick={() => {
-                  setDrop2(!drop2);
-                }}
-                sx={{
-                  minHeight: 30,
-                  justifyContent: 'initial',
-                  px: 2.5,
-                }}
-              >
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemIcon>
-                    <img src={AccountPng} alt="exchange" style={{ width: "23px", color: "white" }} />
-                  </ListItemIcon>
-                )}
-                {localStorage.getItem("Mellifluous") && (
-                  <ListItemText
-                    primary="Account"
-                    className={isActivePath("/exchange-account") || isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'}
-                    sx={{ opacity: 1 }}
-                  />
-                )}
-
-                <div
-                  className="dropdownicon"
-                  id={drop2 ? "rotate-id-down" : "rotate-id-right"}
-                  style={{ display: "block" }}
-                >
-                  <img src={dropdownicon} alt="dropdown-icon" />
-                </div>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {drop2 && localStorage.getItem("Mellifluous") && (
-            <ul className="sab-list" style={{ paddingLeft: '50px' }}>
-              <li
-                onClick={() => {
-                  setDropAccount(true);
-                }}
-              >
-                <Link className={isActivePath("/exchange-account") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/exchange-account`}>
-                <span className="smf-icons-left"><img src={exchangeaccicon} alt="exchangeaccicon"/></span>
-                <span style={{ opacity: 1 }}>Exchange Account</span>
-                </Link>
-              </li>
-
-            </ul>
-          )}
-          {drop2 && localStorage.getItem("Mellifluous") && (
-            <ul className="sab-list" style={{ paddingLeft: '50px'}}>
-              <li
-                onClick={() => {
-                  setDropAccount(true);
-                }}
-              >
-                <Link className={isActivePath("/my-subscription") ? 'text-color-green' : 'text-color-white'} to={`${Constant.route}/my-subscription`}>
-                <span className="smf-icons-left"><img src={subscriptionicon} alt="subscriptionicon"/></span>
-                <span style={{ opacity: 1 }}>My Subscription</span>
-                </Link>
-              </li>
-
-            </ul>
-          )}
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/bot_trade`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={Ethereum} alt="Ethereum" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Bot Trade"
-                  className={isActivePath("/bot_trade") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1}}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/analytics`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={Analytics} alt="Analytics" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Analytics"
-                  className={isActivePath("/analytics") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-          {token && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/trade-history`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={historyicon} alt="history" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Trade History"
-                  className={isActivePath("/trade-history") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1}}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {walletExist && localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/wallet`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img
-                    src={Wallets}
-                    style={{ width: "23px", color: "white" }}
-                    alt="Wallet"
-                  />
-                </ListItemIcon>
-                <ListItemText primary="Wallet" className={isActivePath("/wallet") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1}}/>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/refferals`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={referal} alt="referal" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Referral"
-                  className={isActivePath("/refferals") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {!localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/Login`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img
-                    src={Wallets}
-                    style={{ width: "23px", color: "white" }}
-                    alt="Login"
-                  />
-                </ListItemIcon>
-                <ListItemText primary="Login" className={isActivePath("/Login") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1}}/>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {!localStorage.getItem("Mellifluous") && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/register`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img
-                    src={Wallets}
-                    style={{ width: "23px", color: "white" }}
-                    alt="Register"
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Register"
-                  className={isActivePath("/register") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          )}
-
-          {token && (
-            <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/profile`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img
-                    src={account}
-                    style={{ width: "13px", color: "white" }}
-                    alt="Profile"
-                  />
-                </ListItemIcon>
-                <ListItemText primary="Profile" className={isActivePath("/profile") ? 'text-color-green' : 'text-color-white'} sx={{ opacity: 1}}/>
-              </ListItemButton>
-            </ListItem>
-          )}
-
-        </List>
-      </nav>
-      <div className="bottom-list">
-        <nav aria-label="main mailbox folders">
-          <List>
-            {localStorage.getItem('Mellifluous') && <ListItem disablePadding className="liststyle">
-              <ListItemButton to={`${Constant.route}/supportmain`}
-              sx={{
-                minHeight: 30,
-                justifyContent: 'initial',
-                px: 2.5,
-              }}
-              >
-                <ListItemIcon>
-                  <img src={customerservice} alt="support" />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Support"
-                  className={isActivePath("/supportmain") ? 'text-color-green' : 'text-color-white'}
-                  sx={{ opacity: 1}}
-                />
-              </ListItemButton>
-            </ListItem>}
-
-          </List>
-        </nav>
-      </div>
-    </div>
-    </div>
-    </div>
-
-</>
+    </>
   );
 };
 

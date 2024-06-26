@@ -68,7 +68,8 @@ export default function OpenOrderTab({selectedPairs, reload}) {
           setOrder("limit")
         }}> Limit </Button>
         <Button variant={order != "limit" ? "contained" :"outlined"} onClick={()=>{
-          setOrder("market")
+          // setOrder("market")
+          setOrder("Market")
         }}>Market</Button>
         </Stack>
         <OpenOrderTable selectedPairs={selectedPairs} ordreType={order} reload={reload}/>
@@ -79,7 +80,9 @@ export default function OpenOrderTab({selectedPairs, reload}) {
           setOrder("limit")
         }}> Limit </Button>
         <Button variant={order != "limit" ? "contained" :"outlined"} onClick={()=>{
-          setOrder("market")
+          // setOrder("market")
+          setOrder("Market")
+
         }}>Market</Button>
         </Stack>
         <CompleteAndCancelList selectedPairs={selectedPairs} ordreType={order}/> 
@@ -90,7 +93,9 @@ export default function OpenOrderTab({selectedPairs, reload}) {
           setOrder("limit")
         }}> Limit </Button>
         <Button variant={order != "limit" ? "contained" :"outlined"} onClick={()=>{
-          setOrder("market")
+          // setOrder("market")
+          setOrder("Market")
+
         }}>Market</Button>
         </Stack>
          <OpenOrderTable selectedPairs={selectedPairs} ordreType={order}/>

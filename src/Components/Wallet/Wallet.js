@@ -88,7 +88,7 @@ const Wallet = ({ setSideBarShow, sideBarShow, openSideBar, setOpenSideBar }) =>
               setOpenSideBar={setOpenSideBar} />
           </Item>
           {/* </Grid> */}
-          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={10} xl={10}>
+          <Grid id={sideBarShow ? "z-index-prop-postve" : "z-index-prop-negtve"} item xs={12} sm={12} md={12} lg={12} xl={12}>
             <Item className={classes.headercls}>
               <Header sideBarShow={sideBarShow}
                 setSideBarShow={setSideBarShow}

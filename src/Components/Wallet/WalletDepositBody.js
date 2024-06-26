@@ -81,7 +81,7 @@ const useStyles = makeStyles({
   }
 });
 
-const WalletDepositBody = () => {
+const WalletDepositBody = ({ status }) => {
   const classes = useStyles();
   const [addata, setAddata] = useState([""])
   const [cadd, setCadd] = useState("")
@@ -89,26 +89,27 @@ const WalletDepositBody = () => {
   const [deperr, setDeperr] = useState('');
   const history = useLocation()
   const navigate = useNavigate()
-  const ccy = history.state
-  console.log(ccy, "depositedata123");
+  const ccy = history?.state?.symbol
+  const coinName = history?.state?.coinname
+  console.log(ccy, "depositedata123", history);
 
   const getaddress = async () => {
-    const data = await Axios.post(`${Consts.BackendUrl}/wallet/getWalletaddressById`, { ccy: ccy   }, {
+    const data = await Axios.post(`${Consts.BackendUrl}/wallet/getWalletaddressById`, { ccy: coinName }, {
       headers: {
         Authorization: localStorage.getItem("Mellifluous"),
       },
     })
-    console.log(data,"satassss")
+    console.log(data, "satassss")
     if (data?.data?.result?.length > 0) {
-      setAddata(data?.data?.result)
+      setAddata(data?.data?.result[0].mugavari)
     } else {
 
       setAddata(null)
     }
-  } 
+  }
   useEffect(() => {
     getaddress()
-  }, [ccy])
+  }, [ccy, status])
 
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -120,7 +121,7 @@ const WalletDepositBody = () => {
     } else {
       for (let i = 0; i < addata.length; i++) {
         if (addata[i].chain === depositNetwork) {
-          setCadd(addata[i].addr)
+          setCadd(addata[i].address)
         }
       }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -204,7 +205,7 @@ const WalletDepositBody = () => {
       <Toaster />
       <Box sx={{ flexGrow: 1 }}>
 
-      <Button onClick={() => navigate(-1)} className='back-button-style' variant="text"><ArrowBackIcon/>Back</Button>
+        <Button onClick={() => navigate(-1)} className='back-button-style' variant="text"><ArrowBackIcon />Back</Button>
 
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -225,7 +226,7 @@ const WalletDepositBody = () => {
                     </StepLabel>
                     <StepContent>
                       <Box sx={{ minWidth: 120 }}>
-                        <TextField fullWidth id="outlined-basic" label="Crypto" variant="outlined" value={ccy?.symbol} />
+                        <TextField fullWidth id="outlined-basic" label="Crypto" variant="outlined" value={coinName} />
                       </Box>
 
                       <Box sx={{ minWidth: 120 }}>
@@ -242,9 +243,9 @@ const WalletDepositBody = () => {
                               return (
                                 <MenuItem value={row?.chain} >{row?.chain}</MenuItem>
                               );
-                              
+
                             })}
-                            {console.log(addata,"addddddddd")}
+                            {console.log(addata, "addddddddd")}
 
                           </Select>
                           {deperr != "" ?

@@ -455,7 +455,7 @@ const SellForminnermarket = ({ selected, pair , index , ordertype,market }) => {
           />
         </FormControl>
 
-        <div style={{"width":"98%"}}>
+        <div style={{"width":"89%"}}>
      <ThumbSlider
         aria-label="Temperature"
         defaultValue={0}

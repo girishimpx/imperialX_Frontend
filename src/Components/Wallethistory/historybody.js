@@ -60,7 +60,7 @@ const Historybody = () => {
 
   const classes = useStyles();
   const [list, setList] = useState([]);
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [value, setValue] = React.useState(0);
@@ -77,6 +77,7 @@ const Historybody = () => {
 
     if (users?.trader_type == 'master') {
       setList([])
+      setloading(true)
       Axios.get(
         `${Consts.BackendUrl}/trade/tradeHistorypaginate?limit=${limit}&page=${page}`,
         {
@@ -96,6 +97,7 @@ const Historybody = () => {
     } else {
       if (value == 0) {
         setList([])
+        setloading(true)
         Axios.get(
           `${Consts.BackendUrl}/trade/copytradeHistorypaginate?limit=${limit}&page=${page}`,
           {
@@ -116,6 +118,7 @@ const Historybody = () => {
         });
       } else {
         setList([])
+        setloading(true)
         Axios.get(
           `${Consts.BackendUrl}/trade/tradeHistorypaginate?limit=${limit}&page=${page}`,
           {
@@ -199,7 +202,7 @@ const Historybody = () => {
               <TableBody>
                 {console.log(list, "hlo")}
                 {list &&
-                  list.map((row) => (
+                  list?.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell className={classes.tableCell}>
                         {row.pair ? row.pair : "-"}
@@ -215,7 +218,7 @@ const Historybody = () => {
                       </TableCell>
                       <TableCell className={classes.tableCell}>
                         <span id={row.trade_type == "buy" ? "green" : "red"}>
-                          {row.price ? row.price : "-"}
+                          {row?.price ? row.price : row?.entry_price ? row?.entry_price : "-"}
                         </span>
                       </TableCell>
                       <TableCell className={classes.tableCell}>
@@ -243,10 +246,10 @@ const Historybody = () => {
               </TableBody>
             </Table>
 
-            {!loading && !list && (
+            {!loading && list?.length <= 0 && (
               <div>
-                <h3 style={{ color: "white", padding: "1rem" }}>
-                  Data Not Found
+                <h3 style={{ color: "#0eb394", padding: "1rem" }}>
+                  No Trade Found
                 </h3>
               </div>
             )}
@@ -308,7 +311,7 @@ const Historybody = () => {
                       </TableCell>
                       <TableCell className={classes.tableCell}>
                         <span id={row.trade_type == "buy" ? "green" : "red"}>
-                          {row.price ? row.price : "-"}
+                          {row.price ? row?.price : row?.entry_price ? row?.entry_price : "-"}
                         </span>
                       </TableCell>
                       <TableCell className={classes.tableCell}>
@@ -335,10 +338,10 @@ const Historybody = () => {
               </TableBody>
             </Table>
 
-            {!loading && !list && (
+            {!loading && list?.length <= 0 && (
               <div>
-                <h3 style={{ color: "white", padding: "1rem" }}>
-                  Data Not Found
+                <h3 style={{ color: "#0eb394", padding: "1rem" }}>
+                  No Trade Found
                 </h3>
               </div>
             )}

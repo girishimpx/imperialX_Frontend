@@ -19,6 +19,8 @@ import SpotAnalysis from "./SpotAnalysis";
 import BTCBasis from "./BTCBasis";
 import BTCFuture from "./BTCFuture";
 import Axios from "../../Axios";
+import BeatLoader from "react-spinners/BeatLoader";
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,11 +77,12 @@ const useStyles = makeStyles({
     background: "#010712 !important",
     borderRadius: "0px !important",
     boxShadow: "none !important",
-    overflow: "hidden",
+    // overflow: "hidden",
     position: 'sticky !important',
-        top: '0px',
-        padding:'0px !important',
-        height: '100vh'
+    top: '0px',
+    padding: '0px !important',
+    // height: '100vh',
+    flexWrap: 'wrap'
   },
   headercls: {
     background: "#131a26 !important",
@@ -117,10 +120,12 @@ const AnalyticsNewBody = () => {
   const [allspot, setallspot] = useState(false);
   const [allmargin, setallmargin] = useState(false);
   const [allfuture, setallfuture] = useState(false);
+  const [load, setLoad] = useState(false)
+
 
   const getmasters = () => {
     // setMAsterList("")
-    Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`,{}, {
+    Axios.post(`${Consts.BackendUrl}/users/getMastersbyQuery`, {}, {
       headers: {
         Authorization: localStorage.getItem("Mellifluous"),
       },
@@ -146,85 +151,162 @@ const AnalyticsNewBody = () => {
       });
   };
 
+  // const plottingfunction = (dates) => {
+  //   console.log(dates, 'dates');
+  //   let a = [];
+  //   let b = [];
+
+  //   for (let i = 0; i < dates.length; i++) {
+
+  //     if (Number(dates[i].entry_price) != 0) {
+  //       //console.log("1exitprice",i,Number(dates[i].exit_price))
+  //       const value = Number(
+  //         (
+  //           ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /
+  //             Math.abs(Number(dates[i]?.entry_price))) *
+  //           100
+  //         ).toFixed(4)
+  //       )
+  //       const finalvalue = value / 100
+  //       // console.log(value, ",", finalvalue, "value")
+  //       if (value < -10 || value > 10) {
+  //         a.push(finalvalue);
+  //       }
+  //       else {
+  //         a.push(
+  //           Number(
+  //             (
+  //               ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /
+  //                 Math.abs(Number(dates[i]?.entry_price))) *
+  //               100
+  //             ).toFixed(4)
+  //           )
+  //         );
+  //       }
+
+  //       // console.log("====", a)
+  //       let data = dates[i]?.createdAt?.split("T")[0]?.split("-");
+  //       b.push(`${data[2]}-${data[1]}-${data[0]}`);
+  //     }
+  //     else {
+  //       //console.log("exitprice",i,Number(dates[i].exit_price))
+  //       let value = Number(
+  //         (
+  //           ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) / 1) *
+  //           100
+  //         ).toFixed(2)
+  //       )
+
+  //       const finalvalue = value / 100
+  //       // console.log(value, ",", finalvalue, "value")
+  //       if (value < -10 || value > 10) {
+  //         a.push(finalvalue);
+  //       }
+
+  //       else {
+  //         a.push(Number(
+  //           (
+  //             ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) / 1) *
+  //             100
+  //           ).toFixed(4)
+  //         ));
+  //       }
+
+  //       // console.log("====",a)
+  //       let data = dates[i]?.createdAt?.split("T")[0]?.split("-");
+  //       b.push(`${data[2]}-${data[1]}-${data[0]}`);
+  //     }
+  //   }
+  //   // console.log("====",[a,b])
+  //   return [a, b];
+  // };
+
   const plottingfunction = (dates) => {
     let a = [];
     let b = [];
-    
+    let c = []
+
     for (let i = 0; i < dates.length; i++) {
-     
+
       if (Number(dates[i].entry_price) != 0) {
-        //console.log("1exitprice",i,Number(dates[i].exit_price))
-const value =  Number(
-  (
-    ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /
-      Math.abs(Number(dates[i]?.entry_price))) *
-    100
-  ).toFixed(4)
-)
-        const finalvalue = value/100
-        console.log(value,",",finalvalue,"value")
-        if(value < -10 || value > 10){
+        const value = Number(
+          (
+            ((Number(dates[i]?.entry_price) - Number(dates[i]?.price)) /
+              Math.abs(Number(dates[i]?.entry_price))) *
+            100
+          ).toFixed(4)
+        )
+        const finalvalue = value / 100
+        // console.log(value, ",", finalvalue, "value")
+        if (value < -10 || value > 10) {
           a.push(finalvalue);
         }
-        else{
+        else {
           a.push(
             Number(
               (
-                ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /
-                  Math.abs(Number(dates[i]?.entry_price))) *
+                ((Number(dates[i]?.entry_price) - Number(dates[i]?.price)) /
+                  Math.abs(Number(dates[i]?.price))) *
                 100
               ).toFixed(4)
             )
           );
         }
-        
-        console.log("====",a)
+
         let data = dates[i]?.createdAt?.split("T")[0]?.split("-");
         b.push(`${data[2]}-${data[1]}-${data[0]}`);
+        let price = Number(dates[i].price) != null ? dates[i].price : dates[i].entry_price
+        // console.log(price, "-", dates[i].symbol, "-", dates[i].trade_at, 'price');
+        const final = Number(price).toFixed(3)
+        c.push(final)
       }
-      else{
-        //console.log("exitprice",i,Number(dates[i].exit_price))
-        let value =   Number(
+      else {
+        let value = Number(
           (
-            ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /1) *
+            ((Number(dates[i]?.entry_price) - Number(dates[i]?.price)) / 1) *
             100
           ).toFixed(2)
-        ) 
-        
-        const finalvalue = value/100
-        console.log(value,",",finalvalue,"value")
-        if(value < -10 || value > 10){
+        )
+
+        const finalvalue = value / 100
+        if (value < -10 || value > 10) {
           a.push(finalvalue);
         }
-        
-        else{
+
+        else {
           a.push(Number(
             (
-              ((Number(dates[i]?.exit_price) - Number(dates[i]?.entry_price)) /1) *
+              ((Number(dates[i]?.entry_price) - Number(dates[i]?.price)) / 1) *
               100
             ).toFixed(4)
           ));
         }
-        
-       // console.log("====",a)
+
         let data = dates[i]?.createdAt?.split("T")[0]?.split("-");
         b.push(`${data[2]}-${data[1]}-${data[0]}`);
+        let price = Number(dates[i].price) != null ? dates[i].price : dates[i].entry_price
+        // console.log(price, 'elseprice');
+        const final = Number(price).toFixed(2)
+        c.push(final)
       }
     }
-    // console.log("====",[a,b])
-    return [a, b];
+    return [a, b, c];
   };
+
+ 
 
   useEffect(() => {
     getmasters();
   }, []);
 
   const get_a_Master_history = () => {
+    setLoad(true)
     setsingledata("");
     Axios.post(
       "trade/MasterAllTradeList",
 
       { id: selected },
+      // { id: '661f57c9ede6313e603e82e2' },
       {
         headers: {
           Authorization: localStorage.getItem("Mellifluous"),
@@ -233,7 +315,7 @@ const value =  Number(
     )
       .then((res) => {
         Object.entries(res.data.result)?.map((item, index) => {
-          console.log(item[1]?.future?.length, "item");
+          // console.log(item[1]?.future?.length, "item");
           if (item[1]?.margin?.length > 0) {
             setallmargin(true);
           }
@@ -241,27 +323,29 @@ const value =  Number(
             setallspot(true);
           }
           if (item[1]?.future?.length > 0) {
-          
+
             setallfuture(true);
           }
         });
         setsingledata(Object.entries(res.data.result));
+        setLoad(false)
       })
       .catch((err) => {
-        setsingledata("") 
+        setsingledata("")
         setallmargin(!true)
         setallspot(!true)
         setallfuture(!true)
+        setLoad(false)
       });
   };
 
-  console.log(singledata, "f", allfuture, "m", allmargin, "s", allspot);
+  // console.log(singledata, "f", allfuture, "m", allmargin, "s", allspot);
 
   useEffect(() => {
     get_a_Master_history();
   }, [selected]);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
@@ -297,7 +381,7 @@ const value =  Number(
               </div>
 
               <div className="select-option-token-tabs">
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }} className='token-tab-trade-opt'>
                   <Tabs
                     value={value}
                     onChange={handleChangeTab}
@@ -310,374 +394,501 @@ const value =  Number(
                   </Tabs>
                 </Box>
               </div>
+
+              <Box style={{ flex: "0 0 100%" }} sx={{ width: "100%" }}>
+                <CustomTabPanel value={value} index={0}>
+                  {
+                    load == true ? <BeatLoader size={8} /> :
+
+                      allspot || allfuture || allmargin ? (
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                          {/* <Grid container spacing={0}>
+                      <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                        <Item className={classes.headercls}></Item>
+                      </Grid>
+                    </Grid> */}
+
+                          <Grid container spacing={0} className="sco-block">
+
+                            {singledata &&
+                              singledata?.map((item, index) => {
+                                return (
+                                  <>
+                                    {/* {console.log(item, 'singledataitem')} */}
+                                    {item[1].spot.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item[0] ? item[0] : "-"}
+                                                <span className="Contracts comon-tab-division">
+                                                  Spot
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+                                          <LongShort
+                                            feedData={plottingfunction(item[1].spot)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                    {item[1].margin.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item[0]}
+                                                <span className="Contracts comon-tab-division">
+                                                  Margin
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+                                          <LongShort
+                                            feedData={plottingfunction(item[1].margin)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                    {item[1].future.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item[0]}
+                                                <span className="Contracts comon-tab-division">
+                                                  Futures
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+                                          {/* {console.log("Data", item[1].future)} */}
+                                          <LongShort
+                                            feedData={plottingfunction(item[1].future)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                    {/* <Grid
+                                  item
+                                  xs={12}
+                                  sm={12}
+                                  md={12}
+                                  lg={4}
+                                  xl={4}
+                                  key={index}
+                                >
+                                  <Item
+                                    className={classes.headercls}
+                                    id="comon-id-style-1"
+                                  >
+                                    <div className="analy-inner-block-head">
+                                      <div className="analy-inner-block">
+                                        <h5>
+                                          USDT & USDC premium
+                                          <span className="Contracts comon-tab-division">
+                                            Contract
+                                          </span>
+                                        </h5>
+                                      </div>
+                                      <div className="analyticsicon">
+                                        <img
+                                          src={analyticsicon}
+                                          alt="analyticsicon"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="tab-hours">
+                                      <span className="duration-period active">
+                                        5m
+                                      </span>
+                                      <span className="duration-period">1h</span>
+                                      <span className="duration-period">1d</span>
+                                    </div>
+                                    <SpotAnalysis
+                                      // feedData={plottingfunction(item[1].spot)}
+                                      feedData={dateFunction(item[1])}
+                                    />
+                                  </Item>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={12}
+                                  md={12}
+                                  lg={4}
+                                  xl={4}
+                                  key={index}
+                                >
+                                  <Item
+                                    className={classes.headercls}
+                                    id="comon-id-style-1"
+                                  >
+                                    <div className="analy-inner-block-head">
+                                      <div className="analy-inner-block">
+                                        <h5>
+                                          BTC basis
+                                          <span className="Contracts comon-tab-division">
+                                            Contract
+                                          </span>
+                                        </h5>
+                                      </div>
+                                      <div className="analyticsicon">
+                                        <img
+                                          src={analyticsicon}
+                                          alt="analyticsicon"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="tab-hours">
+                                      <span className="duration-period active">
+                                        5m
+                                      </span>
+                                      <span className="duration-period">1h</span>
+                                      <span className="duration-period">1d</span>
+                                    </div>
+                                    <BTCBasis
+                                      // feedData={plottingfunction(item[1].spot)}
+                                      feedData={PriceFunction(item[0], item[1])}
+                                    />
+                                  </Item>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={12}
+                                  md={12}
+                                  lg={4}
+                                  xl={4}
+                                  key={index}
+                                >
+                                  <Item
+                                    className={classes.headercls}
+                                    id="comon-id-style-1"
+                                  >
+                                    <div className="analy-inner-block-head">
+                                      <div className="analy-inner-block">
+                                        <h5>
+                                          {item[0] ? item[0] : "-"}
+                                          <span className="Contracts comon-tab-division">
+                                            Spot
+                                          </span>
+                                        </h5>
+                                      </div>
+                                      <div className="analyticsicon">
+                                        <img
+                                          src={analyticsicon}
+                                          alt="analyticsicon"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div className="tab-hours">
+                                      <span className="duration-period active">
+                                        5m
+                                      </span>
+                                      <span className="duration-period">1h</span>
+                                      <span className="duration-period">1d</span>
+                                    </div>
+                                    <BTCFuture
+                                      feedData={plottingfunction(item[1].spot)}
+                                    />
+                                  </Item>
+                                </Grid> */}
+                                  </>
+                                );
+                              })}
+
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div className="DataNotFound">
+                          <h3>Trade Not Found</h3>
+                        </div>
+                      )
+                  }
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                  {
+                    load == true ? <BeatLoader size={8} /> :
+
+                      allspot ? (
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+
+                          <Grid container spacing={0} className="sco-block">
+                            {singledata &&
+                              singledata?.map((item, index) => {
+                                return (
+                                  <>
+                                    {/* {console.log(item, 'spotItem')} */}
+                                    {item[1].spot.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item?.[0]}
+                                                <span className="Contracts comon-tab-division">
+                                                  Spot
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+                                          <LongShort
+                                            feedData={plottingfunction(item[1].spot)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                  </>
+                                );
+                              })}
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div className="DataNotFound">
+                          <h3>Trade Not Found</h3>
+                        </div>
+                      )
+                  }
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={2}>
+                  {
+                    load == true ? <BeatLoader size={8} /> :
+                      allmargin ? (
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+
+                          <Grid container spacing={0} className="sco-block">
+                            {singledata &&
+                              singledata?.map((item, index) => {
+                                return (
+                                  <>
+                                    {/* {console.log(item, 'marginItem')} */}
+                                    {item[1].margin.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item[0]}
+                                                <span className="Contracts comon-tab-division">
+                                                  Margin
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+                                          <LongShort
+                                            feedData={plottingfunction(item[1].margin)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                  </>
+                                );
+                              })}
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div className="DataNotFound">
+                          <h3>Trade Not Found</h3>
+                        </div>
+                      )}
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={3}>
+                  {
+                    load == true ? <BeatLoader size={8} /> :
+                      allfuture ? (
+                        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+
+                          <Grid container spacing={0} className="sco-block">
+                            {singledata &&
+                              singledata?.map((item, index) => {
+                                return (
+                                  <>
+                                    {/* {console.log(item, 'futureItem')} */}
+                                    {item[1].future.length > 0 && (
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={4}
+                                        xl={4}
+                                        key={index}
+                                      >
+                                        <Item
+                                          className={classes.headercls}
+                                          id="comon-id-style-1"
+                                        >
+                                          <div className="analy-inner-block-head">
+                                            <div className="analy-inner-block">
+                                              <h5>
+                                                {item[0]}
+                                                <span className="Contracts comon-tab-division">
+                                                  Futures
+                                                </span>
+                                              </h5>
+                                            </div>
+                                            <div className="analyticsicon">
+                                              <img
+                                                src={analyticsicon}
+                                                alt="analyticsicon"
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="tab-hours">
+                                            <span className="duration-period active">
+                                              5m
+                                            </span>
+                                            <span className="duration-period">1h</span>
+                                            <span className="duration-period">1d</span>
+                                          </div>
+
+                                          <LongShort
+                                            feedData={plottingfunction(item[1]?.future)}
+                                          />
+                                        </Item>
+                                      </Grid>
+                                    )}
+                                  </>
+                                );
+                              })}
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div className="DataNotFound">
+                          <h3>Trade Not Found</h3>
+                        </div>
+                      )}
+                </CustomTabPanel>
+              </Box>
             </Item>
           </Grid>
 
-          <Box sx={{ width: "100%" }}>
-            <CustomTabPanel value={value} index={0}>
-              {allspot || allfuture || allmargin ? (
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Grid container spacing={0}>
-                    <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-                      <Item className={classes.headercls}></Item>
-                    </Grid>
-                  </Grid>
 
-                  <Grid container spacing={0} className="sco-block">
-                    {singledata &&
-                      singledata?.map((item, index) => {
-                        return (
-                          <>
-                            {item[1].spot.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0] ? item[0] : "-"}
-                                        <span className="Contracts comon-tab-division">
-                                          Spot
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-                                  <LongShort
-                                    feedData={plottingfunction(item[1].spot)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-
-                            {item[1].margin.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0]}
-                                        <span className="Contracts comon-tab-division">
-                                          Margin
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-                                  <LongShort
-                                    feedData={plottingfunction(item[1].margin)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-
-                            {item[1].future.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0]}
-                                        <span className="Contracts comon-tab-division">
-                                          Futures
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-                                  {console.log("Data",item[1].future)}
-                                  <LongShort
-                                    feedData={plottingfunction(item[1].future)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-                          </>
-                        );
-                      })}
-                  </Grid>
-                </Grid>
-              ) : (
-                <div className="DataNotFound">
-                  <h3>Trade Not Found</h3>
-                </div>
-              )}
-            </CustomTabPanel>
-
-            <CustomTabPanel value={value} index={1}>
-              {allspot ? (
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Grid container spacing={0}>
-                    <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-                      <Item className={classes.headercls}></Item>
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={0} className="sco-block">
-                    {singledata &&
-                      singledata?.map((item, index) => {
-                        return (
-                          <>
-                            {item[1].spot.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0]}
-                                        <span className="Contracts comon-tab-division">
-                                          Spot
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-                                  <LongShort
-                                    feedData={plottingfunction(item[1].spot)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-                          </>
-                        );
-                      })}
-                  </Grid>
-                </Grid>
-              ) : (
-                <div className="DataNotFound">
-                  <h3>Trade Not Found</h3>
-                </div>
-              )}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-              {allmargin ? (
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Grid container spacing={0}>
-                    <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-                      <Item className={classes.headercls}></Item>
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={0} className="sco-block">
-                    {singledata &&
-                      singledata?.map((item, index) => {
-                        return (
-                          <>
-                            {item[1].margin.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0]}
-                                        <span className="Contracts comon-tab-division">
-                                          Margin
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-                                  <LongShort
-                                    feedData={plottingfunction(item[1].margin)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-                          </>
-                        );
-                      })}
-                  </Grid>
-                </Grid>
-              ) : (
-                <div className="DataNotFound">
-                  <h3>Trade Not Found</h3>
-                </div>
-              )}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={3}>
-              {allfuture ? (
-                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Grid container spacing={0}>
-                    <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-                      <Item className={classes.headercls}></Item>
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={0} className="sco-block">
-                    {singledata &&
-                      singledata?.map((item, index) => {
-                        return (
-                          <>
-                            {item[1].future.length > 0 && (
-                              <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={4}
-                                xl={4}
-                                key={index}
-                              >
-                                <Item
-                                  className={classes.headercls}
-                                  id="comon-id-style-1"
-                                >
-                                  <div className="analy-inner-block-head">
-                                    <div className="analy-inner-block">
-                                      <h5>
-                                        {item[0]}
-                                        <span className="Contracts comon-tab-division">
-                                          Futures
-                                        </span>
-                                      </h5>
-                                    </div>
-                                    <div className="analyticsicon">
-                                      <img
-                                        src={analyticsicon}
-                                        alt="analyticsicon"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="tab-hours">
-                                    <span className="duration-period active">
-                                      5m
-                                    </span>
-                                    <span className="duration-period">1h</span>
-                                    <span className="duration-period">1d</span>
-                                  </div>
-
-                                  <LongShort
-                                    feedData={plottingfunction(item[1]?.future)}
-                                  />
-                                </Item>
-                              </Grid>
-                            )}
-                          </>
-                        );
-                      })}
-                  </Grid>
-                </Grid>
-              ) : (
-                <div className="DataNotFound">
-                  <h3>Trade Not Found</h3>
-                </div>
-              )}
-            </CustomTabPanel>
-          </Box>
         </Grid>
       </Box>
     </div>

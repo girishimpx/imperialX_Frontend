@@ -70,7 +70,7 @@ const TradeViewMain = (props) => {
   const day = async(e) => {
     
     setActiveClass(e.target.id);
-    console.log(e.target.value,"value");
+    // console.log(e.target.value,"value");
     setInitialData([])
     try {
 

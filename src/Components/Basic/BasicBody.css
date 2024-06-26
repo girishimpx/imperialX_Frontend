@@ -772,6 +772,7 @@ button.Buy-SOL {
 
 .basic-exchange-page-main div#market-basic-left-block-id-left {
     max-height: 540px;
+    overflow-y: scroll;
 }
 
 .basic-exchange-page-main h5.market-advance {
@@ -810,30 +811,48 @@ button.non-active {
     color: #fff;
 }
 
-button.active-select, button.non-active:hover, button.active-select:hover {
+button.active-select,
+button.non-active:hover,
+button.active-select:hover {
     background: #25a750 !important;
     color: #fff;
 }
 
-.percentage-button-row{
+.percentage-button-row {
     margin-bottom: 10px !important;
 }
 
-.percentage-button-row button{
+.percentage-button-row button {
     min-width: 48px !important;
     height: 30px !important;
 }
-.future-form-block-right-part .available-max-block-left>div, .future-form-block-right-part .available-max-block-right>div{font-size: 8.5px;}
-.future-form-block-right-part .available-max-block-right>div{display: flex;gap:5px}
-.future-form-block-right-part .available-max-block-left, .future-form-block-right-part .available-max-block-right{width: 50% !important;}
-.future-form-block-right-part .available-max-block-left label, .future-form-block-right-part .available-max-block-right label {
+
+.future-form-block-right-part .available-max-block-left>div,
+.future-form-block-right-part .available-max-block-right>div {
+    font-size: 8.5px;
+}
+
+.future-form-block-right-part .available-max-block-right>div {
+    display: flex;
+    gap: 5px
+}
+
+.future-form-block-right-part .available-max-block-left,
+.future-form-block-right-part .available-max-block-right {
+    width: 50% !important;
+}
+
+.future-form-block-right-part .available-max-block-left label,
+.future-form-block-right-part .available-max-block-right label {
     width: auto !important;
     color: #ccc !important;
     font-size: 8.5px !important;
 }
+
 .future-form-block-right-part .available-max-block-right svg {
     font-size: 22px;
 }
+
 .available-max-block-right-svg {
     justify-content: flex-end;
 }
@@ -862,7 +881,7 @@ button.active-select, button.non-active:hover, button.active-select:hover {
     margin-left: 3px;
 }
 
-.leverage-rate > label {
+.leverage-rate>label {
     margin-bottom: 10px;
     font-size: 14px;
     color: #ccc;
@@ -878,7 +897,7 @@ div#overflow-x button {
     color: #ccc;
     padding-left: 0px;
     padding-right: 0px;
-    min-width: 50px ;
+    min-width: 50px;
 }
 
 .inner-matches-outer-inner-outer {
@@ -888,7 +907,7 @@ div#overflow-x button {
     margin-top: 12px;
 }
 
-.inner-matches-outer-inner-outer > button {
+.inner-matches-outer-inner-outer>button {
     position: absolute;
     max-width: 30px !important;
     min-width: 30px;
@@ -905,18 +924,22 @@ div#overflow-x button {
 .inner-matches-outer-inner-outer button#slideRight {
     right: -20px;
 }
+
 .leverage-caution-outer {
     margin-top: 15px;
 }
+
 .leverage-caution {
     text-align: left;
     font-size: 12px;
     margin-bottom: 5px;
 }
+
 .leverage-caution label {
     color: #ccc;
     margin-right: 5px;
 }
+
 .font-size-for-head {
     color: #fff;
 }
@@ -940,7 +963,9 @@ div#overflow-x button {
     margin-bottom: 20px;
 }
 
-.MuiStack-root.leverage-row-stack fieldset, .MuiStack-root.leverage-row-stack input, .MuiStack-root.leverage-row-stack div {
+.MuiStack-root.leverage-row-stack fieldset,
+.MuiStack-root.leverage-row-stack input,
+.MuiStack-root.leverage-row-stack div {
     font-size: 14px !important;
     /* padding: 0px; */
     border: none;
@@ -973,7 +998,8 @@ button.leveragePercentRate {
     color: #fff;
 }
 
-.available-max-block-right div, .available-max-block-left div {
+.available-max-block-right div,
+.available-max-block-left div {
     width: auto !important;
 }
 
@@ -989,7 +1015,8 @@ p.para-Leverage-Confirm {
     margin-bottom: 20px;
 }
 
-.MuiStack-root.leverage-row-stack > div, .MuiStack-root.leverage-row-stack button {
+.MuiStack-root.leverage-row-stack>div,
+.MuiStack-root.leverage-row-stack button {
     width: 50%;
 }
 
@@ -1012,24 +1039,32 @@ button.Sell-SOL {
     text-transform: none;
 }
 
-.available-max-block-left-right .available-max-block-right, .available-max-block-left-right .available-max-block-left {
+.available-max-block-left-right .available-max-block-right,
+.available-max-block-left-right .available-max-block-left {
     display: flex;
     flex-direction: column;
     gap: 1px !important;
 }
 
-.available-max-block-left-right{margin-top: 10px !important;padding-bottom: 0px !important; border-bottom: none !important;}
+.available-max-block-left-right {
+    margin-top: 10px !important;
+    padding-bottom: 0px !important;
+    border-bottom: none !important;
+}
 
-.sell-buy-btns-stack button{
+.sell-buy-btns-stack button {
     font-size: 12px;
     display: flex;
     flex-direction: column;
     margin-top: 5px !important;
 }
 
-.available-max-block-available-max-buy{padding-bottom: 5px !important;}
+.available-max-block-available-max-buy {
+    padding-bottom: 5px !important;
+}
 
-.available-max-block.available-max-buy.available-max-block-available-max-buy .available-max-block-left, .available-max-block.available-max-buy.available-max-block-available-max-buy .available-max-block-right {
+.available-max-block.available-max-buy.available-max-block-available-max-buy .available-max-block-left,
+.available-max-block.available-max-buy.available-max-block-available-max-buy .available-max-block-right {
     gap: 2px !important;
 }
 
@@ -1045,6 +1080,7 @@ button.Sell-SOL {
     padding-bottom: 0px;
     height: 43px;
 }
+
 .MuiStack-root.price-input-block-outer .MuiFormControl-root.MuiTextField-root {
     margin-top: 0px;
 }
@@ -1068,7 +1104,7 @@ button.Sell-SOL {
     border: none !important;
 }
 
-.basic-exchange-page.basic-exchange-page-main.future-main-page-class .tabsection .MuiFormControl-root.select-tpsl-options-form-control > div > div {
+.basic-exchange-page.basic-exchange-page-main.future-main-page-class .tabsection .MuiFormControl-root.select-tpsl-options-form-control>div>div {
     padding-top: 8px;
     padding-bottom: 5px;
     padding-left: 5px;
@@ -1093,26 +1129,36 @@ button.Sell-SOL {
     background: #fff;
     opacity: 1;
 }
-.thumslider-design-class span.MuiSlider-track{height: 2px;background: #000;}
-.thumslider-design-class span.MuiSlider-mark, .thumslider-design-class .MuiSlider-thumb {
+
+.thumslider-design-class span.MuiSlider-track {
+    height: 2px;
+    background: #000;
+}
+
+.thumslider-design-class span.MuiSlider-mark,
+.thumslider-design-class .MuiSlider-thumb {
     border-radius: 50% !important;
     height: 10px !important;
     width: 10px !important;
     margin-top: -5px !important;
 }
+
 .thumslider-design-class span.MuiSlider-valueLabelLabel {
     font-size: 11px !important;
 }
+
 .thumslider-design-class span.MuiSlider-valueLabel {
     padding-left: 0px;
     padding-right: 4px;
     top: -28px !important;
 }
+
 .thumslider-design-class span.MuiSlider-root {
     width: 94%;
     margin-left: -15px;
     padding-bottom: 0px;
 }
+
 .thumslider-design-class {
     overflow: hidden;
 }
@@ -1138,6 +1184,14 @@ span.rowcoin.rowcoin-span span {
 
 .row-flex-display-table svg {
     color: #ffe900 !important;
+}
+
+
+.chg-table tr {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
 }
 
 @media (max-width:767.98px) {
@@ -1188,7 +1242,7 @@ span.rowcoin.rowcoin-span span {
         margin-top: 10px;
     }
 
-    .order-book-part-basic-right #sell-buy-form-outer-id{
+    .order-book-part-basic-right #sell-buy-form-outer-id {
         margin-top: 0px !important;
         height: auto !important;
         margin-bottom: 0px !important;
@@ -1306,8 +1360,8 @@ span.rowcoin.rowcoin-span span {
     }
 } */
 
-@media (max-width:1199.98px){
-    .leverage-adjustment-modal > .MuiBox-root {
+@media (max-width:1199.98px) {
+    .leverage-adjustment-modal>.MuiBox-root {
         width: 95% !important;
     }
 }
@@ -1317,7 +1371,7 @@ span.rowcoin.rowcoin-span span {
         display: none;
     }
 
-    .basic-exchange-page.basic-exchange-page-main.future-main-page-class .tabsection{
+    .basic-exchange-page.basic-exchange-page-main.future-main-page-class .tabsection {
         display: block !important;
     }
 

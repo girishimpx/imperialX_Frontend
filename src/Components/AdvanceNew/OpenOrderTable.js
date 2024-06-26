@@ -13,79 +13,232 @@ import Button from "@mui/material/Button";
 import { toast, Toaster, ToastBar } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from 'react';
+import CryptoJS from 'crypto-js';
+import WebSocket from 'websocket';
+
+
 
 export default function OpenOrderTable({ selectedPairs, ordreType, reload }) {
   const [loading, setLoading] = React.useState(true);
   const [tradelist, settradelist] = React.useState();
   const [state, setState] = React.useState(false);
   const [pair, sertPair] = React.useState("All");
-  console.log(ordreType, "adouygfipadgi");
-  React.useEffect(() => {
-    settradelist("");
-    let token = localStorage.getItem("Mellifluous");
-    if (token) {
-      Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: selectedPairs }, {
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then((res) => {
-          let data = [];
-          res?.data?.result.map((item, index) => {
-            if (item.trade_at == "margin" || item.trade_at == "Margin") {
-              if (item.status == "init" || item.status == "partially_filled") {
-                if (item?.order_type == ordreType) {
-                  data.push(item);
-                }
-              }
-            }
-          });
-          if (data.length > 0) {
-            settradelist(data.reverse());
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-    }
-  }, [state, selectedPairs, ordreType]);
+  const [orderlist, setOrderlist] = React.useState();
+  const [cancelorder, setCancelOrder] = React.useState();
+  // console.log(ordreType, "adouygfipadgi");
+  const Token = window.localStorage.getItem('Mellifluous')
+  
 
-  const [isZero, setIsZero] = React.useState(reload);
+  const getUserOpenOrders = async() => {
+    // alert(selectedPairs);
 
-  React.useEffect(() => {
-    if(isZero == 1){
-    settradelist("");
-    let token = localStorage.getItem("Mellifluous");
-    if (token) {
-      Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: selectedPairs }, {
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then((res) => {
-          let data = [];
-          res?.data?.result.map((item, index) => {
-            if (item.trade_at == "margin" || item.trade_at == "Margin") {
-              if (item.status == "init" || item.status == "partially_filled") {
-                if (item?.order_type == ordreType) {
-                  data.push(item);
-                }
-              }
-            }
-          });
-          if (data.length > 0) {
-            settradelist(data.reverse());
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-    }
-    setIsZero(0)
+    const { data } = await Axios.post(`/bybit/getopenorders`,{ category : 'spot', pair : selectedPairs }, {
+      headers: {
+        Authorization: localStorage.getItem("Mellifluous"),
+      }
+    })
+
+    if(data?.success){
+      setOrderlist(data?.result);
+    } 
+
   }
-  }, [reload]);
+
+  useEffect(() => {
+    getUserOpenOrders();
+  }, [selectedPairs])
+
+
+  const connectUserSocket = async() => {
+
+    var decryptedApiKey;
+    var decryptedSecretKey;
+
+    try {
+      
+      await Axios.get(`/bybit/getuserdata`, {
+         headers: {
+           Authorization: localStorage.getItem("Mellifluous"),
+         },
+       })
+         .then((res) => {
+             console.log(res?.data?.success,"exzi")
+             if(res?.data?.success){
+               const encryptedApiKey = res.data.result.one;
+               const encryptedSecretKey = res.data.result.two; 
+               // alert(encryptedApiKey);
+               function decryptCaesar(ciphertext, shift) {
+                 return ciphertext
+                   .split("")
+                   .map(char => {
+                     if (char.match(/[a-z]/i)) {
+                       let code = char.charCodeAt(0);
+                       let start = char.toLowerCase() === char ? 'a'.charCodeAt(0) : 'A'.charCodeAt(0);
+                       return String.fromCharCode((code - start - shift + 26) % 26 + start);
+                     } else if (char.match(/[0-9]/)) {
+                       let code = char.charCodeAt(0);
+                       let start = '0'.charCodeAt(0);
+                       return String.fromCharCode((code - start - shift + 10) % 10 + start);
+                     }
+                     return char;
+                   })
+                   .join("");
+               }
+               decryptedApiKey = decryptCaesar(encryptedApiKey, 3);
+               decryptedSecretKey = decryptCaesar(encryptedSecretKey, 3);
+  
+             }
+         })
+         .catch((err) => {
+          console.log(err,'err');
+         });
+ 
+     } catch (error) {
+       console.log(error,'error');
+     }
+
+     const apiKey = decryptedApiKey;
+     const apiSecret = decryptedSecretKey;
+     const endpoint = 'wss://stream.bybit.com/v5/private';
+
+     // Generate expires timestamp
+    const expires = new Date().getTime() + 30000; // Example: 10 seconds from now
+
+    // Generate signature
+    const signature = CryptoJS.HmacSHA256(`GET/realtime${expires}`, apiSecret).toString();
+
+    // Create WebSocket connection
+    const client = new WebSocket.w3cwebsocket(endpoint);
+
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+
+      // Send authentication message
+      client.send(JSON.stringify({
+        op: 'auth',
+        args: [apiKey, expires, signature]
+      }));
+
+      client.send(JSON.stringify({
+        op: 'subscribe',
+        args: [
+          'order.spot',
+          // Add more topics as needed
+        ]
+      }));
+    };
+    // console.log(signature,apiKey,expires,"params")
+    client.onmessage = (event) => {
+      // console.log('Message received:', event.data);
+      const data = JSON.parse(event.data);
+      // console.log(data,"datasa")
+
+      // Check if the message is an order update
+      if (data?.data?.length > 0) {
+        const filterorder = []
+        for(let i =0; i < data?.data?.length; i++){
+          const orders = data?.data[i]
+          // console.log('Orders', orders);
+          if(orders?.orderType.toLowerCase()  == ordreType.toLowerCase() ){
+            filterorder.push(orders)
+          }
+
+        }
+        // console.log('filterorder', filterorder);
+        setOrderlist(filterorder);
+      }
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    client.onclose = () => {
+      console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    // Cleanup function
+    return () => {
+      console.log('Cleaning up WebSocket connection');
+      client.close();
+    };
+
+  }
+
+
+  useEffect(() => {
+    connectUserSocket();
+}, []);
+
+  // React.useEffect(() => {
+  //   settradelist("");
+  //   let token = localStorage.getItem("Mellifluous");
+  //   if (token) {
+  //     Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: selectedPairs }, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         let data = [];
+  //         res?.data?.result.map((item, index) => {
+  //           if (item.trade_at == "margin" || item.trade_at == "Margin") {
+  //             if (item.status == "init" || item.status == "partially_filled") {
+  //               if (item?.order_type == ordreType) {
+  //                 data.push(item);
+  //               }
+  //             }
+  //           }
+  //         });
+  //         if (data.length > 0) {
+  //           settradelist(data.reverse());
+  //         }
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         setLoading(false);
+  //       });
+  //   }
+  // }, [state, selectedPairs, ordreType]);
+
+  // const [isZero, setIsZero] = React.useState(reload);
+
+  // React.useEffect(() => {
+  //   if(isZero == 1){
+  //   settradelist("");
+  //   let token = localStorage.getItem("Mellifluous");
+  //   if (token) {
+  //     Axios.post(`${Consts.BackendUrl}/trade/tradeHistory`, { pair: selectedPairs }, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         let data = [];
+  //         res?.data?.result.map((item, index) => {
+  //           if (item.trade_at == "margin" || item.trade_at == "Margin") {
+  //             if (item.status == "init" || item.status == "partially_filled") {
+  //               if (item?.order_type == ordreType) {
+  //                 data.push(item);
+  //               }
+  //             }
+  //           }
+  //         });
+  //         if (data.length > 0) {
+  //           settradelist(data.reverse());
+  //         }
+  //         setLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         setLoading(false);
+  //       });
+  //   }
+  //   setIsZero(0)
+  // }
+  // }, [reload]);
+
 
   const header = [
     "Time",
@@ -100,90 +253,182 @@ export default function OpenOrderTable({ selectedPairs, ordreType, reload }) {
     "Action",
   ];
 
-  const cancelOrder = (selectedItem) => {
-    let data = {
-      instId: selectedItem.pair,
-      ordId: selectedItem.order_id,
-      // instId: "BTC-USDT",
-      // ordId: "1252451",
-    };
+  const bybitcancelOrder = async(selectedItem)=>{
+    try{
+      let params = {
+        symbol:selectedItem.symbol,
+        orderId:selectedItem.orderId
+      }
+      // console.log(data,'datasaw')
 
-    Axios.post(`${Consts.BackendUrl}/trade/cancelTrade`, data, {
-      headers: {
-        Authorization: localStorage.getItem("Mellifluous"),
-      },
-    })
-      .then((res) => {
-        if (res.data.success) {
-          toast.success(`${res.data.message}`, {
-
-            duration: 3000,
-            position: "top-center",
-
-            // Styling
-            style: {
-              padding: "1rem",
-              fontSize: "15px",
-              color: "green",
-              fontWeight: "bold",
+      const { data } = await Axios.post(`/bybit/cancelorder`, params, {
+            headers: {
+              Authorization: localStorage.getItem("Mellifluous"),
             },
-            className: "",
+          })
+          console.log(data,'cancelorder')
+          // alert('outsideIF')
+          if(data?.success){
+            // alert('IF')
+            // console.log(cancelorder?.data?.result,'cancelorderreault')
+            setCancelOrder(data?.result)
+            //  ('elseeeIF')
+            // toast.success(cancelorder?.message)
+            toast.success(`${data?.message}`, {
 
-            // Custom Icon
-            icon: "👏",
+              duration: 5000,
+              position: "top-center",
 
-            // Change colors of success/error/loading icon
-            iconTheme: {
-              primary: "#000",
-              secondary: "#fff",
-            },
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
 
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
-          setTimeout(() => {
-            setState(!state);
-          }, 1000);
-        } else {
+              // Custom Icon
+              icon: "👏",
 
-          toast.error(`${res.data.message}`, {
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
 
-            duration: 4000,
-            position: "top-center",
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
 
-            // Styling
-            style: {
-              padding: "1rem",
-              fontSize: "15px",
-              color: "red",
-              fontWeight: "bold",
-            },
-            className: "",
+          }else{
+            toast.error(`${data?.message}`,{
+            // toast.error(cancelorder?.message, {
 
-            // Custom Icon
-            icon: "",
+              duration: 5000,
+              position: "top-center",
 
-            // Change colors of success/error/loading icon
-            iconTheme: {
-              primary: "#000",
-              secondary: "#fff",
-            },
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "red",
+                fontWeight: "bold",
+              },
+              className: "",
 
-            // Aria
-            ariaProps: {
-              role: "status",
-              "aria-live": "polite",
-            },
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err?.response?.data?.message);
-      });
-  };
+              // Custom Icon
+              // icon: "👏",
+
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "red",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+          }
+
+    }catch(error){
+      console.log(error,"error")
+    } finally {
+      getUserOpenOrders();
+    }
+   
+  }
+
+  // const cancelOrder = (selectedItem) => {
+  //   let data = {
+  //     instId: selectedItem.pair,
+  //     ordId: selectedItem.order_id,
+  //     // instId: "BTC-USDT",
+  //     // ordId: "1252451",
+  //   };
+
+  //   Axios.post(`${Consts.BackendUrl}/trade/cancelTrade`, data, {
+  //     headers: {
+  //       Authorization: localStorage.getItem("Mellifluous"),
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (res.data.success) {
+  //         toast.success(`${res.data.message}`, {
+
+  //           duration: 3000,
+  //           position: "top-center",
+
+  //           // Styling
+  //           style: {
+  //             padding: "1rem",
+  //             fontSize: "15px",
+  //             color: "green",
+  //             fontWeight: "bold",
+  //           },
+  //           className: "",
+
+  //           // Custom Icon
+  //           icon: "👏",
+
+  //           // Change colors of success/error/loading icon
+  //           iconTheme: {
+  //             primary: "#000",
+  //             secondary: "#fff",
+  //           },
+
+  //           // Aria
+  //           ariaProps: {
+  //             role: "status",
+  //             "aria-live": "polite",
+  //           },
+  //         });
+  //         setTimeout(() => {
+  //           setState(!state);
+  //         }, 1000);
+  //       } else {
+
+  //         toast.error(`${res.data.message}`, {
+
+  //           duration: 4000,
+  //           position: "top-center",
+
+  //           // Styling
+  //           style: {
+  //             padding: "1rem",
+  //             fontSize: "15px",
+  //             color: "red",
+  //             fontWeight: "bold",
+  //           },
+  //           className: "",
+
+  //           // Custom Icon
+  //           icon: "",
+
+  //           // Change colors of success/error/loading icon
+  //           iconTheme: {
+  //             primary: "#000",
+  //             secondary: "#fff",
+  //           },
+
+  //           // Aria
+  //           ariaProps: {
+  //             role: "status",
+  //             "aria-live": "polite",
+  //           },
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err?.response?.data?.message);
+  //     });
+  // };
 
   return (
     <TableContainer>
@@ -200,30 +445,33 @@ export default function OpenOrderTable({ selectedPairs, ordreType, reload }) {
             })}
           </TableRow>
         </TableHead>
-        {tradelist && (
+        {orderlist && (
           <TableBody>
-            {tradelist.map((row) => (
+            {orderlist.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>
-                  {row.createdAt
-                    ? new Date(row.createdAt).toLocaleString()
+                  {row.createdTime
+                    ? new Date(row.createdTime).toLocaleString()
                     : "-"}
                 </TableCell>
-                <TableCell>{row.order_type ? row.order_type : "-"}</TableCell>
-                <TableCell>{row.pair ? row.pair : "-"}</TableCell>
-                <TableCell sx={{ color: `${row.trade_type == "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.price ? row.price : "0"}</TableCell>
+                <TableCell>{row.orderType ? row.orderType : "-"}</TableCell>
+                <TableCell>{row.symbol ? row.symbol : "-"}</TableCell>
+                <TableCell sx={{ color: `${row.side == "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.price ? row.price : "0"}</TableCell>
                 <TableCell>{row.remaining ? row.remaining : "0"}</TableCell>
                 <TableCell>{row.trade_at ? row.trade_at : "-"}</TableCell>
-                <TableCell sx={{ color: `${row.trade_type == "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.trade_type ? row.trade_type : "-"}</TableCell>
-                <TableCell>{row.volume ? row.volume : "-"}</TableCell>
-                <TableCell>{row.status ? row.status : "-"}</TableCell>
+                <TableCell sx={{ color: `${row.side == "buy" ? "#25DEB0 !important" : "#CA3F64 !important"}` }}>{row.side ? row.side : "-"}</TableCell>
+                <TableCell>{row.qty ? row.qty : "-"}</TableCell>
+                <TableCell>{row.orderStatus ? row.orderStatus : "-"}</TableCell>
                 <TableCell>
                   <Button
+                    // onClick={() => {
+                    //   cancelOrder(row);
+                    // }}
                     onClick={() => {
-                      cancelOrder(row);
+                      bybitcancelOrder(row);
                     }}
                     variant="contained"
                     style={{ fontSize: "10px" }}
@@ -243,7 +491,7 @@ export default function OpenOrderTable({ selectedPairs, ordreType, reload }) {
         </div>
       )}
 
-      {!loading && !tradelist && (
+      {!loading && !orderlist && (
         <div style={{ backgroundColor: "lightgrey" }}>
           <h5 style={{ padding: "1rem", color: "black" }}>Data Not Found</h5>
         </div>

@@ -24,6 +24,11 @@ import TextField from "@mui/material/TextField";
 import { useLocation } from "react-router-dom";
 import { toast, Toaster, ToastBar } from "react-hot-toast";
 import TradeViewMain from "../TradeView/TradeViewMain";
+import Modal from "@mui/material/Modal";
+import Consts from "../../Constansts";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from "@mui/material/IconButton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -75,7 +80,9 @@ function a11yProps(index) {
 }
 
 var ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
-const BasicBody = () => {
+const endpoint = Consts.bybitsocketurl;
+
+const BasicBody = ({ data }) => {
   const [btc, setBtc] = useState();
   const [eth, setEth] = useState();
   const [xpr, setxrp] = useState();
@@ -88,17 +95,17 @@ const BasicBody = () => {
 
   const history = useLocation();
 
-  const [assetList, setAssetList] = useState(["BTC-USDT", "ETH-USDT"]);
+  const [assetList, setAssetList] = useState(["BTCUSDT", "ETHUSDT"]);
   const [value, setValue] = React.useState(0);
-  const [pair, setPair] = useState("BTC-USDT");
+  const [pair, setPair] = useState("BTCUSDT");
   const [oldpair, setoldpair] = useState("");
   const [selPair, setSelPair] = useState("");
   const [ers, seters] = useState();
 
-  const [selec,setSelc] = useState("")
-  const [selec1,setSelc1] = useState("BTC-USDT")
+  const [selec, setSelc] = useState("")
+  const [selec1, setSelc1] = useState("BTCUSDT")
 
-  const [reload,setReload] = useState(0);
+  const [reload, setReload] = useState(0);
 
   const handleReload = (value) => {
     setReload(value)
@@ -114,7 +121,7 @@ const BasicBody = () => {
       .then((res) => {
         let finds;
         res.data.result[0].data.find((item) => {
-          if (item.instFamily == "BTC-USDT") {
+          if (item.instFamily == "BTCUSDT") {
             finds = item.instId;
           }
         });
@@ -149,61 +156,61 @@ const BasicBody = () => {
     ],
   };
 
-  const Ticker = () => {
-    ws.onopen = (event) => {
-      ws.send(JSON.stringify(datas));
-    };
+  // const Ticker = () => {
+  //   ws.onopen = (event) => {
+  //     ws.send(JSON.stringify(datas));
+  //   };
 
-    ws.onmessage = (event) => {
-      const response = JSON.parse(event.data);
+  //   ws.onmessage = (event) => {
+  //     const response = JSON.parse(event.data);
 
-      try {
-        if (response?.arg?.channel != "books") {
-          setBtc(response?.data[0]);
-        } else {
-          if (response?.data[0]?.asks.length > 0) {
-            if (
-              response?.data[0]?.asks.slice(0, 1)[0] &&
-              response?.data[0]?.asks.slice(0, 1)[0][0] != "0" &&
-              response?.data[0]?.asks.slice(0, 1)[0][1] != "0" &&
-              response?.data[0]?.asks.slice(0, 1)[0][3] != "0"
-            ) {
-              let values = response?.data[0]?.asks.slice(0, 1)[0];
-              values.push(response?.arg?.instId);
-              setSellspot(values);
-            }
-          }
-          if (response?.data[0]?.bids.length > 0) {
-            if (
-              response?.data[0]?.bids.slice(0, 1)[0] &&
-              response?.data[0]?.bids.slice(0, 1)[0][0] != "0" &&
-              response?.data[0]?.bids.slice(0, 1)[0][1] != "0" &&
-              response?.data[0]?.bids.slice(0, 1)[0][3] != "0"
-            ) {
-              let values = response?.data[0]?.bids.slice(0, 1)[0];
-              values.push(response?.arg?.instId);
-              setbuyspot(values);
-              // {console.log(values,"open3333")}
-            }
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  };
+  //     try {
+  //       if (response?.arg?.channel != "books") {
+  //         // setBtc(response?.data[0]);
+  //       } else {
+  //         if (response?.data[0]?.asks.length > 0) {
+  //           if (
+  //             response?.data[0]?.asks.slice(0, 1)[0] &&
+  //             response?.data[0]?.asks.slice(0, 1)[0][0] != "0" &&
+  //             response?.data[0]?.asks.slice(0, 1)[0][1] != "0" &&
+  //             response?.data[0]?.asks.slice(0, 1)[0][3] != "0"
+  //           ) {
+  //             let values = response?.data[0]?.asks.slice(0, 1)[0];
+  //             values.push(response?.arg?.instId);
+  //             // setSellspot(values);
+  //           }
+  //         }
+  //         if (response?.data[0]?.bids.length > 0) {
+  //           if (
+  //             response?.data[0]?.bids.slice(0, 1)[0] &&
+  //             response?.data[0]?.bids.slice(0, 1)[0][0] != "0" &&
+  //             response?.data[0]?.bids.slice(0, 1)[0][1] != "0" &&
+  //             response?.data[0]?.bids.slice(0, 1)[0][3] != "0"
+  //           ) {
+  //             let values = response?.data[0]?.bids.slice(0, 1)[0];
+  //             values.push(response?.arg?.instId);
+  //             // setbuyspot(values);
+  //             // {console.log(values,"open3333")}
+  //           }
+  //         }
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  // };
 
-  useEffect(() => {
-    setSelPair(pair);
-  }, [pair]);
+  // useEffect(() => {
+  //   setSelPair(pair);
+  // }, [pair]);
 
-  useEffect(() => {
-    Ticker();
-    return () => {
-      ws.close();
-      ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
-    };
-  }, [selPair]);
+  // useEffect(() => {
+  //   Ticker();
+  //   return () => {
+  //     ws.close();
+  //     ws = new WebSocket("wss://ws.okx.com:8443/ws/v5/public?brokerId=197");
+  //   };
+  // }, [selPair]);
 
   useEffect(() => {
     if (oldpair) {
@@ -263,7 +270,7 @@ const BasicBody = () => {
 
   useEffect(() => {
     if (history.state) {
-      setPair(history.state?.data?.instId);
+      setPair(history.state?.pairs);
     }
   }, [history.state]);
 
@@ -271,17 +278,118 @@ const BasicBody = () => {
     getAllTradePairs();
   }, []);
 
-  const selectPairsss = (data)=>{
-    console.log(data,'fasdfsdf')
+  const selectPairsss = (data) => {
+    // console.log(data,'fasdfsdf')
     setSelc(data)
   }
 
-  useEffect(()=>{
-    if(selec != ''){
+  useEffect(() => {
+    if (selec != '') {
       setSelc1(selec)
     }
-   
-  },[selec])
+
+  }, [selec])
+
+  useEffect(() => {
+    var symbol = pair
+    // symbol = symbol.replace('-', '');
+    const client = new WebSocket(endpoint);
+
+    // console.log('Attempting to connect to WebSocket', endpoint);
+
+    client.onopen = () => {
+      // console.log('WebSocket Client Connected');
+      setInterval(() => {
+        client.send('ping'); // Send ping to keep connection alive
+      }, 30000);
+
+      client.send(JSON.stringify({ op: 'subscribe', args: [`orderbook.${200}.${symbol}`] }));
+    };
+
+    client.onmessage = (event) => {
+      // setTimeout(() => {
+      const response = JSON.parse(event.data);
+      // console.log('Message received from socket FUTURE', response );
+      // Handle incoming messages from WebSocket
+
+      if (response?.data?.b.length > 0) {
+
+        if (response?.data?.b[0] != 0 && response?.data?.b[1] != 0) {
+          var values = response?.data?.b[0];
+          values.push(response?.data?.s);
+          // console.log(values,'REDRESPONSEFUTURE');
+          setbuyspot(values);
+        }
+
+        if (response?.data?.a[0] != 0 && response?.data?.a[1] != 0) {
+          var values1 = response?.data?.a[0];
+          values.push(response?.data?.s);
+          // console.log(values1,'REDRESPONSEFUTURE');
+          setSellspot(values1);
+        }
+
+      }
+      // }, 2000)
+
+    };
+
+    client.onclose = () => {
+      // console.log('WebSocket Connection Closed');
+      // Handle WebSocket closed
+    };
+
+    client.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+      // Handle WebSocket errors
+    };
+
+    // Cleanup function
+    return () => {
+      // console.log('Cleaning up WebSocket connection');
+      client.close();
+    };
+  }, [pair]);
+
+
+  const handleOrderBookData = async () => {
+    try {
+
+      const { data } = await Axios.post(
+        `/bybit/orderbook`,
+        { type: 'linear', ccy: pair },
+        {
+          headers: {
+            Authorization: localStorage?.getItem("Mellifluous"),
+          },
+        }
+      );
+      if (data?.success) {
+        // console.log(data,'DATA-ORDERBOOK');
+        if (data?.result.length > 1) {
+          setBtc(data?.result)
+        } else {
+          setBtc(data?.result[0])
+        }
+
+      } else {
+        setBtc([])
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    handleOrderBookData()
+  }, [pair])
+
+  const [open, setOpen] = useState(false);
+
+
+  const handleClearClick = () => {
+    setsearchpair('')
+  }
 
   return (
     <div className="dashboard-body spot-body basic-page-body">
@@ -292,28 +400,99 @@ const BasicBody = () => {
             <Grid container spacing={0}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                 <div className="top-part-all-page basic-page-top-part">
-                  <div className="top-col-1">
+                  {/* <div className="top-col-1">
                     <span></span>
                     <span></span>
                   </div>
                   <div className="top-col-2">
                     <span></span>
                     <span></span>
+                  </div> */}
+                  <div className="top-col-4 comon-flex-top-bot-style">
+                    <span style={{ textAlign: "left" }}>Future</span>
+                    <div
+                      className="iconDiv"
+                      onClick={() => {
+                        setOpen(true);
+                        setsearchpair('')
+                      }}
+                    >
+                      {" "}
+                      <span style={{ color: "#25DEB0" }}>{pair} </span>
+                      <ArrowDropDownIcon />
+                    </div>
+                    <Modal
+                      open={open}
+                      onClose={() => {
+                        // getAllTradePairs();
+                        setOpen(false);
+                      }}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                      className="account-qr-code-pop-up-modal"
+                    >
+                      <Box id="account-qr-code-pop-up-modal-ids">
+                        <div
+                          className="menu-pair-heads"
+                          style={{ "flex-direction": "column" }}
+                        >
+
+                          <Grid container spacing={5} className="basic-body-container">
+
+                            <Grid
+                              item
+                              xs={12}
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              xl={12}
+                              className="market-basic-left-block"
+                              id="market-basic-left-block-id-left"
+                            >
+                              <h5 className="market-advance">Markets</h5>
+                              <div className="advance-search">
+                                <TextField
+                                  id="outlined-basic"
+                                  label="Search"
+                                  variant="outlined"
+                                  value={searchedpair}
+                                  onChange={(e) => {
+                                    // console.log(e.target.value.toUpperCase(), 'e.target.value');
+                                    setsearchpair(e.target.value.toUpperCase());
+                                  }}
+                                />
+                              </div>
+                              {/* <IconButton
+                                type="button"
+                                sx={{ p: "10px" }}
+                                aria-label="search"
+                                onClick={handleClearClick}
+                              >
+                                <CloseIcon />
+                              </IconButton> */}
+                              <AdvanceMarketTab pairs={pair} searchpair={searchedpair} selectPairsss={selectPairsss} />
+                            </Grid>
+
+                          </Grid>
+                        </div>
+                      </Box>
+                    </Modal>
                   </div>
                   <div className="top-col-3 comon-flex-top-bot-style">
+
                     <span
                       style={{
                         color: `${findPercentage(
                           Number(btc?.idxPx),
                           Number(btc?.open24h)
                         ) > 0
-                            ? "#10D876 !important"
-                            : "#CA3F64 !important"
+                          ? "#10D876 !important"
+                          : "#CA3F64 !important"
                           }`,
                       }}
-                    >{`${btc?.open24h
-                        ? `${Number(btc?.open24h).toLocaleString()}`
-                        : "0"
+                    >{`${btc?.openInterestValue
+                      ? `${Number(btc?.openInterestValue).toLocaleString()}`
+                      : "0"
                       }`}</span>
                     <span
                       style={{
@@ -321,44 +500,54 @@ const BasicBody = () => {
                           Number(btc?.idxPx),
                           Number(btc?.open24h)
                         ) > 0
-                            ? "#10D876 !important"
-                            : "#CA3F64 !important"
+                          ? "#10D876 !important"
+                          : "#CA3F64 !important"
                           } `,
                       }}
-                    >{`${btc?.idxPx
-                        ? findPercentage(
-                          Number(btc?.idxPx),
-                          Number(btc?.open24h)
-                        )
-                        : 0
+                    // >{`${btc?.idxPx
+                    //     ? findPercentage(
+                    //       Number(btc?.idxPx),
+                    //       Number(btc?.open24h)
+                    //     )
+                    //     : 0
+                    //   }%`}</span>
+                    >{`${btc?.price24hPcnt
+                      ? btc?.price24hPcnt
+                      : 0
                       }%`}</span>
                   </div>
                   <div className="top-col-4 comon-flex-top-bot-style">
-                    <span>{pair ? pair.split("-")[0] : "USD"}</span>
-                    <span>{`${btc?.idxPx
+                    {/* <span>{pair ? pair.split("-")[0] : "USD"}</span> */}
+                    <span>{pair ? pair.slice(0, -4) : "USD"}</span>
+                    {/* <span>{`${btc?.idxPx
                         ? `${Number(btc?.idxPx).toFixed(3).toLocaleString()}`
                         : "0"
+                      }`}</span> */}
+                    <span>{`${buyspot?.length > 0
+                      ? `${Number(buyspot[0]).toFixed(3).toLocaleString()}`
+                      : "0"
                       }`}</span>
                   </div>
                   <div className="top-col-5 comon-flex-top-bot-style">
                     <span>24h low</span>
-                    <span>{`${btc?.low24h
-                        ? `${Number(btc?.low24h).toLocaleString()}`
-                        : "0"
+                    <span>{`${btc?.lowPrice24h
+                      ? `${Number(btc?.lowPrice24h).toLocaleString()}`
+                      : "0"
                       }`}</span>
                   </div>
                   <div className="top-col-6 comon-flex-top-bot-style">
                     <span>24h high</span>
-                    <span>{`${btc?.high24h
-                        ? `${Number(btc?.high24h).toLocaleString()}`
-                        : "0"
+                    <span>{`${btc?.highPrice24h
+                      ? `${Number(btc?.highPrice24h).toLocaleString()}`
+                      : "0"
                       }`}</span>
                   </div>
                   <div className="top-col-7 comon-flex-top-bot-style">
-                    <span>24h volume({pair.split("-")[0]})</span>
-                    <span>{`${btc?.open24h
-                        ? `${Number(btc?.open24h).toLocaleString()}`
-                        : "0"
+                    {/* <span>24h volume({pair.split("-")[0]})</span> */}
+                    <span>24h volume({pair})</span>
+                    <span>{`${btc?.volume24h
+                      ? `${Number(btc?.volume24h).toLocaleString()}`
+                      : "0"
                       }`}</span>
                   </div>
 
@@ -368,14 +557,14 @@ const BasicBody = () => {
             </Grid>
 
             <Grid container spacing={5} className="basic-body-container">
-
+              {/* 
               <Grid
                 item
                 xs={12}
                 sm={12}
                 md={12}
-                lg={2}
-                xl={2}
+                lg={4}
+                xl={3}
                 className="market-basic-left-block"
                 id="market-basic-left-block-id-left"
               >
@@ -391,22 +580,22 @@ const BasicBody = () => {
                   />
                 </div>
                 <AdvanceMarketTab pairs={pair} searchpair={searchedpair} selectPairsss={selectPairsss} />
-              </Grid>
+              </Grid> */}
 
               <Grid
                 item
                 xs={12}
                 sm={12}
                 md={12}
-                lg={5}
-                xl={5}
+                lg={4}
+                xl={6}
                 id="basic-graph-chart-top-bottom"
               >
                 <Item
                   className={classes.dashboarbodycls}
                   id="basic-graph-chart"
                 >
-                  {selec1 &&    <Box sx={{ width: "100%" }}>
+                  {selec1 && <Box sx={{ width: "100%" }}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                       <Tabs
                         value={value}
@@ -446,8 +635,8 @@ const BasicBody = () => {
                       index={0}
                       className="spot-graph-chart-tab-content"
                     >
-                      {console.log(selec1,'selec')}
-                    {selec1 ? <TradingViewWidget selec={selec1 != '' && selec1} /> :<></> } 
+                      {/* {console.log(selec1,'selec')} */}
+                      {selec1 ? <TradingViewWidget selec={selec1 != '' && selec1} /> : <></>}
                       {/* <TradeViewMain pair={pair} /> */}
                     </TabPanel>
                     <TabPanel
@@ -455,11 +644,11 @@ const BasicBody = () => {
                       index={1}
                       className="spot-graph-chart-tab-content"
                     >
-                    {selec1 &&  <TradingViewWidget pair={selec1}/>} 
+                      {selec1 && <TradingViewWidget pair={selec1} />}
                       {/* <TradeViewMain pair={pair} /> */}
                     </TabPanel>
                   </Box>}
-               
+
                 </Item>
 
 
@@ -469,9 +658,9 @@ const BasicBody = () => {
                 item
                 xs={12}
                 sm={12}
-                md={5.5}
-                lg={2.4}
-                xl={2.4}
+                md={6}
+                lg={4}
+                xl={3}
                 id="order-book-part-basic"
               >
                 <h6 className="order-book-spot">Order book</h6>
@@ -491,13 +680,13 @@ const BasicBody = () => {
                 item
                 xs={12}
                 sm={12}
-                md={5.5}
-                lg={2.4}
-                xl={2.4}
+                md={6}
+                lg={4}
+                xl={3}
                 id="order-book-part-basic"
                 className="order-book-part-basic-right"
               >
-                
+
                 <Item
                   className={classes.dashboarbodycls}
                   id="sell-buy-form-outer-id"
@@ -524,7 +713,7 @@ const BasicBody = () => {
                 id="open-order-id-outer"
               >
                 <Item className={classes.dashboarbodycls}>
-                  <OpenOrderTab selected={selected} selectedPairs={pair} reload={reload}/>
+                  <OpenOrderTab selected={selected} selectedPairs={pair} reload={reload} data={data} />
                 </Item>
 
               </Grid>

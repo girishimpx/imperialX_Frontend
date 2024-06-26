@@ -255,17 +255,17 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
 
   const onSubscribe = () => {
     if (!exchange) {
-      setexchangeerr("* Exchange Required");
+      setexchangeerr("Exchange Required");
     } else if (!apikey) {
-      setapikeyerr("* Apikeyasdf Required");
+      setapikeyerr("Apikeyasdf Required");
     } else if (!secretkey) {
-      setsecretkeyerr("* SecretKey Required");
+      setsecretkeyerr("SecretKey Required");
     } else if (!passphrase) {
-      setpassphraseerr("* Passphrase Required");
+      setpassphraseerr("Passphrase Required");
     } else if (!api_name) {
-      setapi_nameerr("* Api_name Required");
+      setapi_nameerr("Api name Required");
     } else if (!permission) {
-      setpermissionerr("* Permission Required");
+      setpermissionerr("Permission Required");
     } else if (!spot && !margin && !future) {
       setfuture("atleast any one of above sholud be checked");
     } else {
@@ -522,10 +522,10 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
             "aria-live": "polite",
           },
         });
-        
+
         setTimeout(() => {
           setchange(!change);
-          if(window.localStorage.getItem("referaldeposit") == 'null'){
+          if (window.localStorage.getItem("referaldeposit") == 'null') {
             navigate(`${Consts.route}/wallet`);
           }
         }, 800);
@@ -544,66 +544,66 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
 
 
 
-                   <Grid
-                      container
-                      spacing={0}
-                      className="inner-popup table-heading-style"
-                    >
+                <Grid
+                  container
+                  spacing={0}
+                  className="inner-popup table-heading-style"
+                >
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                        <Item className={classes.dashboarbodycls}>
-                        <div className="text-binance">
-                            <span>Exchange Name</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance">
+                        <span>Exchange Name</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                        <Item className={classes.dashboarbodycls}>
-                          <div className="text-binance">
-                            <span>Referral Bonus</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance">
+                        <span>Referral Bonus</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                        <Item className={classes.dashboarbodycls}>
-                          <div className="text-binance">
-                            <span>Subaccounts</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance">
+                        <span>Subaccounts</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                        <Item className={classes.dashboarbodycls}>
-                          <div className="text-binance">
-                            <span>Exchange</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance">
+                        <span>Exchange</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                        <Item className={classes.dashboarbodycls}>
-                          <div className="text-binance">
-                            <span>Supported Types</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance">
+                        <span>Supported Types</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                      <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
-                      <Item className={classes.dashboarbodycls}>
-                          <div className="text-binance action-column-table-last">
-                            <span>Action</span>
-                          </div>
-                        </Item>
-                      </Grid>
+                  <Grid item={true} xs={12} sm={12} md={12} lg={2} xl={2}>
+                    <Item className={classes.dashboarbodycls}>
+                      <div className="text-binance action-column-table-last">
+                        <span>Action</span>
+                      </div>
+                    </Item>
+                  </Grid>
 
-                    </Grid>
-
-
+                </Grid>
 
 
-                
+
+
+
                 {exchanges?.map((item, index) => {
                   return (
                     <Grid
@@ -712,57 +712,57 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
                               </Button>
                             )}
 
-                          {mylist?.length > 0 && mylist.includes(item.exchange) && (
-                            <div className="text-binance">
-                              {mylist?.length > 0 &&
-                                mylist.includes(item.exchange) && (
-                                  <div className={classes.twobuttons}>
-                                    <div className={classes.boxfield}>
-                                      {/* <span>status</span> */}
+                            {mylist?.length > 0 && mylist.includes(item.exchange) && (
+                              <div className="text-binance">
+                                {mylist?.length > 0 &&
+                                  mylist.includes(item.exchange) && (
+                                    <div className={classes.twobuttons}>
+                                      <div className={classes.boxfield}>
+                                        {/* <span>status</span> */}
 
-                                      {item.status ? (
-                                        <Button
-                                          style={{ padding: "6px !important" }}
+                                        {item.status ? (
+                                          <Button
+                                            style={{ padding: "6px !important" }}
 
-                                          className="subscribed-btn"
-                                          id="removeWidth"
-                                          onClick={() => {
-                                            status_changeApi(
-                                              item.exchange,
-                                              !item.status
-                                            );
-                                          }}
-                                        >
-                                          Disable
-                                        </Button>
-                                      ) : (
-                                        <Button
-                                          style={{ padding: "6px !important" }}
+                                            className="subscribed-btn"
+                                            id="removeWidth"
+                                            onClick={() => {
+                                              status_changeApi(
+                                                item.exchange,
+                                                !item.status
+                                              );
+                                            }}
+                                          >
+                                            Disable
+                                          </Button>
+                                        ) : (
+                                          <Button
+                                            style={{ padding: "6px !important" }}
 
-                                          className="subscribed-btn"
-                                          id="removeWidth"
-                                          onClick={() => {
-                                            status_changeApi(
-                                              item.exchange,
-                                              !item.status
-                                            );
+                                            className="subscribed-btn"
+                                            id="removeWidth"
+                                            onClick={() => {
+                                              status_changeApi(
+                                                item.exchange,
+                                                !item.status
+                                              );
 
-                                          }}
-                                        >
-                                          Enable
-                                        </Button>
-                                      )}
+                                            }}
+                                          >
+                                            Enable
+                                          </Button>
+                                        )}
 
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
-                            </div>
-                          
-                          )}
+                                  )}
+                              </div>
+
+                            )}
                           </div>
                         </Item>
                       </Grid>
-        
+
                     </Grid>
                   );
                 })}
@@ -896,7 +896,7 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
                                     xl={4}
                                   >
                                     <Item className={classes.dashboarbodycls}>
-                                      <div className="text-binance">
+                                      <div className="text-binance inactive">
                                         <span>3 Step</span>
                                         <p>Enter Your Key</p>
                                       </div>
@@ -919,7 +919,8 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
                                       style={{ padding: "6px !important" }}
 
                                       className="chosse-btn chose"
-                                      onClick={handleOpens1}
+                                      // onClick={handleOpens1}
+                                      onClick={handleCloses}
                                     >
                                       <img src={backarrow} alt="user" />
                                       Back
@@ -1622,7 +1623,7 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
                                           <Item
                                             className={classes.dashboarbodycls}
                                           >
-                                            <div className="text-binance">
+                                            <div className="text-binance inactive">
                                               <span>3 Step</span>
                                               <p>Enter Your Key</p>
                                             </div>
@@ -1646,7 +1647,8 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add, getSubscription }) => 
                                             style={{ padding: "6px !important" }}
 
                                             className="chosse-btn chose"
-                                            onClick={handleOpens1}
+                                            // onClick={handleOpens1}
+                                            onClick={handleCloses}
                                           >
                                             <img src={backarrow} alt="user" />
                                             Back

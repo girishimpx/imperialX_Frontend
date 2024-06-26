@@ -184,7 +184,7 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add }) => {
 
   const tokenCheck = window.localStorage.getItem("Mellifluous");
   const exchanges = [
-    
+
     {
       exchange: "binance",
       logo: binanceImage,
@@ -247,17 +247,17 @@ const DasboardBody = ({ sideBarShow, setSideBarShow, add }) => {
 
   const onSubscribe = () => {
     if (!exchange) {
-      setexchangeerr("* Exchange Required");
+      setexchangeerr("Exchange Required");
     } else if (!apikey) {
-      setapikeyerr("* Apikey Required");
+      setapikeyerr("Apikey Required");
     } else if (!secretkey) {
-      setsecretkeyerr("* SecretKey Required");
+      setsecretkeyerr("SecretKey Required");
     } else if (!passphrase) {
-      setpassphraseerr("* Passphrase Required");
+      setpassphraseerr("Passphrase Required");
     } else if (!api_name) {
-      setapi_nameerr("* Api_name Required");
+      setapi_nameerr("Api name Required");
     } else if (!permission) {
-      setpermissionerr("* Permission Required");
+      setpermissionerr("Permission Required");
     } else if (!spot && !margin && !future) {
       setfuture("atleast any one of above sholud be checked");
     } else {

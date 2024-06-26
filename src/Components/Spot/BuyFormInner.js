@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -13,7 +13,7 @@ import Axios from "../../Axios";
 
 import { Slider, RangeSlider } from "rsuite";
 
-const BuyFormInner = ({ selected, pair , index }) => {
+const BuyFormInner = ({ selected, pair, index }) => {
   const user = JSON.parse(window.localStorage.getItem("users"))
   const [price, setPrice] = React.useState();
   const [Amount, setAmount] = React.useState();
@@ -22,33 +22,33 @@ const BuyFormInner = ({ selected, pair , index }) => {
   const Amountref = useRef()
   // const total = useRef()
   React.useEffect(() => {
-    
-     
-      
-    if (selected) {     
-      setPrice(selected.price);      
+
+
+
+    if (selected) {
+      setPrice(selected.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
     if (Amount !== "") {
-      
+
       settotal(Amount * price)
     } else {
       settotal("")
     }
-  }, []); 
- 
+  }, []);
+
   React.useEffect(() => {
-    
-    
-      
-    if (selected) {     
-      setPrice(selected.price);     
+
+
+
+    if (selected) {
+      setPrice(selected.price);
       // setAmount(selected.amount);
       // settotal(selected.total);
     }
     if (Amount !== "") {
-      
+
       settotal(Amountref.current.value * selected.price)
     } else {
       settotal("")
@@ -71,7 +71,7 @@ const BuyFormInner = ({ selected, pair , index }) => {
   };
   const Amountupdate = (event) => {
     const newValue = Math.max(0, Number(event.target.value));
-    
+
     // setAmount((prev) => { return prev, event.target.value })
     setAmount(newValue)
   };
@@ -79,7 +79,7 @@ const BuyFormInner = ({ selected, pair , index }) => {
     const newValue = Math.max(0, Number(event.target.value));
     settotal(newValue)
   };
-const [load,setload] = useState(true)
+  const [load, setload] = useState(true)
   useEffect(() => {
     if (pair !== "") {
       setPrice("")
@@ -90,9 +90,9 @@ const [load,setload] = useState(true)
 
   const buytrade = async () => {
     try {
-      if(price === ""){
-        toast.error("Pelese Fill the Price", {
-            
+      if (price === "") {
+        toast.error("Please Fill the Price", {
+
           duration: 4000,
           position: "top-center",
 
@@ -106,7 +106,7 @@ const [load,setload] = useState(true)
           className: "",
 
           // Custom Icon
-         icon:"",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -120,9 +120,9 @@ const [load,setload] = useState(true)
             "aria-live": "polite",
           },
         });
-    } else if(Amount === ""){
-      toast.error("Pelese Fill the Amount", {
-          
+      } else if (Amount === "") {
+        toast.error("Pelese Fill the Amount", {
+
           duration: 4000,
           position: "top-center",
 
@@ -136,7 +136,7 @@ const [load,setload] = useState(true)
           className: "",
 
           // Custom Icon
-         icon:"",
+          icon: "",
 
           // Change colors of success/error/loading icon
           iconTheme: {
@@ -150,272 +150,272 @@ const [load,setload] = useState(true)
             "aria-live": "polite",
           },
         });
-    } 
-    else {
-      setload(false)
-      if(user.trader_type === "user"){
-        const pair12 = pair.split('-')[1]
-        const  da = {
-          instId: pair,
-          tdMode : "cash",
-          ccy : pair12,
-          tag : "mk1",
-          side : "buy",
-          orderType : index,
-          sz : Amount,
-          px : price,
-          trade_at : "spot",
-          lever: "0"
-        }
-         const { data } = await Axios.post(`/trade/userTrade`, da , {
-          headers: {
-            Authorization: localStorage.getItem("Mellifluous"),
+      }
+      else {
+        setload(false)
+        if (user.trader_type === "user") {
+          const pair12 = pair.split('-')[1]
+          const da = {
+            instId: pair,
+            tdMode: "cash",
+            ccy: pair12,
+            tag: "mk1",
+            side: "buy",
+            orderType: index,
+            sz: Amount,
+            px: price,
+            trade_at: "spot",
+            lever: "0"
           }
-        })
-        if(data){
-          setload(true)
-        toast.success(data.message, {
-            
-          duration: 4000,
-          position: "top-center",
+          const { data } = await Axios.post(`/trade/userTrade`, da, {
+            headers: {
+              Authorization: localStorage.getItem("Mellifluous"),
+            }
+          })
+          if (data) {
+            setload(true)
+            toast.success(data.message, {
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "green",
-            fontWeight: "bold",
-          },
-          className: "",
+              duration: 4000,
+              position: "top-center",
 
-          // Custom Icon
-          icon: "👏",
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Custom Icon
+              icon: "👏",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
-        window.location.reload();
-        setAmount("")
-      }else{
-        setload(true)
-        toast.error("Something Went Wrong", {
-            
-          duration: 4000,
-          position: "top-center",
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "red",
-            fontWeight: "bold",
-          },
-          className: "",
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+            window.location.reload();
+            setAmount("")
+          } else {
+            setload(true)
+            toast.error("Something Went Wrong", {
 
-          // Custom Icon
-          icon: "👏",
+              duration: 4000,
+              position: "top-center",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "red",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
-      }
-      }else{
-        const pair12 = pair.split('-')[1]
-        const  da = {
-          instId: pair,
-          tdMode : "cash",
-          ccy : pair12,
-          tag : "mk1",
-          side : "buy",
-          orderType : index,
-          sz : Amount,
-          px : price,
-          trade_at : "spot",
-          lever: "0"
-        }
-         const { data } = await Axios.post(`/trade/CreateTrade`, da , {
-          headers: {
-            Authorization: localStorage.getItem("Mellifluous"),
+              // Custom Icon
+              icon: "👏",
+
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
           }
-        })
-        if(data){
-          setload(true)
-        toast.success(data.message, {
-            
-          duration: 4000,
-          position: "top-center",
+        } else {
+          const pair12 = pair.split('-')[1]
+          const da = {
+            instId: pair,
+            tdMode: "cash",
+            ccy: pair12,
+            tag: "mk1",
+            side: "buy",
+            orderType: index,
+            sz: Amount,
+            px: price,
+            trade_at: "spot",
+            lever: "0"
+          }
+          const { data } = await Axios.post(`/trade/CreateTrade`, da, {
+            headers: {
+              Authorization: localStorage.getItem("Mellifluous"),
+            }
+          })
+          if (data) {
+            setload(true)
+            toast.success(data.message, {
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "green",
-            fontWeight: "bold",
-          },
-          className: "",
+              duration: 4000,
+              position: "top-center",
 
-          // Custom Icon
-          icon: "👏",
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Custom Icon
+              icon: "👏",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
-        window.location.reload();
-        setAmount("")
-      }else{
-        setload(true)
-        toast.success("Something Went Wrong", {
-            
-          duration: 4000,
-          position: "top-center",
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "green",
-            fontWeight: "bold",
-          },
-          className: "",
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+            window.location.reload();
+            setAmount("")
+          } else {
+            setload(true)
+            toast.success("Something Went Wrong", {
 
-          // Custom Icon
-         icon:"",
+              duration: 4000,
+              position: "top-center",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+              // Styling
+              style: {
+                padding: "1rem",
+                fontSize: "15px",
+                color: "green",
+                fontWeight: "bold",
+              },
+              className: "",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
+              // Custom Icon
+              icon: "",
+
+              // Change colors of success/error/loading icon
+              iconTheme: {
+                primary: "#000",
+                secondary: "#fff",
+              },
+
+              // Aria
+              ariaProps: {
+                role: "status",
+                "aria-live": "polite",
+              },
+            });
+          }
+        }
       }
-      }
-    }
     } catch (error) {
       setload(!false)
       toast.error(error.response.data.message, {
-          
-          duration: 4000,
-          position: "top-center",
 
-          // Styling
-          style: {
-            padding: "1rem",
-            fontSize: "15px",
-            color: "red",
-            fontWeight: "bold",
-          },
-          className: "",
+        duration: 4000,
+        position: "top-center",
 
-          // Custom Icon
-         icon:"",
+        // Styling
+        style: {
+          padding: "1rem",
+          fontSize: "15px",
+          color: "red",
+          fontWeight: "bold",
+        },
+        className: "",
 
-          // Change colors of success/error/loading icon
-          iconTheme: {
-            primary: "#000",
-            secondary: "#fff",
-          },
+        // Custom Icon
+        icon: "",
 
-          // Aria
-          ariaProps: {
-            role: "status",
-            "aria-live": "polite",
-          },
-        });
+        // Change colors of success/error/loading icon
+        iconTheme: {
+          primary: "#000",
+          secondary: "#fff",
+        },
+
+        // Aria
+        ariaProps: {
+          role: "status",
+          "aria-live": "polite",
+        },
+      });
     }
   }
 
   return (
     <>
-    
-    <div className="Form-Inner-box">
-      
-      {/* <label className="form-label-style">Price ({selected ? selected?.pair.split('-')[1] : "USD"})</label> */}
-      <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
 
-      <div className="">
-        <TextField
-          type={"number"}
-          id="outlined-basic"
-          variant="outlined"
-          value={selected.price}
-          InputProps={{ inputProps: { min: "0" } }}
-          onChange={priceupdate}
-        />
-      </div>
-      <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
-      <div className="">
-        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-          <OutlinedInput
-            id="outlined-adornment-weight"
+      <div className="Form-Inner-box">
+
+        {/* <label className="form-label-style">Price ({selected ? selected?.pair.split('-')[1] : "USD"})</label> */}
+        <label className="form-label-style">Price ({pair ? pair.split('-')[1] : "USD"})</label>
+
+        <div className="">
+          <TextField
             type={"number"}
-            value={Amount}
+            id="outlined-basic"
+            variant="outlined"
+            value={selected.price}
             InputProps={{ inputProps: { min: "0" } }}
-            inputRef={Amountref}
-            onChange={Amountupdate}
-            endAdornment={
-              <InputAdornment position="end" InputProps={{ inputProps: { min: "0" } }} >
-                Min  (<span>{pair ? pair.split('-')[0] : "USD"}</span>)
-              </InputAdornment>
-            }
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              "aria-label": "weight",
-            }}
-
+            onChange={priceupdate}
           />
-        </FormControl>
+        </div>
+        <label className="form-label-style">Amount ({pair ? pair.split('-')[0] : "USD"})</label>
+        <div className="">
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <OutlinedInput
+              id="outlined-adornment-weight"
+              type={"number"}
+              value={Amount}
+              InputProps={{ inputProps: { min: "0" } }}
+              inputRef={Amountref}
+              onChange={Amountupdate}
+              endAdornment={
+                <InputAdornment position="end" InputProps={{ inputProps: { min: "0" } }} >
+                  Min  (<span>{pair ? pair.split('-')[0] : "USD"}</span>)
+                </InputAdornment>
+              }
+              aria-describedby="outlined-weight-helper-text"
+              inputProps={{
+                "aria-label": "weight",
+              }}
 
-        {/* <Slider defaultValue={0} min={0} step={25} max={100} graduated /> */}
-      </div>
-      <div>
-        <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-          <OutlinedInput
-            value={total}
-            type={"number"}
-            InputProps={{ inputProps: { min: "0" } }}
-            onChange={totalupdate}
-            id="outlined-adornment-weight"
-            endAdornment={<InputAdornment position="end">{pair ? pair.split('-')[1] : "USD"}</InputAdornment>}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              "aria-label": "weight",
-            }}
-          />
-        </FormControl>
-        {/* <div className="available-max-buy">
+            />
+          </FormControl>
+
+          {/* <Slider defaultValue={0} min={0} step={25} max={100} graduated /> */}
+        </div>
+        <div>
+          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+            <OutlinedInput
+              value={total}
+              type={"number"}
+              InputProps={{ inputProps: { min: "0" } }}
+              onChange={totalupdate}
+              id="outlined-adornment-weight"
+              endAdornment={<InputAdornment position="end">{pair ? pair.split('-')[1] : "USD"}</InputAdornment>}
+              aria-describedby="outlined-weight-helper-text"
+              inputProps={{
+                "aria-label": "weight",
+              }}
+            />
+          </FormControl>
+          {/* <div className="available-max-buy">
           <span>
             Available <span>-- USDC</span>
           </span>
@@ -430,11 +430,11 @@ const [load,setload] = useState(true)
           />
           <FormControlLabel required control={<Checkbox />} label="Stop loss" />
         </FormGroup> */}
-        <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
-          Buy {selected ? selected?.pair.split('-')[0] : ""}
-        </Button>
+          <Button className="Buy-SOL" variant="contained" onClick={buytrade} disabled={!load}>
+            Buy {selected ? selected?.pair.split('-')[0] : ""}
+          </Button>
+        </div>
       </div>
-    </div>
     </>
   );
 };

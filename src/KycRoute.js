@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import Constant from './Constansts'
-import Axios from './Axios'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Axios from './Axios';
+import Constant from './Constansts';
 
 function KycPrivateRoute({ children }) {
 
